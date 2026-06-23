@@ -254,6 +254,7 @@ body.locked .brand, body.locked nav, body.locked main, body.locked section{visib
 
 <section id="wb"><div class="wrap">
   <div class="secthead"><h2 id="wbTitle"></h2><small id="wbSub"></small></div>
+  <div class="search" id="wbMetricBar" style="margin-bottom:10px"><span class="perlbl" id="wbMetricL"></span><select id="wbMetric"></select><span class="perlbl" id="wbFFL"></span><select id="wbFF"></select></div>
   <div class="cards" id="wbCards"></div>
   <div class="panel" style="margin-bottom:14px"><h3 id="wbWChT"></h3>
     <div class="ch" style="height:320px"><canvas id="cWbW"></canvas></div></div>
@@ -264,6 +265,11 @@ body.locked .brand, body.locked nav, body.locked main, body.locked section{visib
       <div class="tscroll" style="max-height:230px"><table class="tbl" id="tWbSub"></table></div>
       <h3 style="margin-top:14px" id="wbBChT"></h3>
       <div class="ch" style="height:160px"><canvas id="cWbB"></canvas></div></div>
+  </div>
+  <div class="panel" style="margin-top:14px">
+    <h3 id="wbWtTblT" style="margin:0 0 10px"></h3>
+    <div class="tscroll" style="max-height:480px"><table class="tbl" id="tWbWt"></table></div>
+    <div class="note" id="wbWtNote"></div>
   </div>
 </div></section>
 
@@ -398,6 +404,38 @@ body.locked .brand, body.locked nav, body.locked main, body.locked section{visib
   <div class="panel" style="margin-top:14px"><h3 id="wipTblT"></h3><div class="tscroll" style="max-height:520px"><table class="tbl" id="tWip"></table></div></div>
   <div class="note" id="wipNote"></div>
 </div></section>
+<section id="wdist"><div class="wrap">
+  <div class="secthead"><h2 id="wdTitle"></h2><small id="wdSub"></small></div>
+  <div class="search" id="wdFilters" style="flex-wrap:wrap;gap:10px">
+    <span class="perlbl" id="wdFromLbl"></span><input type="date" id="wdFrom" class="rngDate">
+    <span class="perlbl" id="wdToLbl"></span><input type="date" id="wdTo" class="rngDate">
+    <button class="btn ghost" id="wdClearBtn"></button>
+    <span class="perlbl" id="wdLcat"></span><select id="wdCat"></select>
+    <span class="perlbl" id="wdLfam"></span><select id="wdFam"></select>
+    <span class="perlbl" id="wdLpack"></span><select id="wdPack"></select>
+  </div>
+  <div class="search" id="wdExclBar" style="flex-wrap:wrap;gap:8px;margin-bottom:10px"><span class="perlbl" id="wdExclLbl"></span><span id="wdExclChips" style="display:flex;flex-wrap:wrap;gap:6px"></span></div>
+  <div class="cards" id="wdKpi"></div>
+  <div class="panel" style="margin-top:4px"><h3 id="wdFlowT"></h3><div class="ch" style="height:300px"><canvas id="cWdFlow"></canvas></div></div>
+  <div class="grid2" style="margin-top:14px">
+    <div class="panel"><h3 id="wdCatT"></h3><div class="ch"><canvas id="cWdCat"></canvas></div></div>
+    <div class="panel"><h3 id="wdFamChT"></h3><div class="ch"><canvas id="cWdFam"></canvas></div></div>
+  </div>
+  <div class="secthead" style="margin-top:18px"><h2 id="wdCmpT"></h2><small id="wdCmpSub"></small></div>
+  <div class="search" style="margin-bottom:6px"><span class="perlbl" id="wdCmpGranL"></span><select id="wdCmpGran"></select></div>
+  <div class="cards" id="wdCmpKpi"></div>
+  <div class="panel" style="margin-top:4px"><h3 id="wdCmpChT"></h3><div class="ch"><canvas id="cWdCmp"></canvas></div></div>
+  <div class="cards" id="wdLossKpi" style="margin-top:14px"></div>
+  <div class="panel" style="margin-top:14px"><h3 id="wdTblT"></h3>
+    <div class="search" style="margin-bottom:10px;flex-wrap:wrap;gap:8px">
+      <input type="text" id="wdProdSearch" placeholder="" style="flex:1;min-width:180px;padding:7px 10px;border:1px solid var(--bd);border-radius:8px;background:var(--panel);color:var(--ink)">
+      <button class="btn ghost" id="wdSelAll"></button>
+      <button class="btn ghost" id="wdSelNone"></button>
+      <span class="perlbl" id="wdSelInfo" style="opacity:.7"></span>
+    </div>
+    <div class="tscroll" style="max-height:520px"><table class="tbl" id="tWdist"></table></div></div>
+  <div class="note" id="wdNote"></div>
+</div></section>
 <section id="cmp"><div class="wrap">
   <div class="secthead"><h2 id="cmpTitle"></h2><small id="cmpSub"></small></div>
   <div id="cmpGran" class="perbar" style="margin-bottom:8px"></div>
@@ -475,7 +513,7 @@ ar:{dir:'rtl', title:'شركة سما كربلاء — مجزر الدواجن',
  asof:'آخر تحديث للبيانات', themeD:'🌙 داكن', themeL:'☀️ فاتح', importBtn:'⟳ تحديث من إكسل',
  months:['كانون الثاني','شباط','آذار','نيسان','أيار','حزيران','تموز','آب','أيلول','تشرين الأول','تشرين الثاني','كانون الأول'],
  days:['السبت','الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة'],
- tabs:{exec:'النظرة التنفيذية',rx:'الاستلام الحي',wb:'الدجاج الكامل',ff:'فريش × مجمد',stk:'المخزون',plant:'كفاءة المجزر',quality:'جودة الذبح',demand:'التنبؤ والدقة',alerts:'التنبيهات',fresh:'متابعة الفريش',fpp:'تحليل المصنّعات',top:'أفضل الأصناف',offals:'تحليل الأحشاء',wip:'تحت التشغيل WIP',cmp:'الطلب·الإنتاج·المبيعات',week:'أسبوعي',month:'شهري',sku:'المنتجات'},
+ tabs:{exec:'النظرة التنفيذية',rx:'الاستلام الحي',wb:'الدجاج الكامل',ff:'فريش × مجمد',stk:'المخزون',plant:'كفاءة المجزر',quality:'جودة الذبح',demand:'التنبؤ والدقة',alerts:'التنبيهات',fresh:'متابعة الفريش',fpp:'تحليل المصنّعات',top:'أفضل الأصناف',offals:'تحليل الأحشاء',wip:'تحت التشغيل WIP',wdist:'توزيع الوزن',cmp:'الطلب·الإنتاج·المبيعات',week:'أسبوعي',month:'شهري',sku:'المنتجات'},
  chain:{rx:'📥 استلام حي',prod:'🏭 إنتاج',sales:'🛒 مبيعات',ord:'📦 طلبات',stk:'🏬 مخزون افتتاحي'}, rxFromLbl:'من', rxToLbl:'إلى', rxClear:'كل الفترة',
  birds:'طير', box:'صندوق', boxes:'صندوق', days_u:'يوم',
  chainNote:d=>'سلسلة آخر يوم تشغيلي '+d+' — أرقام المنتجات بالصناديق، المخزون يعتمد الرصيد الافتتاحي.',
@@ -551,6 +589,14 @@ ar:{dir:'rtl', title:'شركة سما كربلاء — مجزر الدواجن',
  wipLmetric:'المقياس', wipLgran:'الفترة', wipLff:'النوع', wipLown:'العلامة', wipLfam:'العائلة', wipLprod:'المنتج',
  wipTsT:'التحليل الزمني', wipFFt:'فريش مقابل مجمد', wipFamT:'حسب العائلة',
  wipTblT:'كل منتجات WIP', wipNote:'استخدم الفلاتر للتحليل اليومي/الأسبوعي/الشهري وحسب العلامة والنوع والعائلة. الأرقام بالصناديق.',
+ wdTitle:'توزيع الوزن — أين ذهب الوزن المستلم', wdSub:'من الوزن الحي إلى الوزن الصافي القابل للتصنيع، ونسبة كل منتج منه',
+ wdFromLbl:'من', wdToLbl:'إلى', wdClear:'كل الفترة', wdLcat:'الفئة', wdLfam:'العائلة',
+ wdKlive:'الوزن الحي المستلم', wdKdress:'الوزن المُصفّى (×74%)', wdKnet:'الوزن الصافي القابل للتصنيع', wdKprod:'إجمالي إنتاج المنتجات', wdKpct:'نسبة الإنتاج من الصافي', wdKunacc:'غير محسوب (تشذيب/فقد)',
+ wdFlowT:'مسار الوزن: حي ← مُصفّى ← صافي ← منتجات', wdCatT:'توزيع الوزن حسب الفئة', wdFamChT:'أعلى العائلات بالوزن',
+ wdCmpT:'مقارنة الفترات', wdCmpSub:'اليوم مقابل أمس · الأسبوع مقابل السابق · الشهر مقابل السابق', wdCmpGranL:'الفترة',
+ wdCmpKpiCur:'الحالية', wdCmpKpiPrev:'السابقة', wdCmpChT:'اتجاه نسبة التصافي (الإنتاج ÷ الحي)',
+ wdTblT:'كل المنتجات — الوزن والنسبة', wdThProd:'المنتج', wdThCat:'الفئة', wdThFam:'العائلة', wdThType:'النوع', wdThBoxes:'الصناديق', wdThKg:'الوزن (كغم)', wdThPctNet:'% من الصافي', wdThPctLive:'% من الحي',
+ wdNote:'الوزن الصافي = (الوزن الحي × 74% تصافي) − الإعدامات (طبي + أجنحة + أخطاء). النافق والصاعق يُطرحان كطيور نافقة قبل التصافي. الأحشاء جزء من الـ26% المطروحة (تُقاس في تابها المنفصل ولا تُجمع هنا). استخدم فلتر الاستثناء لإزالة الفئات الوسيطة/المُعاد تصنيعها. الأوزان بالكيلوغرام.', wdExclLbl:'استثناء الفئات (وسيطة/مُعاد تصنيعها):', wdLpack:'التعبئة', wdKoffal:'الأحشاء (% من الحي)', wdPackT:'توزيع الوزن حسب التعبئة', wdProdSearchPH:'ابحث عن منتج بالاسم أو الكود...', wdSelAll:'تحديد الكل', wdSelNone:'إلغاء الكل', wdThSel:'اختيار', wdKsel:'إنتاج المنتجات المختارة', wdKloss:'الفقد (صافي − مختار)', wdSelInfo:(n,tot)=>`مختار ${n} من ${tot}`,
  dmTrendT:'اتجاه دقة التنبؤ الأسبوعية', dmFOSt:'مقارنة أسبوعية: التنبؤ · الطلب · المبيعات', dmAllCat:'كل الفئات', dmAllFF:'فريش + فروزن', dmBiasT:'الانحياز الأسبوعي (+ تنبؤ زائد / − ناقص)', dmCatT:'دقة آخر أسبوع حسب الفئة',
  dmThCat:'الفئة', dmThAcc:'الدقة', dmThBias:'الانحياز', dmThAO:'الطلب الفعلي',
  dmWkFrom:'من أسبوع', dmWkTo:'إلى أسبوع',
@@ -574,7 +620,7 @@ ar:{dir:'rtl', title:'شركة سما كربلاء — مجزر الدواجن',
  rxTot:'إجمالي الاستلام', rxAvg:'متوسط اليوم', rxPeak:'أعلى يوم', rxUtil:'متوسط الاستغلال', rxOfCap:c=>'من طاقة '+c+' طير/يوم',
  rxDoa:'النافق عند الوصول DOA', rxDoaStd:'المعيار ≤ 0.5%', rxSl:'الطيور المذبوحة',
  rxChT:'الاستلام اليومي مقابل الطاقة', rxCapL:'الطاقة اليومية:', rxCapU:'طير/يوم',
- rxWChT:'الاستلام الأسبوعي (طير)', rxTblT:'السجل الأسبوعي', rxDayT:'السجل اليومي — الخطوط والنافق (آخر 21 يوماً)',
+ rxWChT:'الاستلام الأسبوعي (طير)', rxTblT:'السجل الأسبوعي', rxDayT:'السجل اليومي — الخطوط والنافق',
  rxCap:'الطاقة', rxRec:'استلام',
  thW:'الأسبوع',thFrom:'من',thTo:'إلى',thDays:'أيام',thBirds:'طيور',thAvgD:'متوسط/يوم',thDate:'التاريخ',thDay:'اليوم',
  thDOA:'النافق DOA',thDOAp:'DOA%',thSl:'مذبوح',thL1:'خط 1',thL2:'خط 2',thBr:'بريدر لاين',thOther:'فوارق أخرى*',
@@ -583,12 +629,12 @@ ar:{dir:'rtl', title:'شركة سما كربلاء — مجزر الدواجن',
  rxCondKav:'متوسط وزن الطير الحي', rxCondKliv:'إعدام الكبد (ميكانيكي+طبي)', rxCondKmed:'الإعدام الطبي', rxCondKwings:'أجنحة مُعدَمة', rxCondKstun:'نافق الصاعق', rxCondKdoaw:'وزن النافق',
  rxCondChT:'الإعدامات حسب النوع (عدد)', rxWtChT:'الأوزان (كغم)',
  rxCondTblT:'التفصيل اليومي — الإعدامات والأوزان', rxCondNote:'الإعدام الميكانيكي والطبي للكبد، الإعدام الطبي، الأجنحة، نافق الصاعق، وأخطاء الذبح — بالعدد والوزن. متوسط وزن الطير = وزن الاستلام ÷ عدد الطيور.',
- rxThAvgW:'متوسط الوزن', rxThLivMech:'كبد ميكانيكي', rxThLivMed:'كبد طبي', rxThMedN:'إعدام طبي(عدد)', rxThMedW:'إعدام طبي(وزن)', rxThWings:'أجنحة(وزن)', rxThMisN:'أخطاء(عدد)', rxThMisW:'أخطاء(وزن)', rxThStunN:'صاعق(عدد)', rxThStunW:'صاعق(وزن)', rxThDoaW:'نافق(وزن)',
+ rxThAvgW:'متوسط الوزن', rxThLivMech:'كبد ميكانيكي', rxThLivMed:'كبد طبي', rxThMedN:'إعدام طبي(عدد)', rxThMedW:'إعدام طبي(وزن)', rxThWings:'أجنحة(وزن)', rxThMisN:'أخطاء(عدد)', rxThMisW:'أخطاء(وزن)', rxThStunN:'صاعق(عدد)', rxThStunW:'صاعق(وزن)', rxThDoaW:'نافق(وزن)', rxPeriodCap:(from,to,n)=>`الفترة: ${from} ← ${to} · ${n} يوم`,
  wbTitle:'تحليل الدجاج الكامل', wbSub:m=>'شهر '+m+' — الطيور = صناديق × قطع/صندوق، الوزن الحي = الوزن ÷ 0.74 (تصافي 74%)',
  wbShareTot:'حصة الدجاج الكامل من إجمالي المبيعات', wbOfSales:m=>'من مبيعات '+m,
  wbFreshT:'🟢 فريش — مبيعات', wbFrozenT:'🔵 مجمد — مبيعات', ofWB:'من الدجاج الكامل', birdsSold:'طيور مباعة',
  wbTotBirds:'إجمالي الطيور المباعة',
- wbWChT:'المبيعات حسب فئة الوزن — فريش × مجمد (صندوق)', wbTblT:'جدول الأوزان — تصافي 74%',
+ wbWChT:'المبيعات حسب فئة الوزن — فريش × مجمد (صندوق)', wbTblT:'جدول الأوزان — تصافي 74%', wbWtTblT:'تفصيل الأوزان — صناديق وأوزان حسب فئة الطير', wbMetricL:'المقياس', wbFFL:'النوع', wbWtMetricL:'المقياس', wbWtFFL:'النوع', wbWtThClass:'فئة الطير (وزن المنتج)', wbWtThLive:'الوزن الحي/طير', wbWtThType:'النوع', wbWtThBoxes:'الصناديق', wbWtThPcs:'الطيور (عدد)', wbWtThKg:'الوزن (كغم)', wbWtNote:'وزن الصندوق = عدد القطع × وزن المنتج. الوزن الحي للطير = وزن المنتج ÷ 74%. اختر المقياس (مبيعات/إنتاج/طلب) لرؤية الصناديق وعددها ووزنها لكل فئة وزن.',
  wbSubT:'التصنيفات الفرعية', wbBChT:'الطيور المباعة حسب الوزن',
  thType:'النوع',thWt:'وزن المنتج (غم)',thLive:'وزن حي (غم)',thSKUs:'منتجات',thFul:'تنفيذ%',thStock:'مخزون',thLife:'مبيعات تاريخية',thSubF:'التصنيف',
  ffTitle:'فريش × مجمد حسب الفئة', ffSub:m=>'مقارنة شهرية للمبيعات (صندوق) — '+m+' مقابل الشهر السابق',
@@ -620,7 +666,7 @@ en:{dir:'ltr', title:'Sama Karbala Co. — Poultry Processing Plant', sub:'Execu
  asof:'Data as of', themeD:'🌙 Dark', themeL:'☀️ Light', importBtn:'⟳ Update from Excel',
  months:['January','February','March','April','May','June','July','August','September','October','November','December'],
  days:['Saturday','Sunday','Monday','Tuesday','Wednesday','Thursday','Friday'],
- tabs:{exec:'Executive Overview',rx:'Live Bird Intake',wb:'Whole Bird',ff:'Fresh vs Frozen',stk:'Inventory',plant:'Plant Efficiency',quality:'Carcass Quality',demand:'Forecast & Accuracy',alerts:'Alerts',fresh:'Fresh Watch',fpp:'FPP Analysis',top:'Top Products',offals:'Offals Analysis',wip:'WIP Analysis',cmp:'Order·Prod·Sales',week:'Weekly',month:'Monthly',sku:'Products'},
+ tabs:{exec:'Executive Overview',rx:'Live Bird Intake',wb:'Whole Bird',ff:'Fresh vs Frozen',stk:'Inventory',plant:'Plant Efficiency',quality:'Carcass Quality',demand:'Forecast & Accuracy',alerts:'Alerts',fresh:'Fresh Watch',fpp:'FPP Analysis',top:'Top Products',offals:'Offals Analysis',wip:'WIP Analysis',wdist:'Weight Distribution',cmp:'Order·Prod·Sales',week:'Weekly',month:'Monthly',sku:'Products'},
  chain:{rx:'📥 Live intake',prod:'🏭 Production',sales:'🛒 Sales',ord:'📦 Orders',stk:'🏬 Opening stock'}, rxFromLbl:'From', rxToLbl:'To', rxClear:'Full period',
  birds:'birds', box:'boxes', boxes:'boxes', days_u:'days',
  chainNote:d=>'Latest operating-day chain ('+d+') — product figures in boxes; inventory based on opening balance.',
@@ -696,6 +742,14 @@ en:{dir:'ltr', title:'Sama Karbala Co. — Poultry Processing Plant', sub:'Execu
  wipLmetric:'Metric', wipLgran:'Period', wipLff:'Type', wipLown:'Brand', wipLfam:'Family', wipLprod:'Product',
  wipTsT:'Time-series analysis', wipFFt:'Fresh vs Frozen', wipFamT:'By family',
  wipTblT:'All WIP products', wipNote:'Use the filters for daily/weekly/monthly analysis and by brand/type/family. Figures in boxes.',
+ wdTitle:'Weight Distribution — where the received weight went', wdSub:'From live weight to net processable weight, and each product\'s share of it',
+ wdFromLbl:'From', wdToLbl:'To', wdClear:'Full period', wdLcat:'Category', wdLfam:'Family',
+ wdKlive:'Live weight received', wdKdress:'Dressed weight (×74%)', wdKnet:'Net processable weight', wdKprod:'Total product production', wdKpct:'Production % of net', wdKunacc:'Unaccounted (trim/loss)',
+ wdFlowT:'Weight flow: live → dressed → net → products', wdCatT:'Weight distribution by category', wdFamChT:'Top families by weight',
+ wdCmpT:'Period comparison', wdCmpSub:'Today vs yesterday · Week vs previous · Month vs previous', wdCmpGranL:'Period',
+ wdCmpKpiCur:'Current', wdCmpKpiPrev:'Previous', wdCmpChT:'Yield % trend (production ÷ live)',
+ wdTblT:'All products — weight & share', wdThProd:'Product', wdThCat:'Category', wdThFam:'Family', wdThType:'Type', wdThBoxes:'Boxes', wdThKg:'Weight (kg)', wdThPctNet:'% of net', wdThPctLive:'% of live',
+ wdNote:'Net weight = (live weight × 74% dressing) − condemnations (medical + wings + mistakes). DOA and stunner removed as dead birds before dressing. Offals are part of the 26% dressing loss (measured in their own tab, not summed here). Use the exclude filter to remove intermediate/re-processed categories. Weights in kg.', wdExclLbl:'Exclude categories (intermediate/re-processed):', wdLpack:'Packaging', wdKoffal:'Offals (% of live)', wdPackT:'Weight distribution by packaging', wdProdSearchPH:'Search product by name or code...', wdSelAll:'Select all', wdSelNone:'Clear all', wdThSel:'Select', wdKsel:'Selected products production', wdKloss:'Loss (net − selected)', wdSelInfo:(n,tot)=>`${n} of ${tot} selected`,
  dmTrendT:'Weekly forecast-accuracy trend', dmFOSt:'Weekly comparison: Forecast · Orders · Sales', dmAllCat:'All categories', dmAllFF:'Fresh + Frozen', dmBiasT:'Weekly bias (+ over / − under-forecast)', dmCatT:'Latest-week accuracy by category',
  dmThCat:'Category', dmThAcc:'Accuracy', dmThBias:'Bias', dmThAO:'Actual orders',
  dmWkFrom:'From week', dmWkTo:'To week',
@@ -719,7 +773,7 @@ en:{dir:'ltr', title:'Sama Karbala Co. — Poultry Processing Plant', sub:'Execu
  rxTot:'Total birds received', rxAvg:'Daily average', rxPeak:'Peak day', rxUtil:'Average utilisation', rxOfCap:c=>'of '+c+' birds/day capacity',
  rxDoa:'Dead on Arrival (DOA)', rxDoaStd:'Standard ≤ 0.5%', rxSl:'Birds slaughtered',
  rxChT:'Daily intake vs capacity', rxCapL:'Daily capacity:', rxCapU:'birds/day',
- rxWChT:'Weekly intake (birds)', rxTblT:'Weekly log', rxDayT:'Daily log — lines & DOA (last 21 days)',
+ rxWChT:'Weekly intake (birds)', rxTblT:'Weekly log', rxDayT:'Daily log — lines & DOA',
  rxCap:'Capacity', rxRec:'Received',
  thW:'Week',thFrom:'From',thTo:'To',thDays:'Days',thBirds:'Birds',thAvgD:'Avg/day',thDate:'Date',thDay:'Day',
  thDOA:'DOA',thDOAp:'DOA %',thSl:'Slaughtered',thL1:'Line 1',thL2:'Line 2',thBr:'Breeder Line',thOther:'Other variance*',
@@ -728,12 +782,12 @@ en:{dir:'ltr', title:'Sama Karbala Co. — Poultry Processing Plant', sub:'Execu
  rxCondKav:'Avg live bird weight', rxCondKliv:'Liver condemn (mech+med)', rxCondKmed:'Medical condemnation', rxCondKwings:'Condemned wings', rxCondKstun:'Stunner mortalities', rxCondKdoaw:'DOA weight',
  rxCondChT:'Condemnations by type (count)', rxWtChT:'Weights (kg)',
  rxCondTblT:'Daily detail — condemnations & weights', rxCondNote:'Liver mechanical/medical condemnation, medical condemnation, wings, stunner mortalities and slaughter errors — by count and weight. Avg bird weight = intake weight ÷ bird count.',
- rxThAvgW:'Avg weight', rxThLivMech:'Liver mech', rxThLivMed:'Liver med', rxThMedN:'Med cond(n)', rxThMedW:'Med cond(wt)', rxThWings:'Wings(wt)', rxThMisN:'Mistake(n)', rxThMisW:'Mistake(wt)', rxThStunN:'Stunner(n)', rxThStunW:'Stunner(wt)', rxThDoaW:'DOA(wt)',
+ rxThAvgW:'Avg weight', rxThLivMech:'Liver mech', rxThLivMed:'Liver med', rxThMedN:'Med cond(n)', rxThMedW:'Med cond(wt)', rxThWings:'Wings(wt)', rxThMisN:'Mistake(n)', rxThMisW:'Mistake(wt)', rxThStunN:'Stunner(n)', rxThStunW:'Stunner(wt)', rxThDoaW:'DOA(wt)', rxPeriodCap:(from,to,n)=>`Period: ${from} → ${to} · ${n} days`,
  wbTitle:'Whole Bird Analysis', wbSub:m=>m+' — birds = boxes × pcs/box; live weight = product weight ÷ 0.74 (74% dressing yield)',
  wbShareTot:'Whole Bird share of total sales', wbOfSales:m=>'of '+m+' sales',
  wbFreshT:'🟢 Fresh (chilled) — sales', wbFrozenT:'🔵 Frozen — sales', ofWB:'of Whole Bird', birdsSold:'birds sold',
  wbTotBirds:'Total birds sold',
- wbWChT:'Sales by weight class — Fresh vs Frozen (boxes)', wbTblT:'Weight classes — 74% dressing yield',
+ wbWChT:'Sales by weight class — Fresh vs Frozen (boxes)', wbTblT:'Weight classes — 74% dressing yield', wbWtTblT:'Weight detail — boxes & weight by bird class', wbMetricL:'Metric', wbFFL:'Type', wbWtMetricL:'Metric', wbWtFFL:'Type', wbWtThClass:'Bird class (product weight)', wbWtThLive:'Live wt/bird', wbWtThType:'Type', wbWtThBoxes:'Boxes', wbWtThPcs:'Birds (count)', wbWtThKg:'Weight (kg)', wbWtNote:'Box weight = pieces × product weight. Live bird weight = product weight ÷ 74%. Pick the metric (sales/production/orders) to see boxes, bird count and total weight per weight class.',
  wbSubT:'Sub-families', wbBChT:'Birds sold by weight class',
  thType:'Type',thWt:'Product wt (g)',thLive:'Live wt (g)',thSKUs:'SKUs',thFul:'Fulfil.',thStock:'Stock',thLife:'Lifetime sales',thSubF:'Sub-family',
  ffTitle:'Fresh vs Frozen by Category', ffSub:m=>'Monthly sales comparison (boxes) — '+m+' vs previous month',
@@ -766,6 +820,10 @@ let LANG='ar';
 var CO_DOW_AR=['السبت','الأحد','الإثنين','الثلاثاء','الأربعاء','الخميس','الجمعة'];
 var CAT_ORDER=['Whole Birds','Cutups','Offals','FPP'];
 var OFFAL_RATIOS={heart:0.005, gizzard:0.015, liver:0.020};  // 0.5% / 1.5% / 2% of live weight
+var DRESS=0.74;  // dressing yield (carcass = live × DRESS)
+var WD_EXCLUDE=['WIP','Rendering'];  // wdist categories excluded (intermediate). Offals shown as % only.
+var WD_PACK='all';  // packaging filter for weight distribution
+var WD_PRODSEL=null;  // Set of selected product codes for net calc (null = all products)
 var CAT_LABEL={ar:{'Whole Birds':'الدجاج الكامل','Cutups':'المقطعات','Offals':'الأحشاء','FPP':'المصنّعات','WIP':'تحت التشغيل','Rendering':'مخلفات'},en:{'Whole Birds':'Whole Birds','Cutups':'Cutups','Offals':'Offals','FPP':'FPP','WIP':'WIP','Rendering':'Rendering'}};
 var CO_DOW_EN=['Sat','Sun','Mon','Tue','Wed','Thu','Fri'];
 let CMPGRAN='daily';  // daily | weekly
@@ -991,6 +1049,10 @@ function renderRx(){
   const rx={daily:fdaily,weekly:fweekly,total:ftot,days:fdays,avg:favg,mx:fmx};
   const cap=parseFloat(($('#capIn').value||'600000').replace(/,/g,''))||600000;
   $('#rxRange').textContent=T.rxRange(rx.daily[0].d,rx.daily[rx.daily.length-1].d,rx.days);
+  // dynamic period caption for the daily-log and condemnation tables (follows the filter)
+  const _pf=rx.daily[0].d, _pt=rx.daily[rx.daily.length-1].d, _pn=rx.days;
+  const _cap=(T.rxPeriodCap?T.rxPeriodCap(_pf,_pt,_pn):(_pf+' → '+_pt+' · '+_pn));
+  $('#rxDayT').textContent=T.rxDayT+'  ('+_cap+')';
   const kill=e=>(e.sl!=null)?e.sl:((e.lines)?((e.lines.B01&&e.lines.B01.sl||0)+(e.lines.B02&&e.lines.B02.sl||0)+(e.lines.B03&&e.lines.B03.sl||0)+(e.lines.B04&&e.lines.B04.sl||0)+(e.lines.BRD&&e.lines.BRD.sl||0)):((e.l1||0)+(e.l2||0)+(e.br||0)||null));
   const totDoa=rx.daily.reduce((a,e)=>a+(e.doa||0),0);
   const totSl=rx.daily.reduce((a,e)=>a+(kill(e)||0),0);
@@ -1018,7 +1080,7 @@ function renderRx(){
    options:{maintainAspectRatio:false,plugins:{legend:{display:false}}}});
   $('#tRxW').innerHTML=`<tr><th>${T.thW}</th><th>${T.thFrom}</th><th>${T.thDays}</th><th>${T.thBirds}</th><th>${T.thAvgD}</th></tr>`+
    [...rxwView].reverse().map(w=>`<tr><td>${w.label}</td><td>${w.frm}</td><td>${w.days}</td><td class="num">${F(w.v)}</td><td class="num">${F(w.v/w.days)}</td></tr>`).join('');
-  const lastd=[...rx.daily].slice(-21).reverse();
+  const lastd=[...rx.daily].reverse();  // all filtered days (follows the date range)
   $('#tRxD').innerHTML=`<tr><th>${T.thDate}</th><th>${T.thDay}</th><th>${T.rxRec}</th><th>${LANG==='ar'?'الوزن (كغم)':'Weight (kg)'}</th><th>${T.thDOA}</th><th>${T.thDOAp}</th><th>B01</th><th>B02</th><th>B03</th><th>B04</th><th>${LANG==='ar'?'بريدر':'Breeder'}</th><th>${T.thSl}</th></tr>`+
    lastd.map(e=>{
     const doap=e.doa!=null&&e.v?e.doa/e.v:null;
@@ -1035,7 +1097,7 @@ function renderRx(){
     <td class="num"><b>${k==null?'—':F(k)}</b></td></tr>`}).join('');
 
   // ===== Condemnations, weights & averages =====
-  $('#rxCondT').textContent=T.rxCondT; $('#rxCondSub').textContent=T.rxCondSub;
+  $('#rxCondT').textContent=T.rxCondT+'  ('+(T.rxPeriodCap?T.rxPeriodCap(rx.daily[0].d,rx.daily[rx.daily.length-1].d,rx.days):'')+')'; $('#rxCondSub').textContent=T.rxCondSub;
   $('#rxCondChT').textContent=T.rxCondChT; $('#rxWtChT').textContent=T.rxWtChT;
   $('#rxCondTblT').textContent=T.rxCondTblT; $('#rxCondNote').textContent=T.rxCondNote;
   const cd=rx.daily;  // filtered daily
@@ -1065,7 +1127,7 @@ function renderRx(){
     datalabels:{...DL(),anchor:'end',align:'end',formatter:v=>Fk(v)}}]},
     options:{maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>Fk(v)}}}}});
   // daily detail table
-  const cdLast=[...cd].slice(-21).reverse();
+  const cdLast=[...cd].reverse();  // all filtered days (follows the date range)
   const c=v=>v==null?'—':F(v);
   $('#tRxCond').innerHTML=`<tr><th>${T.thDate}</th><th>${T.rxThAvgW}</th><th>${T.rxThLivMech}</th><th>${T.rxThLivMed}</th><th>${T.rxThMedN}</th><th>${T.rxThMedW}</th><th>${T.rxThWings}</th><th>${T.rxThMisN}</th><th>${T.rxThMisW}</th><th>${T.rxThStunN}</th><th>${T.rxThStunW}</th><th>${T.rxThDoaW}</th></tr>`+
     cdLast.map(e=>{const aw=e.v&&e.wt?(e.wt/e.v):null;
@@ -1084,36 +1146,81 @@ function renderWb(){
   $('#wbTitle').textContent=T.wbTitle; $('#wbSub').textContent=T.wbSub(mName);
   $('#wbWChT').textContent=T.wbWChT; $('#wbTblT').textContent=T.wbTblT;
   $('#wbSubT').textContent=T.wbSubT; $('#wbBChT').textContent=T.wbBChT;
-  const f=wb.tf[0], z=wb.tf[1], wbTot=f.s+z.s;
-  $('#wbCards').innerHTML=[
-   [T.wbShareTot+' — '+mName,Pc(wbTot/lm.sales),F(wbTot)+' / '+F(lm.sales)+' '+T.box+' — '+T.wbOfSales(mName)],
-   [T.wbFreshT+' — '+mName,F(f.s)+' <span style="font-size:14px" class="gold">('+Pc(f.s/wbTot)+')</span>',Pc(f.s/wbTot)+' '+T.ofWB+' — '+F(f.birds)+' '+T.birdsSold],
-   [T.wbFrozenT+' — '+mName,F(z.s)+' <span style="font-size:14px" class="gold">('+Pc(z.s/wbTot)+')</span>',Pc(z.s/wbTot)+' '+T.ofWB+' — '+F(z.birds)+' '+T.birdsSold],
-   [T.wbTotBirds+' — '+mName,F(f.birds+z.birds),T.birds]
-  ].map(([k,v,d])=>`<div class="card"><div class="k">${k}</div><div class="v num">${v}</div><div class="d">${d}</div></div>`).join('');
+  // ----- GLOBAL metric + fresh/frozen filter (controls the whole tab) -----
+  $('#wbMetricL').textContent=T.wbMetricL; $('#wbFFL').textContent=T.wbFFL;
+  const wm=$('#wbMetric');
+  if(wm&&!wm.dataset.init){wm.dataset.init='1';wm.onchange=renderWb;}
+  if(wm)wm.innerHTML=[['s',T.sales],['p',LANG==='ar'?'الإنتاج':'Production'],['o',LANG==='ar'?'الطلب':'Orders']]
+    .map(([v,l])=>`<option value="${v}" ${wm.value===v?'selected':''}>${l}</option>`).join('');
+  const wff=$('#wbFF');
+  if(wff&&!wff.dataset.init){wff.dataset.init='1';wff.onchange=renderWb;}
+  if(wff)wff.innerHTML=[['all',LANG==='ar'?'الكل':'All'],['Fresh',LANG==='ar'?'فريش':'Fresh'],['Frozen',LANG==='ar'?'مجمد':'Frozen']]
+    .map(([v,l])=>`<option value="${v}" ${wff.value===v?'selected':''}>${l}</option>`).join('');
+  const M=(wm&&wm.value)||'s';            // metric: s | p | o
+  const FF=(wff&&wff.value)||'all';        // type filter
+  const birdKey=M==='s'?'birds':M==='p'?'birdsP':'birdsO';
+  const mLabel=M==='s'?T.sales:M==='p'?(LANG==='ar'?'الإنتاج':'Production'):(LANG==='ar'?'الطلب':'Orders');
+  // metric value accessor for a row/total
+  const mv=o=>o?(o[M]||0):0;
+  const bv=o=>o?(o[birdKey]||0):0;
+  // ----- KPI cards (respect metric + FF) -----
+  const f=wb.tf[0], z=wb.tf[1];
+  const showF=FF!=='Frozen', showZ=FF!=='Fresh';
+  const wbTot=(showF?mv(f):0)+(showZ?mv(z):0);
+  const totBirds=(showF?bv(f):0)+(showZ?bv(z):0);
+  const denom=M==='s'?lm.sales:M==='o'?(lm.orders||lm.sales):(lm.prod||lm.sales);
+  const cards=[[T.wbShareTot+' — '+mLabel,denom?Pc(wbTot/denom):'—',F(wbTot)+' '+T.box]];
+  if(showF)cards.push([T.wbFreshT+' — '+mLabel,F(mv(f))+' <span style="font-size:14px" class="gold">('+(wbTot?Pc(mv(f)/wbTot):'—')+')</span>',(wbTot?Pc(mv(f)/wbTot):'—')+' '+T.ofWB+' — '+F(bv(f))+' '+T.birds]);
+  if(showZ)cards.push([T.wbFrozenT+' — '+mLabel,F(mv(z))+' <span style="font-size:14px" class="gold">('+(wbTot?Pc(mv(z)/wbTot):'—')+')</span>',(wbTot?Pc(mv(z)/wbTot):'—')+' '+T.ofWB+' — '+F(bv(z))+' '+T.birds]);
+  cards.push([T.wbTotBirds+' — '+mLabel,F(totBirds),T.birds]);
+  $('#wbCards').innerHTML=cards.map(([k,v,d])=>`<div class="card"><div class="k">${k}</div><div class="v num">${v}</div><div class="d">${d}</div></div>`).join('');
+  // ----- main weight chart (fresh vs frozen by class, respects metric) -----
   const ws=[...new Set(wb.rows.map(r=>r.w))].sort((a,b)=>a-b);
-  const fr=ws.map(w=>{const r=wb.rows.find(x=>x.t==='Fresh'&&x.w===w);return r?r.s:0});
-  const fz=ws.map(w=>{const r=wb.rows.find(x=>x.t==='Frozen'&&x.w===w);return r?r.s:0});
+  const fr=ws.map(w=>{const r=wb.rows.find(x=>x.t==='Fresh'&&x.w===w);return r?mv(r):0});
+  const fz=ws.map(w=>{const r=wb.rows.find(x=>x.t==='Frozen'&&x.w===w);return r?mv(r):0});
   const rot={display:true,color:css('--ink'),font:{size:9,weight:'700'},anchor:'end',align:'end',rotation:-90,formatter:v=>v?Fk(v):''};
-  mk('cWbW',{type:'bar',data:{labels:ws.map(w=>w+'g'),datasets:[
-   {label:T.sFresh,data:fr,backgroundColor:GREEN,datalabels:rot},
-   {label:T.sFrozen,data:fz,backgroundColor:SKY,datalabels:rot}]},
+  const dsW=[];
+  if(showF)dsW.push({label:T.sFresh,data:fr,backgroundColor:GREEN,datalabels:rot});
+  if(showZ)dsW.push({label:T.sFrozen,data:fz,backgroundColor:SKY,datalabels:rot});
+  mk('cWbW',{type:'bar',data:{labels:ws.map(w=>w+'g'),datasets:dsW},
    options:{maintainAspectRatio:false,plugins:{legend:{labels:{boxWidth:12}}}}});
-  let html=`<tr><th>${T.thType}</th><th>${T.thWt}</th><th>${T.thLive}</th><th>${T.thSKUs}</th><th>${T.sales} ${mName}</th><th>${T.orders}</th><th>${T.thFul}</th><th>${T.thBirds}</th><th>${T.thStock}</th><th>${T.thLife}</th></tr>`;
+  // ----- main detail table (respects metric + FF) -----
+  let html=`<tr><th>${T.thType}</th><th>${T.thWt}</th><th>${T.thLive}</th><th>${T.thSKUs}</th><th>${mLabel} ${mName}</th><th>${T.thFul}</th><th>${T.thBirds}</th><th>${T.thStock}</th></tr>`;
   for(const tp of ['Fresh','Frozen']){
+    if(FF!=='all'&&FF!==tp)continue;
     const rows=wb.rows.filter(r=>r.t===tp); if(!rows.length)continue;
-    html+=`<tr><td colspan="10" style="background:var(--panel2);font-weight:800;color:var(--gold2)">${tp==='Fresh'?'🟢 '+T.sFresh:'🔵 '+T.sFrozen}</td></tr>`;
-    rows.forEach(r=>{html+=`<tr><td>${tp==='Fresh'?T.sFresh:T.sFrozen}</td><td class="num"><b>${r.w}</b></td><td class="num">${F(r.live)}</td><td>${r.sku}</td>
-     <td class="num"><b>${F(r.s)}</b></td><td class="num">${F(r.o)}</td>
-     <td>${r.ful==null?'—':`<span class="pill ${r.ful>=0.95?'g':(r.ful>=0.8?'y':'r')}">${Pc(r.ful,0)}</span>`}</td>
-     <td class="num">${F(r.birds)}</td><td class="num">${F(r.stk)}</td><td class="num">${F(r.sL)}</td></tr>`});}
+    html+=`<tr><td colspan="8" style="background:var(--panel2);font-weight:800;color:var(--gold2)">${tp==='Fresh'?'🟢 '+T.sFresh:'🔵 '+T.sFrozen}</td></tr>`;
+    rows.forEach(r=>{const ful=(M==='s'&&r.o>0)?r.s/r.o:null;
+      html+=`<tr><td>${tp==='Fresh'?T.sFresh:T.sFrozen}</td><td class="num"><b>${r.w}</b></td><td class="num">${F(r.live)}</td><td>${r.sku}</td>
+     <td class="num"><b>${F(mv(r))}</b></td>
+     <td>${ful==null?'—':`<span class="pill ${ful>=0.95?'g':(ful>=0.8?'y':'r')}">${Pc(ful,0)}</span>`}</td>
+     <td class="num">${F(bv(r))}</td><td class="num">${F(r.stk)}</td></tr>`});}
   $('#tWb').innerHTML=html;
-  $('#tWbSub').innerHTML=`<tr><th>${T.thSubF}</th><th>${T.thSKUs}</th><th>${T.sales} ${mName}</th><th>${T.thLife}</th></tr>`+
+  // ----- sub-family table (respects metric where available) -----
+  $('#tWbSub').innerHTML=`<tr><th>${T.thSubF}</th><th>${T.thSKUs}</th><th>${mLabel} ${mName}</th><th>${T.thLife}</th></tr>`+
    wb.sub.map(s=>`<tr><td>${s.sf}</td><td>${s.sku}</td><td class="num">${F(s.s)}</td><td class="num">${F(s.sL)}</td></tr>`).join('');
-  const bw=ws.map(w=>wb.rows.filter(r=>r.w===w).reduce((a,r)=>a+r.birds,0));
+  // ----- birds-by-class chart (respects metric + FF) -----
+  const bw=ws.map(w=>wb.rows.filter(r=>r.w===w&&(FF==='all'||r.t===FF)).reduce((a,r)=>a+bv(r),0));
   mk('cWbB',{type:'bar',data:{labels:ws.map(w=>w+'g'),datasets:[{data:bw,backgroundColor:GOLD}]},
    options:{maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{font:{size:9}}}}}});
+
+  // ===== Weight detail table (boxes & weight by bird class) — uses the SAME global metric+FF =====
+  $('#wbWtTblT').textContent=T.wbWtTblT; $('#wbWtNote').textContent=T.wbWtNote;
+  let wrows=wb.rows.filter(r=>FF==='all'||r.t===FF);
+  const wAgg={};
+  wrows.forEach(r=>{const key=r.w+'|'+(FF==='all'?'':r.t);
+    if(!wAgg[key])wAgg[key]={w:r.w,t:FF==='all'?'—':r.t,live:r.live,boxes:0,birds:0};
+    wAgg[key].boxes+=mv(r); wAgg[key].birds+=bv(r);});
+  const wList=Object.values(wAgg).sort((a,b)=>a.w-b.w);
+  wList.forEach(e=>{e.kg=Math.round(e.birds*e.w/1000);});
+  const totB=wList.reduce((a,e)=>a+e.boxes,0), totBird=wList.reduce((a,e)=>a+e.birds,0), totKg=wList.reduce((a,e)=>a+e.kg,0);
+  const ffPill=tt=>tt==='Frozen'?`<span class="pill b">${LANG==='ar'?'مجمد':'Frozen'}</span>`:tt==='Fresh'?`<span class="pill g">${LANG==='ar'?'فريش':'Fresh'}</span>`:'—';
+  $('#tWbWt').innerHTML=`<tr><th>${T.wbWtThClass}</th><th>${T.wbWtThLive}</th><th>${T.wbWtThType}</th><th>${T.wbWtThBoxes} (${mLabel})</th><th>${T.wbWtThPcs}</th><th>${T.wbWtThKg}</th></tr>`+
+    wList.map(e=>`<tr><td><b>${e.w} g</b></td><td class="num">${F(e.live)} g</td><td>${ffPill(e.t)}</td>
+      <td class="num">${F(e.boxes)}</td><td class="num">${F(e.birds)}</td><td class="num">${F(e.kg)}</td></tr>`).join('')+
+    `<tr style="background:var(--panel2);font-weight:800"><td>${LANG==='ar'?'الإجمالي':'Total'} (${wList.length})</td><td>—</td><td>—</td><td class="num">${F(totB)}</td><td class="num">${F(totBird)}</td><td class="num">${F(totKg)}</td></tr>`;
 }
+
 
 function renderFf(){
   const T=t(), ff=DATA.ff, lm=DATA.kpi.lcm, mName=fmtM(lm.label);
@@ -1638,7 +1745,7 @@ $('#qLineSel')&&$('#qLineSel').addEventListener('change',e=>{QLINE=e.target.valu
 
 /* ===================== Login & Permissions ===================== */
 let CURRENT_USER=null, USER_PERMS=null;
-const PERM_TABS={tab_exec:'exec',tab_rx:'rx',tab_wb:'wb',tab_ff:'ff',tab_stk:'stk',tab_plant:'plant',tab_quality:'quality',tab_demand:'demand',tab_alerts:'alerts',tab_fresh:'fresh',tab_fpp:'fpp',tab_top:'top',tab_offals:'offals',tab_wip:'wip',tab_cmp:'cmp',tab_week:'week',tab_month:'month',tab_products:'sku'};
+const PERM_TABS={tab_exec:'exec',tab_rx:'rx',tab_wb:'wb',tab_ff:'ff',tab_stk:'stk',tab_plant:'plant',tab_quality:'quality',tab_demand:'demand',tab_alerts:'alerts',tab_fresh:'fresh',tab_fpp:'fpp',tab_top:'top',tab_offals:'offals',tab_wip:'wip',tab_wdist:'wdist',tab_cmp:'cmp',tab_week:'week',tab_month:'month',tab_products:'sku'};
 function parseUsers(mat){
   if(!mat||!mat.length)return [];
   // find header row containing 'username' and 'password'
@@ -2096,12 +2203,17 @@ function renderOffals(){
     ['cOfBar','cOfAch'].forEach(id=>{const c=charts[id];if(c){c.destroy();delete charts[id];}}); $('#tOffals').innerHTML=''; return;
   }
   const kg=v=>F(v)+' '+(LANG==='ar'?'كغم':'kg');
+  const lossKg=D.kExp-D.kAct;  // positive = shortfall (produced less than expected)
+  const lossPct=D.kExp?(lossKg/D.kExp):null;
+  const lossLbl=lossKg>=0?(LANG==='ar'?'فاقد (نقص)':'Loss (shortfall)'):(LANG==='ar'?'فائض (زيادة)':'Surplus (over)');
+  const lossCol=lossKg>=0?'var(--red)':'var(--green)';
   $('#ofKpi').innerHTML=[
-    [T.ofKlive,kg(D.totLiveWt),D.days+' '+(LANG==='ar'?'يوم':'days')],
-    [T.ofKexp,kg(D.kExp),''],
-    [T.ofKact,kg(D.kAct),''],
-    [T.ofKach,D.kAch!=null?Pc(D.kAch,1):'—','']
-  ].map(([k,v,d])=>`<div class="card"><div class="k">${k}</div><div class="v num">${v}</div><div class="d">${d}</div></div>`).join('');
+    [T.ofKlive,kg(D.totLiveWt),D.days+' '+(LANG==='ar'?'يوم':'days'),''],
+    [T.ofKexp,kg(D.kExp),'',''],
+    [T.ofKact,kg(D.kAct),'',''],
+    [T.ofKach,D.kAch!=null?Pc(D.kAch,1):'—','',''],
+    [lossLbl,kg(Math.abs(lossKg)),lossPct!=null?Pc(Math.abs(lossPct),1):'',lossCol]
+  ].map(([k,v,d,col])=>`<div class="card"><div class="k">${k}</div><div class="v num" ${col?`style="color:${col}"`:''}>${v}</div><div class="d" ${col?`style="color:${col}"`:''}>${d}</div></div>`).join('');
   // which types to show in charts (respect type filter)
   const types = D.typeFilter==='all'?['heart','gizzard','liver']:[D.typeFilter];
   const tlbl=t=>t==='heart'?T.ofHeart:t==='gizzard'?T.ofGizzard:T.ofLiver;
@@ -2122,8 +2234,15 @@ function renderOffals(){
       <td class="num">${F(r.boxes)}</td><td class="num">${F(r.kg)}</td></tr>`).join('')+
     `<tr style="background:var(--panel2);font-weight:800"><td>${T.ofTotal} (${D.rows.length})</td><td>—</td><td>—</td><td>—</td><td class="num">${F(D.kAct)}</td></tr>`+
     // expected-vs-actual summary per type
-    `<tr style="background:var(--panel2)"><td colspan="5" style="padding-top:8px"><b>${LANG==='ar'?'ملخص المتوقع مقابل الفعلي حسب النوع (كغم):':'Expected vs Actual by type (kg):'}</b></td></tr>`+
-    types.map(tt=>`<tr><td>${tlbl(tt)}</td><td>${LANG==='ar'?'المتوقع':'Expected'}: <b>${F(D.exp[tt])}</b></td><td>${LANG==='ar'?'الفعلي':'Actual'}: <b>${F(D.act[tt])}</b></td><td colspan="2">${LANG==='ar'?'التحقيق':'Achievement'}: <b style="color:${achPct(tt)>=90?'var(--green)':'var(--gold)'}">${achPct(tt)}%</b></td></tr>`).join('');
+    `<tr style="background:var(--panel2)"><td colspan="5" style="padding-top:8px"><b>${LANG==='ar'?'الفاقد/الفرق بين المتوقع والفعلي حسب النوع (كغم):':'Loss / variance — expected vs actual by type (kg):'}</b></td></tr>`+
+    `<tr style="background:var(--panel2);font-weight:700"><td>${LANG==='ar'?'النوع':'Type'}</td><td>${LANG==='ar'?'المتوقع':'Expected'}</td><td>${LANG==='ar'?'الفعلي':'Actual'}</td><td>${LANG==='ar'?'الفاقد/الفرق':'Loss/Variance'}</td><td>${LANG==='ar'?'التحقيق':'Achievement'}</td></tr>`+
+    types.map(tt=>{const loss=D.exp[tt]-D.act[tt];const lossPct=D.exp[tt]?loss/D.exp[tt]:null;const lcol=loss>=0?'var(--red)':'var(--green)';const lsign=loss>=0?(LANG==='ar'?'نقص':'short'):(LANG==='ar'?'زيادة':'over');
+      return `<tr><td><b>${tlbl(tt)}</b></td><td class="num">${F(D.exp[tt])}</td><td class="num">${F(D.act[tt])}</td>
+      <td class="num" style="color:${lcol}"><b>${F(Math.abs(loss))}</b> ${lossPct!=null?'('+Pc(Math.abs(lossPct),1)+' '+lsign+')':''}</td>
+      <td class="num"><b style="color:${achPct(tt)>=90?'var(--green)':'var(--gold)'}">${achPct(tt)}%</b></td></tr>`;}).join('')+
+    // total loss row
+    (()=>{const totLoss=D.exp.total-D.act.total;const totLossPct=D.exp.total?totLoss/D.exp.total:null;const tcol=totLoss>=0?'var(--red)':'var(--green)';
+      return `<tr style="background:var(--panel2);font-weight:800"><td>${LANG==='ar'?'الإجمالي':'Total'}</td><td class="num">${F(D.exp.total)}</td><td class="num">${F(D.act.total)}</td><td class="num" style="color:${tcol}">${F(Math.abs(totLoss))} ${totLossPct!=null?'('+Pc(Math.abs(totLossPct),1)+')':''}</td><td class="num">${D.ach.total!=null?Pc(D.ach.total,1):'—'}</td></tr>`;})();
 }
 
 function renderWip(){
@@ -2192,7 +2311,157 @@ function renderWip(){
     `<tr style="background:var(--panel2);font-weight:800"><td>${LANG==='ar'?'الإجمالي':'Total'} (${A.n})</td><td>—</td><td>—</td><td>—</td><td class="num">${F(A.tot.st)}</td><td class="num">${F(A.tot.ot)}</td><td class="num">${F(A.tot.pt)}</td></tr>`;
 }
 
-function renderAll(){loadColors();setChrome();renderTrend();renderExec();renderRx();renderWb();renderFf();renderStk();renderPlant();renderQuality();renderDemand();renderAlerts();renderFresh();renderFpp();renderTop();try{renderOffals();}catch(e){console.error('renderOffals',e);}try{renderWip();}catch(e){console.error('renderWip',e);}renderCmp();try{injectExportButtons();}catch(e){console.warn('export buttons',e);};renderWeekMonth();renderSku();}
+let WDFROM=null, WDTO=null, WDCAT='all', WDFAM='all', WDCMPGRAN='month';
+function renderWdist(){
+  const T=t();
+  $('#wdTitle').textContent=T.wdTitle; $('#wdSub').textContent=T.wdSub;
+  $('#wdFlowT').textContent=T.wdFlowT; $('#wdCatT').textContent=T.wdCatT; $('#wdFamChT').textContent=T.wdFamChT;
+  $('#wdCmpT').textContent=T.wdCmpT; $('#wdCmpSub').textContent=T.wdCmpSub; $('#wdCmpChT').textContent=T.wdCmpChT;
+  $('#wdTblT').textContent=T.wdTblT; $('#wdNote').textContent=T.wdNote;
+  $('#wdFromLbl').textContent=T.wdFromLbl; $('#wdToLbl').textContent=T.wdToLbl;
+  $('#wdLcat').textContent=T.wdLcat; $('#wdLfam').textContent=T.wdLfam; $('#wdCmpGranL').textContent=T.wdCmpGranL;
+  const wcb=$('#wdClearBtn'); if(wcb)wcb.textContent=T.wdClear;
+  // date inputs
+  const wfr=$('#wdFrom'), wto=$('#wdTo');
+  if(DATA.rx&&DATA.rx.daily&&DATA.rx.daily.length){
+    const lo=DATA.rx.daily[0].d,hi=DATA.rx.daily[DATA.rx.daily.length-1].d;
+    [wfr,wto].forEach(el=>{if(el){el.min=lo;el.max=hi;}});}
+  if(wfr&&!wfr.dataset.init){wfr.dataset.init='1';wfr.onchange=e=>{WDFROM=e.target.value||null;renderWdist();};wfr.onclick=()=>{if(wfr.showPicker){try{wfr.showPicker();}catch(e){}}};}
+  if(wto&&!wto.dataset.init){wto.dataset.init='1';wto.onchange=e=>{WDTO=e.target.value||null;renderWdist();};wto.onclick=()=>{if(wto.showPicker){try{wto.showPicker();}catch(e){}}};}
+  if(wfr)wfr.value=WDFROM||''; if(wto)wto.value=WDTO||'';
+  if(wcb&&!wcb.dataset.init){wcb.dataset.init='1';wcb.onclick=()=>{WDFROM=null;WDTO=null;renderWdist();};}
+  // category + family selectors
+  const allP=(DATA.sku||[]).filter(p=>p.cat!=='Rendering');
+  const cats=[...new Set(allP.map(p=>p.cat))].filter(Boolean).sort();
+  const cs=$('#wdCat');
+  if(cs&&!cs.dataset.init){cs.dataset.init='1';cs.onchange=e=>{WDCAT=e.target.value;WDFAM='all';renderWdist();};}
+  if(cs){cs.innerHTML=[['all',T.wdClear===undefined?'All':(LANG==='ar'?'كل الفئات':'All categories')]].concat(cats.map(c=>[c,c])).map(([v,l])=>`<option value="${v}" ${v===WDCAT?'selected':''}>${l}</option>`).join('');}
+  const famsAll=allP.filter(p=>WDCAT==='all'||p.cat===WDCAT);
+  const fams=[...new Set(famsAll.map(p=>p.sub||'—'))].sort();
+  const fs=$('#wdFam');
+  if(fs&&!fs.dataset.init){fs.dataset.init='1';fs.onchange=e=>{WDFAM=e.target.value;renderWdist();};}
+  if(fs){fs.innerHTML=[['all',LANG==='ar'?'كل العائلات':'All families']].concat(fams.map(f=>[f,f])).map(([v,l])=>`<option value="${v}" ${v===WDFAM?'selected':''}>${l}</option>`).join('');}
+  // packaging selector
+  $('#wdLpack').textContent=T.wdLpack;
+  const allPacks=[...new Set((DATA.sku||[]).filter(p=>p.cat!=='Offals'&&!(WD_EXCLUDE||[]).includes(p.cat)).map(p=>packType(p.n)))].sort();
+  const ps=$('#wdPack');
+  if(ps&&!ps.dataset.init){ps.dataset.init='1';ps.onchange=e=>{WD_PACK=e.target.value;renderWdist();};}
+  if(ps){ps.innerHTML=[['all',LANG==='ar'?'كل التعبئات':'All packaging']].concat(allPacks.map(p=>[p,p])).map(([v,l])=>`<option value="${v}" ${v===WD_PACK?'selected':''}>${l}</option>`).join('');}
+  // exclusion chips (toggle categories in/out of the weight balance)
+  $('#wdExclLbl').textContent=T.wdExclLbl;
+  const exclBox=$('#wdExclChips');
+  if(exclBox){
+    const allCats=[...new Set((DATA.sku||[]).map(p=>p.cat))].filter(c=>c&&c!=='Offals').sort();
+    exclBox.innerHTML=allCats.map(c=>{
+      const on=WD_EXCLUDE.includes(c);
+      return `<button class="btn ${on?'':'ghost'}" data-excl="${c}" style="padding:3px 10px;font-size:12px">${on?'✕ ':''}${catLabel(c)}</button>`;
+    }).join('')+`<span class="perlbl" style="opacity:.6">${LANG==='ar'?'(الأحشاء مستبعدة دائماً)':'(Offals always excluded)'}</span>`;
+    if(!exclBox.dataset.init){exclBox.dataset.init='1';
+      exclBox.addEventListener('click',e=>{const b=e.target.closest('[data-excl]');if(!b)return;
+        const c=b.getAttribute('data-excl');
+        if(WD_EXCLUDE.includes(c))WD_EXCLUDE=WD_EXCLUDE.filter(x=>x!==c);
+        else WD_EXCLUDE=WD_EXCLUDE.concat(c);
+        renderWdist();});}
+  }
+  // comparison gran selector
+  const gs=$('#wdCmpGran');
+  if(gs&&!gs.dataset.init){gs.dataset.init='1';gs.onchange=e=>{WDCMPGRAN=e.target.value;renderWdist();};}
+  if(gs){gs.innerHTML=[['day',LANG==='ar'?'يومي':'Daily'],['week',LANG==='ar'?'أسبوعي':'Weekly'],['month',LANG==='ar'?'شهري':'Monthly']].map(([v,l])=>`<option value="${v}" ${v===WDCMPGRAN?'selected':''}>${l}</option>`).join('');}
+
+  const D=computeWeightDist(WDFROM,WDTO,WDCAT,WDFAM,'all');
+  if(!D||!D.liveWt){
+    $('#wdKpi').innerHTML='<div class="card" style="grid-column:1/-1"><div class="k">'+(LANG==='ar'?'لا توجد بيانات وزن — تأكد من عمود الوزن وإنتاج المنتجات':'No weight data — check weight column & product production')+'</div></div>';
+    ['cWdFlow','cWdCat','cWdFam','cWdCmp'].forEach(id=>{const c=charts[id];if(c){c.destroy();delete charts[id];}}); $('#tWdist').innerHTML=''; $('#wdCmpKpi').innerHTML=''; return;
+  }
+  const kg=v=>F(v)+' '+(LANG==='ar'?'كغم':'kg');
+  const cap=(LANG==='ar'?'الفترة: ':'Period: ')+D.from+' → '+D.to+' · '+D.days+' '+(LANG==='ar'?'يوم':'days');
+  $('#wdTitle').textContent=T.wdTitle+'  ('+cap+')';
+  // KPIs
+  $('#wdKpi').innerHTML=[
+    [T.wdKlive,kg(D.liveWt),''],
+    [T.wdKdress,kg(D.dressed),'×74%'],
+    [T.wdKnet,kg(D.netWt),Pc(D.netWt/D.liveWt,1)+(LANG==='ar'?' من الحي':' of live')],
+    [T.wdKprod,kg(D.prodTotKg),''],
+    [T.wdKpct,D.prodPctNet!=null?Pc(D.prodPctNet,1):'—',(LANG==='ar'?'من الحي ':'of live ')+(D.prodPctLive!=null?Pc(D.prodPctLive,1):'—')],
+    [T.wdKoffal,D.offalPctLive!=null?Pc(D.offalPctLive,2):'—',kg(D.offalKg)]
+  ].map(([k,v,d])=>`<div class="card"><div class="k">${k}</div><div class="v num">${v}</div><div class="d">${d}</div></div>`).join('');
+  // Flow chart (waterfall-style as horizontal bars)
+  mk('cWdFlow',{type:'bar',data:{labels:[T.wdKlive,T.wdKdress,T.wdKnet,T.wdKprod],datasets:[{
+    data:[D.liveWt,D.dressed,D.netWt,D.prodTotKg],
+    backgroundColor:[SKY,'#7eb8d4',GOLD,GREEN],
+    datalabels:{...DL(),anchor:'end',align:'end',formatter:(v)=>Fk(v)+' ('+(D.liveWt?Math.round(v/D.liveWt*100):0)+'%)'}}]},
+    options:{maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{ticks:{callback:v=>Fk(v)}}}}});
+  // by category doughnut
+  mk('cWdCat',{type:'doughnut',data:{labels:D.cats.map(c=>catLabel(c.cat)),datasets:[{
+    data:D.cats.map(c=>c.kg),backgroundColor:[GOLD,SKY,GREEN,VIO,RED,'#b88a3e','#6fa8c4']}]},
+    options:{maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:10}}},
+      datalabels:{color:'#fff',font:{weight:'700',size:10},formatter:(v)=>D.netWt?Math.round(v/D.netWt*100)+'%':''}}}});
+  // top families bars
+  const topFams=D.fams.slice(0,12);
+  mk('cWdFam',{type:'bar',data:{labels:topFams.map(f=>f.fam),datasets:[{
+    data:topFams.map(f=>f.kg),backgroundColor:VIO,
+    datalabels:{display:true,color:css('--ink'),font:{size:8,weight:'700'},anchor:'end',align:'end',formatter:v=>Fk(v)}}]},
+    options:{maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{ticks:{callback:v=>Fk(v)}}}}});
+  // ----- period comparison -----
+  const C=weightDistCompare(WDCMPGRAN);
+  if(C&&C.cur){
+    const cur=C.cur, prev=C.prev;
+    const delta=(c,p)=>p?((c-p)/p):null;
+    const arrow=d=>d==null?'':d>=0?'▲':'▼';
+    const dcol=d=>d==null?'':d>=0?'var(--green)':'var(--red)';
+    const row=(lbl,cv,pv,fmt)=>{const d=delta(cv,pv);return `<div class="card"><div class="k">${lbl}</div><div class="v num">${fmt(cv)}</div><div class="d" style="color:${dcol(d)}">${arrow(d)} ${d==null?'—':Pc(Math.abs(d),1)} <span style="opacity:.6">(${T.wdCmpKpiPrev}: ${fmt(pv||0)})</span></div></div>`;};
+    $('#wdCmpKpi').innerHTML=
+      row(T.wdKlive,cur.liveWt,prev&&prev.liveWt,v=>Fk(v))+
+      row(T.wdKnet,cur.netWt,prev&&prev.netWt,v=>Fk(v))+
+      row(T.wdKprod,cur.prodKg,prev&&prev.prodKg,v=>Fk(v))+
+      row(T.wdKpct,cur.yieldPct!=null?cur.yieldPct*100:0,prev&&prev.yieldPct!=null?prev.yieldPct*100:0,v=>v.toFixed(1)+'%');
+    // yield trend chart
+    mk('cWdCmp',{type:'line',data:{labels:C.series.map(s=>s.k),datasets:[{
+      label:T.wdCmpChT,data:C.series.map(s=>s.yieldPct!=null?+(s.yieldPct*100).toFixed(1):null),
+      borderColor:GOLD,backgroundColor:GOLD,tension:.3,fill:false,pointRadius:3,
+      datalabels:{display:WDCMPGRAN!=='day',color:css('--ink'),font:{size:9,weight:'700'},anchor:'end',align:'top',formatter:v=>v!=null?v+'%':''}}]},
+      options:{maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>v+'%'}}}}});
+  } else { $('#wdCmpKpi').innerHTML=''; const c=charts['cWdCmp'];if(c){c.destroy();delete charts['cWdCmp'];} }
+  // products table
+  // ---- Loss KPIs (based on SELECTED products) ----
+  $('#wdLossKpi').innerHTML=[
+    [T.wdKsel,kg(D.selProdKg),D.selPctNet!=null?Pc(D.selPctNet,1)+(LANG==='ar'?' من الصافي':' of net'):''],
+    [T.wdKloss,kg(D.lossKg),D.lossPct!=null?Pc(D.lossPct,1)+(LANG==='ar'?' فقد':' loss'):'']
+  ].map(([k,v,d],idx)=>`<div class="card"><div class="k">${k}</div><div class="v num" ${idx===1?'style="color:'+(D.lossKg>=0?'var(--red)':'var(--green)')+'"':''}>${v}</div><div class="d">${d}</div></div>`).join('');
+  // ---- product selection table (search + checkboxes) ----
+  $('#wdSelAll').textContent=T.wdSelAll; $('#wdSelNone').textContent=T.wdSelNone;
+  const psearch=$('#wdProdSearch'); if(psearch&&!psearch.placeholder)psearch.placeholder=T.wdProdSearchPH;
+  if(psearch&&!psearch.dataset.ph){psearch.dataset.ph='1';psearch.placeholder=T.wdProdSearchPH;}
+  // init selection set to ALL current product codes the first time (so default = everything counts, visible as checked)
+  if(WD_PRODSEL===null){WD_PRODSEL=new Set(D.rows.map(r=>String(r.code)));}
+  const allCodes=D.rows.map(r=>String(r.code));
+  $('#wdSelInfo').textContent=T.wdSelInfo(WD_PRODSEL.size,allCodes.length);
+  // wire search (filter visible rows only — doesn't change selection)
+  const q=(psearch&&psearch.value||'').trim().toLowerCase();
+  if(psearch&&!psearch.dataset.init){psearch.dataset.init='1';psearch.addEventListener('input',()=>renderWdist());}
+  // wire select all / none
+  const sa=$('#wdSelAll'); if(sa&&!sa.dataset.init){sa.dataset.init='1';sa.onclick=()=>{WD_PRODSEL=new Set(allCodes);renderWdist();};}
+  const sn=$('#wdSelNone'); if(sn&&!sn.dataset.init){sn.dataset.init='1';sn.onclick=()=>{WD_PRODSEL=new Set();renderWdist();};}
+  // visible rows after search
+  const visRows=q?D.rows.filter(r=>String(r.name).toLowerCase().includes(q)||String(r.code).toLowerCase().includes(q)):D.rows;
+  $('#tWdist').innerHTML=`<tr><th>${T.wdThSel}</th><th>${LANG==='ar'?'الكود':'Code'}</th><th>${T.wdThProd}</th><th>${T.wdThCat}</th><th>${T.wdThFam}</th><th>${T.wdLpack}</th><th>${T.wdThType}</th><th>${T.wdThBoxes}</th><th>${T.wdThKg}</th><th>${T.wdThPctNet}</th></tr>`+
+    visRows.map(r=>{const on=WD_PRODSEL.has(String(r.code));
+      return `<tr style="${on?'':'opacity:.5'}"><td style="text-align:center"><input type="checkbox" data-pcode="${r.code}" ${on?'checked':''} style="width:16px;height:16px;cursor:pointer"></td>
+      <td>${r.code}</td><td><b>${r.name}</b></td><td>${catLabel(r.cat)}</td><td>${r.fam}</td><td>${r.pack}</td>
+      <td><span class="pill ${r.typ==='Frozen'?'b':'g'}">${r.typ==='Frozen'?(LANG==='ar'?'مجمد':'Frozen'):(LANG==='ar'?'فريش':'Fresh')}</span></td>
+      <td class="num">${F(r.boxes)}</td><td class="num">${F(r.kg)}</td>
+      <td class="num">${r.pctNet!=null?Pc(r.pctNet,2):'—'}</td></tr>`;}).join('')+
+    `<tr style="background:var(--panel2);font-weight:800"><td>—</td><td>—</td><td>${LANG==='ar'?'المختار':'Selected'} (${WD_PRODSEL.size})</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td class="num">${F(D.selProdKg)}</td><td class="num">${D.selPctNet!=null?Pc(D.selPctNet,1):'—'}</td></tr>`;
+  // wire checkboxes (delegation)
+  const tbl=$('#tWdist');
+  if(tbl&&!tbl.dataset.init){tbl.dataset.init='1';
+    tbl.addEventListener('change',e=>{const cb=e.target.closest('[data-pcode]');if(!cb)return;
+      const c=String(cb.getAttribute('data-pcode'));
+      if(cb.checked)WD_PRODSEL.add(c);else WD_PRODSEL.delete(c);
+      renderWdist();});}
+}
+
+function renderAll(){loadColors();setChrome();renderTrend();renderExec();renderRx();renderWb();renderFf();renderStk();renderPlant();renderQuality();renderDemand();renderAlerts();renderFresh();renderFpp();renderTop();try{renderOffals();}catch(e){console.error('renderOffals',e);}try{renderWip();}catch(e){console.error('renderWip',e);}try{renderWdist();}catch(e){console.error('renderWdist',e);}renderCmp();try{injectExportButtons();}catch(e){console.warn('export buttons',e);};renderWeekMonth();renderSku();}
 
 $('#exportBtn').onclick=()=>{
   try{
@@ -2217,7 +2486,7 @@ try{const th=localStorage.getItem('sk_theme'); if(th)document.documentElement.da
 renderAll();
 
 /* ===================== Excel compute engine ===================== */
-const INFO=15, DRESS=0.74;
+const INFO=15;
 const MON={jan:0,feb:1,mar:2,apr:3,may:4,jun:5,jul:6,aug:7,sep:8,oct:9,nov:10,dec:11};
 function xDate(v){if(v instanceof Date)return v;
  if(typeof v==='number'&&v>40000&&v<60000)return new Date(Math.round((v-25569)*86400*1000));
@@ -2482,20 +2751,20 @@ function computeFromMats(M, rxMat){
   D.top10=[...skuArr].sort((a,b)=>b._lcm-a._lcm).slice(0,10).map(x=>({name:x.n.slice(0,34),v:Math.round(x._lcm)}));
   const wbRows=[],wbSubM={},tf=[];
   for(const tp of ['Fresh','Frozen']){
-    const wmap={};let Ts=0,To=0,Tb=0;
+    const wmap={};let Ts=0,To=0,Tp=0,Tb=0,TbO=0,TbP=0;
     for(let r=1;r<=n;r++){const I=rowsInfo[r-1];
      if(I.cat!=='Whole Bird'||I.typ!==tp)continue;
-     const w=I.wt;if(!(w in wmap))wmap[w]={t:tp,w,live:Math.round(w/DRESS),sku:0,s:0,o:0,birds:0,sL:0,oL:0,stk:0};
+     const w=I.wt;if(!(w in wmap))wmap[w]={t:tp,w,live:Math.round(w/DRESS),sku:0,s:0,o:0,p:0,birds:0,birdsO:0,birdsP:0,sL:0,oL:0,pL:0,stk:0};
      const e=wmap[w];e.sku++;
-     const sl=rowSum('S',r,lcmJ),od=rowSum('O',r,lcmJ);
-     e.s+=sl;e.o+=od;e.birds+=sl*I.pcs;
-     let SL=0,OL=0;for(let j=0;j<nd;j++){if(!useDay(j))continue;SL+=val('S',r,j);OL+=val('O',r,j)}
-     e.sL+=SL;e.oL+=OL;e.stk+=val('K',r,ai);
-     Ts+=sl;To+=od;Tb+=sl*I.pcs;
+     const sl=rowSum('S',r,lcmJ),od=rowSum('O',r,lcmJ),pr=rowSum('P',r,lcmJ);
+     e.s+=sl;e.o+=od;e.p+=pr;e.birds+=sl*I.pcs;e.birdsO+=od*I.pcs;e.birdsP+=pr*I.pcs;
+     let SL=0,OL=0,PL=0;for(let j=0;j<nd;j++){if(!useDay(j))continue;SL+=val('S',r,j);OL+=val('O',r,j);PL+=val('P',r,j)}
+     e.sL+=SL;e.oL+=OL;e.pL+=PL;e.stk+=val('K',r,ai);
+     Ts+=sl;To+=od;Tp+=pr;Tb+=sl*I.pcs;TbO+=od*I.pcs;TbP+=pr*I.pcs;
      if(!(I.sub in wbSubM))wbSubM[I.sub]={sf:I.sub,sku:0,s:0,sL:0};
      wbSubM[I.sub].sku++;wbSubM[I.sub].s+=sl;wbSubM[I.sub].sL+=SL;}
-    tf.push({t:tp,s:Math.round(Ts),o:Math.round(To),birds:Math.round(Tb)});
-    Object.values(wmap).forEach(e=>{if(e.sL||e.oL){['s','o','birds','sL','oL','stk'].forEach(k=>e[k]=Math.round(e[k]));
+    tf.push({t:tp,s:Math.round(Ts),o:Math.round(To),p:Math.round(Tp),birds:Math.round(Tb),birdsO:Math.round(TbO),birdsP:Math.round(TbP)});
+    Object.values(wmap).forEach(e=>{if(e.sL||e.oL||e.pL){['s','o','p','birds','birdsO','birdsP','sL','oL','pL','stk'].forEach(k=>e[k]=Math.round(e[k]));
      e.ful=e.o>0?+(e.s/e.o).toFixed(3):null;wbRows.push(e)}});}
   D.wb={rows:wbRows,sub:Object.values(wbSubM).map(s=>({...s,s:Math.round(s.s),sL:Math.round(s.sL)})).filter(s=>s.sL>0).sort((a,b)=>b.s-a.s),tf,dressing:DRESS};
   D.ff={months:mons.map(m=>m.label),cats:['Whole Bird','Cutups','Offals','FPP'].map(c=>{
@@ -2612,6 +2881,132 @@ $('#doImport').onclick=async()=>{
 
 
 
+
+/* ===================== Weight Distribution / Yield Balance engine ===================== */
+// Computes where the received live weight goes: live → dressed (×74%) → net (−condemnations) → products
+// For a given date range, returns the weight balance + per-product weight & % of net weight.
+
+// classify packaging type from product name
+function packType(name){
+  const n=String(name||'').toLowerCase();
+  if(/\bbulk\b|10 ?kg|15 ?kg/.test(n))return 'Bulk';
+  if(/\biqf\b/.test(n))return 'IQF';
+  if(/\btray\b|foam|فوم/.test(n))return 'Tray';
+  if(/\bbag|bags\b|كيس|أكياس/.test(n))return 'Bag';
+  if(/\bbox\b|carton|كرتون/.test(n))return 'Box';
+  if(/\bpack\b|vacuum|فاكيوم/.test(n))return 'Pack';
+  return 'Other';
+}
+
+function computeWeightDist(from,to,catF,famF,subF){
+  if(!DATA.rx||!DATA.rx.daily)return null;
+  const inRange=d=>(!from||d>=from)&&(!to||d<=to);
+  const rxDays=DATA.rx.daily.filter(e=>inRange(e.d));
+  if(!rxDays.length)return null;
+  // ---- weight balance from receiving ----
+  const liveWt=rxDays.reduce((a,e)=>a+(e.wt||0),0);
+  const doaWt=rxDays.reduce((a,e)=>a+(e.doa_wt||0),0);
+  const stunWt=rxDays.reduce((a,e)=>a+(e.stunner_wt||0),0);
+  const medWt=rxDays.reduce((a,e)=>a+(e.med_wt||0),0);
+  const wingsWt=rxDays.reduce((a,e)=>a+(e.wings_wt||0),0);
+  const misWt=rxDays.reduce((a,e)=>a+(e.mistake_wt||0),0);
+  const dressed=liveWt*DRESS;                  // carcass weight after 74% dressing yield
+  const condemn=medWt+wingsWt+misWt;           // condemnations on the dressed carcass
+  const deadLoss=doaWt+stunWt;                 // dead birds (excluded before dressing)
+  const netWt=dressed-condemn;                 // net processable weight (basis for product %)
+  // ---- actual product production (weight) in range ----
+  // CRITICAL: only count production on days that ALSO have receiving data, and within range.
+  // Otherwise production (which may span 250+ sales days) dwarfs receiving (54 days).
+  const rxDateSet=new Set(rxDays.map(e=>e.d));
+  const idxRange=[];
+  if(SKU_DATES.length){SKU_DATES.forEach((d,i)=>{if(inRange(d)&&rxDateSet.has(d))idxRange.push(i);});}
+  // OFFALS: part of the 26% dressing loss → shown as % only, NOT summed into carcass products.
+  // Compute offals weight separately (for the % display).
+  const offalKg=(()=>{let s=0;(DATA.sku||[]).filter(p=>p.cat==='Offals').forEach(p=>{
+    const bk=prodBoxKg(p)||0;let bx=0;if(idxRange.length&&p.dP){idxRange.forEach(i=>{bx+=(p.dP[i]||0);});}s+=bx*bk;});return s;})();
+  // EXCLUSIONS: offals always out of carcass total; plus user-chosen intermediate categories.
+  const excl=new Set(['Offals'].concat(WD_EXCLUDE||[]));
+  let sku=(DATA.sku||[]).filter(p=>!excl.has(p.cat));
+  // category / family / packaging filters
+  if(catF&&catF!=='all') sku=sku.filter(p=>p.cat===catF);
+  if(famF&&famF!=='all') sku=sku.filter(p=>(p.sub||'—')===famF);  // 'sub' holds family
+  if(typeof WD_PACK!=='undefined' && WD_PACK!=='all') sku=sku.filter(p=>packType(p.n)===WD_PACK);
+  // build product rows with weight
+  const rows=[];
+  let prodTotKg=0, selProdKg=0;
+  const hasSel=WD_PRODSEL&&WD_PRODSEL.size>0;
+  sku.forEach(p=>{
+    const boxKg=prodBoxKg(p)||0;
+    let boxes=0;
+    if(idxRange.length&&p.dP){idxRange.forEach(i=>{boxes+=(p.dP[i]||0);});}
+    // no fallback to p.pt (lifetime total) — it would mismatch the receiving window
+    const kg=boxes*boxKg;
+    if(kg>0||boxes>0){
+      const sel=hasSel?WD_PRODSEL.has(String(p.c)):true;  // when nothing chosen → all count
+      rows.push({code:p.c,name:p.n,cat:p.cat,fam:p.sub||'—',typ:detectType(p),pack:packType(p.n),boxes:Math.round(boxes),boxKg:+boxKg.toFixed(2),kg:Math.round(kg),
+        sel, pctNet:netWt?kg/netWt:null, pctLive:liveWt?kg/liveWt:null});
+      prodTotKg+=kg;
+      if(sel) selProdKg+=kg;
+    }
+  });
+  rows.sort((a,b)=>b.kg-a.kg);
+  // category rollup
+  const catAgg={};
+  rows.forEach(r=>{if(!catAgg[r.cat])catAgg[r.cat]={cat:r.cat,kg:0,n:0};catAgg[r.cat].kg+=r.kg;catAgg[r.cat].n++;});
+  const cats=Object.values(catAgg).sort((a,b)=>b.kg-a.kg)
+    .map(c=>({...c,pctNet:netWt?c.kg/netWt:null,pctLive:liveWt?c.kg/liveWt:null}));
+  // family rollup
+  const famAgg={};
+  rows.forEach(r=>{const k=r.cat+' · '+r.fam;if(!famAgg[k])famAgg[k]={key:k,cat:r.cat,fam:r.fam,kg:0,n:0};famAgg[k].kg+=r.kg;famAgg[k].n++;});
+  const fams=Object.values(famAgg).sort((a,b)=>b.kg-a.kg)
+    .map(f=>({...f,pctNet:netWt?f.kg/netWt:null}));
+  // unaccounted (net weight not captured by products = trim, drip, unrecorded)
+  const unaccounted=netWt-prodTotKg;
+  // (diagnostic warning removed — box-weight calc verified correct)
+  return {
+    days:rxDays.length, from:rxDays[0].d, to:rxDays[rxDays.length-1].d,
+    liveWt:Math.round(liveWt), dressed:Math.round(dressed),
+    deadLoss:Math.round(deadLoss), condemn:Math.round(condemn), netWt:Math.round(netWt),
+    doaWt:Math.round(doaWt),stunWt:Math.round(stunWt),medWt:Math.round(medWt),wingsWt:Math.round(wingsWt),misWt:Math.round(misWt),
+    prodTotKg:Math.round(prodTotKg), unaccounted:Math.round(unaccounted),
+    selProdKg:Math.round(selProdKg), hasSel,
+    lossKg:Math.round(netWt-selProdKg), lossPct:netWt?(netWt-selProdKg)/netWt:null,
+    selPctNet:netWt?selProdKg/netWt:null, selPctLive:liveWt?selProdKg/liveWt:null,
+    prodPctNet:netWt?prodTotKg/netWt:null, prodPctLive:liveWt?prodTotKg/liveWt:null,
+    offalKg:Math.round(offalKg), offalPctLive:liveWt?offalKg/liveWt:null,
+    packs:(()=>{const pa={};rows.forEach(r=>{pa[r.pack]=(pa[r.pack]||0)+r.kg;});return Object.entries(pa).map(([pack,kg])=>({pack,kg,pctNet:netWt?kg/netWt:null})).sort((a,b)=>b.kg-a.kg);})(),
+    rows, cats, fams
+  };
+}
+// period comparison: build day/week/month buckets and compare current vs previous
+function weightDistCompare(gran){
+  // gran: 'day' | 'week' | 'month'
+  if(!DATA.rx||!DATA.rx.daily||!DATA.rx.daily.length)return null;
+  const days=DATA.rx.daily.filter(e=>e.wt);
+  if(!days.length)return null;
+  // bucket by gran
+  const keyOf=d=>{
+    if(gran==='day')return d;
+    if(gran==='week')return iso(satOf(new Date(d+'T00:00:00Z')));
+    return d.slice(0,7); // month
+  };
+  const buckets={};
+  days.forEach(e=>{const k=keyOf(e.d);if(!buckets[k])buckets[k]={k,from:e.d,to:e.d};buckets[k].to=e.d;buckets[k].from=buckets[k].from<e.d?buckets[k].from:e.d;});
+  const keys=Object.keys(buckets).sort();
+  // compute net + product for each bucket
+  let series=keys.map(k=>{
+    const b=buckets[k];
+    const D=computeWeightDist(b.from,b.to,'all','all','all');
+    return {k,from:b.from,to:b.to,liveWt:D?D.liveWt:0,netWt:D?D.netWt:0,prodKg:D?D.prodTotKg:0,
+      yieldPct:D&&D.liveWt?D.prodTotKg/D.liveWt:null, netYield:D&&D.netWt?D.prodTotKg/D.netWt:null};
+  });
+  // exclude empty/incomplete buckets: need BOTH live weight AND production to compute a meaningful yield
+  series=series.filter(s=>s.liveWt>0 && s.prodKg>0);
+  // current = last bucket, previous = second-last
+  const cur=series[series.length-1]||null, prev=series[series.length-2]||null;
+  return {gran,series,cur,prev};
+}
+
 /* ===================== Offals analysis engine ===================== */
 // classify an offal product by name into heart/gizzard/liver/other
 function offalType(name){
@@ -2622,12 +3017,26 @@ function offalType(name){
   return 'other';
 }
 // box weight (kg) for a product: prefer explicit wt; else pcs×unit if available
+// How the 'wt' column is interpreted for box weight. Auto-detected, override via WT_MODE.
+// 'boxkg'  = wt is already the full box/carton weight in kilograms (use directly)
+// 'unitg'  = wt is per-piece weight in grams → box kg = wt × pcs / 1000
+// 'unitkg' = wt is per-piece weight in kilograms → box kg = wt × pcs
+// 'auto'   = pick per-product based on magnitude (safest default)
+var WT_MODE='auto';
 function prodBoxKg(p){
-  // wt is the per-unit weight in grams (from Weight col); pcs = pieces per box
-  // box kg = pcs × wt(g) / 1000 ; if wt already represents box weight in kg, use directly
-  if(p.wt && p.pcs){ const g=p.wt*p.pcs; return g/1000; }
-  if(p.wt){ return p.wt>50? p.wt/1000 : p.wt; } // heuristic: >50 → grams
-  return null;
+  const w=p.wt, pcs=p.pcs;
+  if(!w) return null;
+  if(WT_MODE==='boxkg') return w;                         // wt = box kg
+  if(WT_MODE==='unitg')  return pcs?(w*pcs/1000):(w/1000);
+  if(WT_MODE==='unitkg') return pcs?(w*pcs):w;
+  // AUTO: infer from magnitude. Typical poultry box = 5..25 kg.
+  // Case A: w looks like grams of a single piece (e.g. 1000g, 1100g) AND pcs present → box = w*pcs/1000
+  if(pcs && w>=50){ const box=w*pcs/1000; if(box>=1 && box<=40) return box; }
+  // Case B: w already a sensible box weight in kg (e.g. 10, 12, 15) → use directly
+  if(w>=1 && w<=40) return w;
+  // Case C: w is grams of the whole box (e.g. 10000g) → /1000
+  if(w>40) return w/1000;
+  return w;
 }
 // Build offals analysis: expected (from live intake × ratios) vs actual (offal production weight)
 function computeOffals(from,to,typeFilter,ffFilter){
