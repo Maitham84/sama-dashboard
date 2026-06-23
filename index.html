@@ -241,6 +241,15 @@ body.locked .brand, body.locked nav, body.locked main, body.locked section{visib
   <div class="panel" style="margin-top:14px"><h3 id="rxDayT"></h3>
     <div class="tscroll" style="max-height:380px"><table class="tbl" id="tRxD"></table></div>
     <div class="note" id="rxNote"></div></div>
+  <div class="secthead" style="margin-top:18px"><h2 id="rxCondT"></h2><small id="rxCondSub"></small></div>
+  <div class="cards" id="rxCondKpi"></div>
+  <div class="grid2" style="margin-top:4px">
+    <div class="panel"><h3 id="rxCondChT"></h3><div class="ch"><canvas id="cRxCond"></canvas></div></div>
+    <div class="panel"><h3 id="rxWtChT"></h3><div class="ch"><canvas id="cRxWt"></canvas></div></div>
+  </div>
+  <div class="panel" style="margin-top:14px"><h3 id="rxCondTblT"></h3>
+    <div class="tscroll" style="max-height:420px"><table class="tbl" id="tRxCond"></table></div>
+    <div class="note" id="rxCondNote"></div></div>
 </div></section>
 
 <section id="wb"><div class="wrap">
@@ -570,6 +579,11 @@ ar:{dir:'rtl', title:'شركة سما كربلاء — مجزر الدواجن',
  thW:'الأسبوع',thFrom:'من',thTo:'إلى',thDays:'أيام',thBirds:'طيور',thAvgD:'متوسط/يوم',thDate:'التاريخ',thDay:'اليوم',
  thDOA:'النافق DOA',thDOAp:'DOA%',thSl:'مذبوح',thL1:'خط 1',thL2:'خط 2',thBr:'بريدر لاين',thOther:'فوارق أخرى*',
  rxNote:'* الفوارق بين الاستلام و(المذبوح + النافق) = الإعدام البيطري، أخطاء الذبح، نافق الصاعق وغيرها — لا تُسوّى محاسبياً هنا. أعمدة الخطوط (خط 1 / خط 2 / بريدر لاين) والنافق تُقرأ تلقائياً من ملف الاستلام عند تعبئتها.',
+ rxCondT:'الإعدامات والأوزان والمتوسطات', rxCondSub:'تفاصيل الإعدام البيطري والأوزان ومتوسط وزن الطير من شيت الاستلام',
+ rxCondKav:'متوسط وزن الطير الحي', rxCondKliv:'إعدام الكبد (ميكانيكي+طبي)', rxCondKmed:'الإعدام الطبي', rxCondKwings:'أجنحة مُعدَمة', rxCondKstun:'نافق الصاعق', rxCondKdoaw:'وزن النافق',
+ rxCondChT:'الإعدامات حسب النوع (عدد)', rxWtChT:'الأوزان (كغم)',
+ rxCondTblT:'التفصيل اليومي — الإعدامات والأوزان', rxCondNote:'الإعدام الميكانيكي والطبي للكبد، الإعدام الطبي، الأجنحة، نافق الصاعق، وأخطاء الذبح — بالعدد والوزن. متوسط وزن الطير = وزن الاستلام ÷ عدد الطيور.',
+ rxThAvgW:'متوسط الوزن', rxThLivMech:'كبد ميكانيكي', rxThLivMed:'كبد طبي', rxThMedN:'إعدام طبي(عدد)', rxThMedW:'إعدام طبي(وزن)', rxThWings:'أجنحة(وزن)', rxThMisN:'أخطاء(عدد)', rxThMisW:'أخطاء(وزن)', rxThStunN:'صاعق(عدد)', rxThStunW:'صاعق(وزن)', rxThDoaW:'نافق(وزن)',
  wbTitle:'تحليل الدجاج الكامل', wbSub:m=>'شهر '+m+' — الطيور = صناديق × قطع/صندوق، الوزن الحي = الوزن ÷ 0.74 (تصافي 74%)',
  wbShareTot:'حصة الدجاج الكامل من إجمالي المبيعات', wbOfSales:m=>'من مبيعات '+m,
  wbFreshT:'🟢 فريش — مبيعات', wbFrozenT:'🔵 مجمد — مبيعات', ofWB:'من الدجاج الكامل', birdsSold:'طيور مباعة',
@@ -710,6 +724,11 @@ en:{dir:'ltr', title:'Sama Karbala Co. — Poultry Processing Plant', sub:'Execu
  thW:'Week',thFrom:'From',thTo:'To',thDays:'Days',thBirds:'Birds',thAvgD:'Avg/day',thDate:'Date',thDay:'Day',
  thDOA:'DOA',thDOAp:'DOA %',thSl:'Slaughtered',thL1:'Line 1',thL2:'Line 2',thBr:'Breeder Line',thOther:'Other variance*',
  rxNote:'* Variance between intake and (slaughtered + DOA) = veterinary condemnations, slaughter errors, stunner mortalities, etc. — not reconciled here. Line 1 / Line 2 / Breeder Line and DOA columns are read automatically from the intake workbook once populated.',
+ rxCondT:'Condemnations, Weights & Averages', rxCondSub:'Veterinary condemnation, weights and average bird weight from the receiving sheet',
+ rxCondKav:'Avg live bird weight', rxCondKliv:'Liver condemn (mech+med)', rxCondKmed:'Medical condemnation', rxCondKwings:'Condemned wings', rxCondKstun:'Stunner mortalities', rxCondKdoaw:'DOA weight',
+ rxCondChT:'Condemnations by type (count)', rxWtChT:'Weights (kg)',
+ rxCondTblT:'Daily detail — condemnations & weights', rxCondNote:'Liver mechanical/medical condemnation, medical condemnation, wings, stunner mortalities and slaughter errors — by count and weight. Avg bird weight = intake weight ÷ bird count.',
+ rxThAvgW:'Avg weight', rxThLivMech:'Liver mech', rxThLivMed:'Liver med', rxThMedN:'Med cond(n)', rxThMedW:'Med cond(wt)', rxThWings:'Wings(wt)', rxThMisN:'Mistake(n)', rxThMisW:'Mistake(wt)', rxThStunN:'Stunner(n)', rxThStunW:'Stunner(wt)', rxThDoaW:'DOA(wt)',
  wbTitle:'Whole Bird Analysis', wbSub:m=>m+' — birds = boxes × pcs/box; live weight = product weight ÷ 0.74 (74% dressing yield)',
  wbShareTot:'Whole Bird share of total sales', wbOfSales:m=>'of '+m+' sales',
  wbFreshT:'🟢 Fresh (chilled) — sales', wbFrozenT:'🔵 Frozen — sales', ofWB:'of Whole Bird', birdsSold:'birds sold',
@@ -1014,6 +1033,49 @@ function renderRx(){
     <td class="num">${cell(ln.B03&&ln.B03.sl)}</td><td class="num">${cell(ln.B04&&ln.B04.sl)}</td>
     <td class="num">${cell(ln.BRD&&ln.BRD.sl)}</td>
     <td class="num"><b>${k==null?'—':F(k)}</b></td></tr>`}).join('');
+
+  // ===== Condemnations, weights & averages =====
+  $('#rxCondT').textContent=T.rxCondT; $('#rxCondSub').textContent=T.rxCondSub;
+  $('#rxCondChT').textContent=T.rxCondChT; $('#rxWtChT').textContent=T.rxWtChT;
+  $('#rxCondTblT').textContent=T.rxCondTblT; $('#rxCondNote').textContent=T.rxCondNote;
+  const cd=rx.daily;  // filtered daily
+  const sum=k=>cd.reduce((a,e)=>a+(e[k]||0),0);
+  const totV=sum('v'), totWt=sum('wt');
+  const avgBird=totV?totWt/totV:null;
+  const livMech=sum('mech'), livMed=sum('med'), medN=sum('med_n'), medWt=sum('med_wt');
+  const wingsWt=sum('wings_wt'), misN=sum('mistake_n'), misWt=sum('mistake_wt');
+  const stunN=sum('stunner_n'), stunWt=sum('stunner_wt'), doaWt=sum('doa_wt');
+  const kg=v=>F(v)+' '+(LANG==='ar'?'كغم':'kg');
+  $('#rxCondKpi').innerHTML=[
+    [T.rxCondKav, avgBird!=null?avgBird.toFixed(3)+' '+(LANG==='ar'?'كغم':'kg'):'—',''],
+    [T.rxCondKliv, F(livMech+livMed), (LANG==='ar'?'ميكانيكي ':'mech ')+F(livMech)+' · '+(LANG==='ar'?'طبي ':'med ')+F(livMed)],
+    [T.rxCondKmed, F(medN), kg(medWt)],
+    [T.rxCondKwings, kg(wingsWt),''],
+    [T.rxCondKstun, F(stunN), kg(stunWt)],
+    [T.rxCondKdoaw, kg(doaWt),'']
+  ].map(([k2,v,d])=>`<div class="card"><div class="k">${k2}</div><div class="v num">${v}</div><div class="d">${d}</div></div>`).join('');
+  // condemnations by type chart (counts)
+  mk('cRxCond',{type:'bar',data:{labels:[T.rxThLivMech,T.rxThLivMed,T.rxThMedN,T.rxThStunN,T.rxThMisN],datasets:[{
+    data:[livMech,livMed,medN,stunN,misN],backgroundColor:[RED,'#e0888a',GOLD,SKY,VIO],
+    datalabels:{...DL(),anchor:'end',align:'end',formatter:v=>Fk(v)}}]},
+    options:{maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>Fk(v)}}}}});
+  // weights chart (kg)
+  mk('cRxWt',{type:'bar',data:{labels:[T.rxThMedW,T.rxThWings,T.rxThStunW,T.rxThMisW,T.rxCondKdoaw],datasets:[{
+    data:[medWt,wingsWt,stunWt,misWt,doaWt],backgroundColor:GOLD,
+    datalabels:{...DL(),anchor:'end',align:'end',formatter:v=>Fk(v)}}]},
+    options:{maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>Fk(v)}}}}});
+  // daily detail table
+  const cdLast=[...cd].slice(-21).reverse();
+  const c=v=>v==null?'—':F(v);
+  $('#tRxCond').innerHTML=`<tr><th>${T.thDate}</th><th>${T.rxThAvgW}</th><th>${T.rxThLivMech}</th><th>${T.rxThLivMed}</th><th>${T.rxThMedN}</th><th>${T.rxThMedW}</th><th>${T.rxThWings}</th><th>${T.rxThMisN}</th><th>${T.rxThMisW}</th><th>${T.rxThStunN}</th><th>${T.rxThStunW}</th><th>${T.rxThDoaW}</th></tr>`+
+    cdLast.map(e=>{const aw=e.v&&e.wt?(e.wt/e.v):null;
+      return `<tr><td>${e.d}</td><td class="num">${aw!=null?aw.toFixed(3):'—'}</td>
+      <td class="num">${c(e.mech)}</td><td class="num">${c(e.med)}</td>
+      <td class="num">${c(e.med_n)}</td><td class="num">${c(e.med_wt)}</td>
+      <td class="num">${c(e.wings_wt)}</td>
+      <td class="num">${c(e.mistake_n)}</td><td class="num">${c(e.mistake_wt)}</td>
+      <td class="num">${c(e.stunner_n)}</td><td class="num">${c(e.stunner_wt)}</td>
+      <td class="num">${c(e.doa_wt)}</td></tr>`;}).join('');
 }
 $('#capIn').addEventListener('input',renderRx);
 
