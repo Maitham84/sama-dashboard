@@ -118,6 +118,19 @@ html[data-theme="light"] .asof{color:#5C6E82 !important}
 .perbar{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin:2px 0 12px}
 .perlbl{color:var(--mut);font-size:11.5px;margin-inline-end:4px}
 .fgrp{display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+.msdd{position:relative;display:inline-block}
+.msdd-btn{padding:6px 10px;border:1px solid var(--bd);border-radius:8px;background:var(--panel);color:var(--ink);font-size:12.5px;cursor:pointer;min-width:130px;text-align:start;display:inline-flex;align-items:center;justify-content:space-between;gap:6px}
+.msdd-btn:hover{border-color:var(--gold)}
+.msdd-btn .cnt{opacity:.6;font-size:11px}
+.msdd-pop{position:absolute;top:calc(100% + 4px);inset-inline-start:0;z-index:200;background:var(--panel);border:1px solid var(--bd);border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.25);min-width:210px;max-height:320px;overflow:auto;padding:6px;display:none}
+.msdd-pop.open{display:block}
+.msdd-act{display:flex;gap:6px;padding:4px 6px 8px;border-bottom:1px solid var(--line);margin-bottom:6px}
+.msdd-act button{flex:1;font-size:11px;padding:5px 8px;border:1px solid var(--bd);border-radius:6px;background:var(--panel2);color:var(--ink);cursor:pointer}
+.msdd-act button:hover{border-color:var(--gold);color:var(--gold2)}
+.msdd-opt{display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:6px;cursor:pointer;font-size:12.5px}
+.msdd-opt:hover{background:var(--panel2)}
+.msdd-opt input{accent-color:var(--gold);width:15px;height:15px;cursor:pointer;flex-shrink:0}
+.msdd-opt label{cursor:pointer;flex:1}
 .search select,.search input.rngDate{padding:6px 10px;border:1px solid var(--bd);border-radius:8px;background:var(--panel);color:var(--ink);font-size:12.5px}
 .search .fgrp .perlbl{margin:0}
 .perBtn{background:var(--panel2);border:1px solid var(--line);color:var(--mut);border-radius:8px;padding:4px 12px;font-size:12px;font-family:inherit;cursor:pointer;font-weight:700}
@@ -257,7 +270,7 @@ body.locked .brand, body.locked nav, body.locked main, body.locked section{visib
 
 <section id="wb"><div class="wrap">
   <div class="secthead"><h2 id="wbTitle"></h2><small id="wbSub"></small></div>
-  <div class="search" id="wbMetricBar" style="margin-bottom:10px;flex-wrap:wrap;gap:10px"><span class="fgrp"><span class="perlbl" id="wbMetricL"></span><select id="wbMetric"></select></span><span class="fgrp"><span class="perlbl" id="wbFFL"></span><select id="wbFF"></select></span><span class="fgrp"><span class="perlbl" id="wbOwnL"></span><select id="wbOwn"></select></span><span class="fgrp"><span class="perlbl" id="wbFromLbl"></span><input type="date" id="wbFrom" class="rngDate"></span><span class="fgrp"><span class="perlbl" id="wbToLbl"></span><input type="date" id="wbTo" class="rngDate"></span><button class="btn ghost" id="wbClearBtn"></button></div>
+  <div class="search" id="wbMetricBar" style="margin-bottom:10px;flex-wrap:wrap;gap:10px"><span class="fgrp"><span class="perlbl" id="wbMetricL"></span><select id="wbMetric"></select></span><span class="fgrp"><span class="perlbl" id="wbFFL"></span><select id="wbFF"></select></span><span class="fgrp"><span class="perlbl" id="wbOwnL"></span><select id="wbOwn"></select></span><span class="fgrp"><span class="perlbl" id="wbFamL"></span><span id="wbFam"></span></span><span class="fgrp"><span class="perlbl" id="wbFromLbl"></span><input type="date" id="wbFrom" class="rngDate"></span><span class="fgrp"><span class="perlbl" id="wbToLbl"></span><input type="date" id="wbTo" class="rngDate"></span><button class="btn ghost" id="wbClearBtn"></button></div>
   <div class="cards" id="wbCards"></div>
   <div class="panel" style="margin-bottom:14px"><h3 id="wbWChT"></h3>
     <div class="ch" style="height:320px"><canvas id="cWbW"></canvas></div></div>
@@ -281,6 +294,7 @@ body.locked .brand, body.locked nav, body.locked main, body.locked section{visib
   <div class="search" id="ffFilters" style="flex-wrap:wrap;gap:10px">
     <span class="fgrp"><span class="perlbl" id="ffMetricL"></span><select id="ffMetric"></select></span>
     <span class="fgrp"><span class="perlbl" id="ffOwnL"></span><select id="ffOwn"></select></span>
+    <span class="fgrp"><span class="perlbl" id="ffCatL"></span><span id="ffCat"></span></span>
     <span class="fgrp"><span class="perlbl" id="ffGranL"></span><select id="ffGran"></select></span>
     <span class="fgrp"><span class="perlbl" id="ffFromL"></span><input type="date" id="ffFrom" class="rngDate"></span>
     <span class="fgrp"><span class="perlbl" id="ffToL"></span><input type="date" id="ffTo" class="rngDate"></span>
@@ -296,9 +310,10 @@ body.locked .brand, body.locked nav, body.locked main, body.locked section{visib
   <div class="search" id="stkFilters" style="flex-wrap:wrap;gap:10px">
     <span class="fgrp"><span class="perlbl" id="stkAsofL"></span><input type="date" id="stkAsof" class="rngDate"></span>
     <span class="fgrp"><span class="perlbl" id="stkOwnL"></span><select id="stkOwn"></select></span>
-    <span class="fgrp"><span class="perlbl" id="stkCatL"></span><select id="stkCat"></select></span>
-    <span class="fgrp"><span class="perlbl" id="stkFamL"></span><select id="stkFam"></select></span>
+    <span class="fgrp"><span class="perlbl" id="stkCatL"></span><span id="stkCat"></span></span>
+    <span class="fgrp"><span class="perlbl" id="stkFamL"></span><span id="stkFam"></span></span>
     <span class="fgrp"><span class="perlbl" id="stkFFL"></span><select id="stkFF"></select></span>
+    <span class="fgrp"><span class="perlbl" id="stkBalL"></span><select id="stkBal"></select></span>
   </div>
   <div class="cards" id="stkCards"></div>
   <div class="grid2" style="margin-top:4px">
@@ -311,6 +326,29 @@ body.locked .brand, body.locked nav, body.locked main, body.locked section{visib
     <div class="tscroll" style="max-height:520px"><table class="tbl" id="tStk"></table></div>
   </div>
   <div class="note" id="stkNote"></div>
+</div></section>
+
+<section id="prod"><div class="wrap">
+  <div class="secthead"><h2 id="prodTitle"></h2><small id="prodSub"></small></div>
+  <div class="search" id="prodFilters" style="flex-wrap:wrap;gap:10px">
+    <span class="fgrp"><span class="perlbl" id="prodAsofL"></span><input type="date" id="prodAsof" class="rngDate"></span>
+    <span class="fgrp"><span class="perlbl" id="prodOwnL"></span><select id="prodOwn"></select></span>
+    <span class="fgrp"><span class="perlbl" id="prodFFL"></span><select id="prodFF"></select></span>
+    <span class="fgrp"><span class="perlbl" id="prodCatL"></span><span id="prodCat"></span></span>
+    <span class="fgrp"><span class="perlbl" id="prodFamL"></span><span id="prodFam"></span></span>
+    <span class="fgrp"><span class="perlbl" id="prodPackL"></span><select id="prodPack"></select></span>
+  </div>
+  <div class="cards" id="prodCards"></div>
+  <div class="grid2">
+    <div class="panel"><h3 id="prodChT"></h3><div class="ch" style="height:300px"><canvas id="cProd"></canvas></div></div>
+    <div class="panel"><h3 id="prodCh2T"></h3><div class="ch" style="height:300px"><canvas id="cProd2"></canvas></div></div>
+  </div>
+  <div class="panel" style="margin-top:14px">
+    <div class="search" style="margin-bottom:10px"><h3 id="prodTblT" style="margin:0 12px 0 0"></h3>
+      <input type="text" id="prodSearch" placeholder="" style="flex:1;min-width:180px;padding:7px 12px;border:1px solid var(--bd);border-radius:8px;background:var(--panel);color:var(--ink)"></div>
+    <div class="tscroll" style="max-height:560px"><table class="tbl" id="tProd"></table></div>
+  </div>
+  <small id="prodNote" class="muted" style="display:block;margin-top:8px"></small>
 </div></section>
 
 <section id="plant"><div class="wrap">
@@ -370,7 +408,7 @@ body.locked .brand, body.locked nav, body.locked main, body.locked section{visib
     <span class="perlbl" id="fppLgran"></span><select id="fppGran"></select>
     <span class="perlbl" id="fppLff"></span><select id="fppFF"></select>
     <span class="perlbl" id="fppLown"></span><select id="fppOwn"></select>
-    <span class="perlbl" id="fppLfam"></span><select id="fppFam"></select>
+    <span class="perlbl" id="fppLfam"></span><span id="fppFam"></span>
     <span class="perlbl" id="fppLprod"></span><select id="fppProd"></select>
   </div>
   <div class="cards" id="fppKpi"></div>
@@ -424,8 +462,8 @@ body.locked .brand, body.locked nav, body.locked main, body.locked section{visib
     <span class="perlbl" id="wdFromLbl"></span><input type="date" id="wdFrom" class="rngDate">
     <span class="perlbl" id="wdToLbl"></span><input type="date" id="wdTo" class="rngDate">
     <button class="btn ghost" id="wdClearBtn"></button>
-    <span class="perlbl" id="wdLcat"></span><select id="wdCat"></select>
-    <span class="perlbl" id="wdLfam"></span><select id="wdFam"></select>
+    <span class="perlbl" id="wdLcat"></span><span id="wdCat"></span>
+    <span class="perlbl" id="wdLfam"></span><span id="wdFam"></span>
     <span class="perlbl" id="wdLpack"></span><select id="wdPack"></select>
   </div>
   <div class="search" id="wdExclBar" style="flex-wrap:wrap;gap:8px;margin-bottom:10px"><span class="perlbl" id="wdExclLbl"></span><span id="wdExclChips" style="display:flex;flex-wrap:wrap;gap:6px"></span></div>
@@ -459,8 +497,10 @@ body.locked .brand, body.locked nav, body.locked main, body.locked section{visib
     <span class="fgrp"><span class="perlbl" id="cutLmetric"></span><select id="cutMetric"></select></span>
     <span class="fgrp"><span class="perlbl" id="cutLgran"></span><select id="cutGran"></select></span>
     <span class="fgrp"><span class="perlbl" id="cutLff"></span><select id="cutFF"></select></span>
+    <span class="fgrp"><span class="perlbl" id="cutLiqf"></span><select id="cutIqf"></select></span>
+    <span class="fgrp"><span class="perlbl" id="cutLpack"></span><select id="cutPack"></select></span>
     <span class="fgrp"><span class="perlbl" id="cutLown"></span><select id="cutOwn"></select></span>
-    <span class="fgrp"><span class="perlbl" id="cutLfam"></span><select id="cutFam"></select></span>
+    <span class="fgrp"><span class="perlbl" id="cutLfam"></span><span id="cutFam"></span></span>
     <span class="fgrp"><span class="perlbl" id="cutLprod"></span><select id="cutProd"></select></span>
   </div>
   <div class="cards" id="cutKpi"></div>
@@ -536,7 +576,7 @@ const GS = {
   proc:'1lfnETJhG5cfdoYDp1fKAR1fIVRGmtt0LfxJ9db2sIG4',
   users:'1ev9vomAg9mRoU684hgxRB4GoaOmt1BZ747yW3y-MYXI',
   demand:'1xl-g2MXw7fN0XffLOmQK2ZNHjk_PcpMlUCzGgU4pdLw',  // Demand Plan DATABASE sheet
-  tabs:{S:'Daily Sales',O:'Act. Orders',P:'Daily Prod',K:'Open Stock'},
+  tabs:{S:'Daily Sales',O:'Act. Orders',P:'Daily Prod',K:'Open Stock',C:'Close Stock'},
   procTabs:{G:'Daily_Grades',H:'Daily_Histogram',W:'Line_Hours'},
   rxMonths:['Jan-2026','Feb-2026','Mar-2026','Apr-2026','May-2026','Jun-2026','Jul-2026','Aug-2026','Sep-2026','Oct-2026','Nov-2026','Dec-2026']
 };
@@ -554,7 +594,7 @@ ar:{dir:'rtl', title:'شركة سما كربلاء — مجزر الدواجن',
  asof:'آخر تحديث للبيانات', themeD:'🌙 داكن', themeL:'☀️ فاتح', importBtn:'⟳ تحديث من إكسل',
  months:['كانون الثاني','شباط','آذار','نيسان','أيار','حزيران','تموز','آب','أيلول','تشرين الأول','تشرين الثاني','كانون الأول'],
  days:['السبت','الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة'],
- tabs:{exec:'النظرة التنفيذية',rx:'الاستلام الحي',wb:'الدجاج الكامل',cut:'المقطّعات',ff:'فريش × مجمد',stk:'المخزون',plant:'كفاءة المجزر',quality:'جودة الذبح',demand:'التنبؤ والدقة',alerts:'التنبيهات',fpp:'تحليل المصنّعات',top:'أفضل الأصناف',offals:'تحليل الأحشاء',wip:'تحت التشغيل WIP',wdist:'توزيع الوزن',cmp:'الطلب·الإنتاج·المبيعات',week:'أسبوعي',month:'شهري',sku:'المنتجات'},
+ tabs:{exec:'النظرة التنفيذية',rx:'الاستلام الحي',wb:'الدجاج الكامل',cut:'المقطّعات',ff:'فريش × مجمد',stk:'المخزون',prod:'الإنتاج اليومي',plant:'كفاءة المجزر',quality:'جودة الذبح',demand:'التنبؤ والدقة',alerts:'التنبيهات',fpp:'تحليل المصنّعات',top:'أفضل الأصناف',offals:'تحليل الأحشاء',wip:'تحت التشغيل WIP',wdist:'توزيع الوزن',cmp:'الطلب·الإنتاج·المبيعات',week:'أسبوعي',month:'شهري',sku:'المنتجات'},
  chain:{rx:'📥 استلام حي',prod:'🏭 إنتاج',sales:'🛒 مبيعات',ord:'📦 طلبات',stk:'🏬 مخزون افتتاحي'}, rxFromLbl:'من', rxToLbl:'إلى', rxClear:'كل الفترة',
  birds:'طير', box:'صندوق', boxes:'صندوق', days_u:'يوم',
  chainNote:d=>'سلسلة آخر يوم تشغيلي '+d+' — أرقام المنتجات بالصناديق، المخزون يعتمد الرصيد الافتتاحي.',
@@ -632,7 +672,7 @@ ar:{dir:'rtl', title:'شركة سما كربلاء — مجزر الدواجن',
  wipTblT:'كل منتجات WIP', wipNote:'استخدم الفلاتر للتحليل اليومي/الأسبوعي/الشهري وحسب العلامة والنوع والعائلة. الأرقام بالصناديق.',
  cutTitle:'تحليل المقطّعات (Cut-ups)', cutSub:'تحليل كامل لمنتجات التقطيع بمبيعاتها وطلبها وإنتاجها',
  cutFromLbl:'من', cutToLbl:'إلى', cutClear:'كل الفترة',
- cutLmetric:'المقياس', cutLgran:'الفترة', cutLff:'النوع', cutLown:'العلامة', cutLfam:'العائلة', cutLprod:'المنتج',
+ cutLmetric:'المقياس', cutLgran:'الفترة', cutLiqf:'IQF', cutLpack:'التعبئة', cutLff:'النوع', cutLown:'العلامة', cutLfam:'العائلة', cutLprod:'المنتج',
  cutTsT:'التحليل الزمني', cutFFt:'فريش مقابل مجمد', cutFamT:'حسب العائلة',
  cutTblT:'كل منتجات المقطّعات', cutNote:'استخدم فلتر التاريخ (يومي/أسبوعي/شهري + من/إلى) والمقياس والنوع والعائلة. الأرقام بالصناديق.',
  wdTitle:'توزيع الوزن — أين ذهب الوزن المستلم', wdSub:'من الوزن الحي إلى الوزن الصافي القابل للتصنيع، ونسبة كل منتج منه',
@@ -680,15 +720,15 @@ ar:{dir:'rtl', title:'شركة سما كربلاء — مجزر الدواجن',
  wbShareTot:'حصة الدجاج الكامل من إجمالي المبيعات', wbOfSales:m=>'من مبيعات '+m,
  wbFreshT:'🟢 فريش — مبيعات', wbFrozenT:'🔵 مجمد — مبيعات', ofWB:'من الدجاج الكامل', birdsSold:'طيور مباعة',
  wbTotBirds:'إجمالي الطيور المباعة',
- wbWChT:'المبيعات حسب فئة الوزن — فريش × مجمد (صندوق)', wbTblT:'جدول الأوزان — تصافي 74%', wbWtTblT:'تفصيل الأوزان — صناديق وأوزان حسب فئة الطير', wbMetricL:'المقياس', wbFFL:'النوع', wbOwnL:'العلامة', wbFromLbl:'من', wbToLbl:'إلى', wbClear:'كل الفترة', wbWtMetricL:'المقياس', wbWtFFL:'النوع', wbWtThClass:'فئة الطير (وزن المنتج)', wbWtThLive:'الوزن الحي/طير', wbWtThType:'النوع', wbWtThBoxes:'الصناديق', wbWtThPcs:'الطيور (عدد)', wbWtThKg:'الوزن (كغم)', wbWtNote:'وزن الصندوق = عدد القطع × وزن المنتج. الوزن الحي للطير = وزن المنتج ÷ 74%. اختر المقياس (مبيعات/إنتاج/طلب) لرؤية الصناديق وعددها ووزنها لكل فئة وزن.',
+ wbWChT:'المبيعات حسب فئة الوزن — فريش × مجمد (صندوق)', wbTblT:'جدول الأوزان — تصافي 74%', wbWtTblT:'تفصيل الأوزان — صناديق وأوزان حسب فئة الطير', wbMetricL:'المقياس', wbFFL:'النوع', wbOwnL:'العلامة', wbFamL:'العائلة', wbFromLbl:'من', wbToLbl:'إلى', wbClear:'كل الفترة', wbWtMetricL:'المقياس', wbWtFFL:'النوع', wbWtThClass:'فئة الطير (وزن المنتج)', wbWtThLive:'الوزن الحي/طير', wbWtThType:'النوع', wbWtThBoxes:'الصناديق', wbWtThPcs:'الطيور (عدد)', wbWtThKg:'الوزن (كغم)', wbWtNote:'وزن الصندوق = عدد القطع × وزن المنتج. الوزن الحي للطير = وزن المنتج ÷ 74%. اختر المقياس (مبيعات/إنتاج/طلب) لرؤية الصناديق وعددها ووزنها لكل فئة وزن.',
  wbSubT:'التصنيفات الفرعية', wbBChT:'الطيور المباعة حسب الوزن',
  thType:'النوع',thWt:'وزن المنتج (غم)',thLive:'وزن حي (غم)',thSKUs:'منتجات',thFul:'تنفيذ%',thStock:'مخزون',thLife:'مبيعات تاريخية',thSubF:'التصنيف',
  ffTitle:'فريش × مجمد حسب الفئة', ffSub:m=>'مقارنة شهرية للمبيعات (صندوق) — '+m+' مقابل الشهر السابق',
- ffMetricL:'المقياس', ffOwnL:'العلامة', ffGranL:'الفترة', ffFromL:'من', ffToL:'إلى', ffClear:'كل الفترة', ffShareF:'حصة الفريش', ffShareZ:'حصة المجمد', ffCatTot:'إجمالي الفئة',
+ ffMetricL:'المقياس', ffOwnL:'العلامة', ffCatL:'الفئة', ffGranL:'الفترة', ffFromL:'من', ffToL:'إلى', ffClear:'كل الفترة', ffShareF:'حصة الفريش', ffShareZ:'حصة المجمد', ffCatTot:'إجمالي الفئة',
  ffChT:(a,m)=>a+' — فريش × مجمد شهرياً (صندوق)',
  thCat:'الفئة',thGrow:'النمو',
  stkTitle:'تقرير المخزون', stkSub:d=>'الرصيد الافتتاحي بتاريخ '+d+' (صندوق)',
- stkChT:'الرصيد حسب الفئة (صندوق)', stkPackChT:'الرصيد حسب التعبئة (صندوق)', stkAsofL:'الرصيد بتاريخ', stkToday:'اليوم', stkOwnL:'العلامة', stkCatL:'الفئة', stkFamL:'العائلة', stkFFL:'النوع', stkTblT:'كل المنتجات التي لها رصيد', stkSearchPH:'ابحث بالاسم أو الكود...', stkThCode:'الكود', stkThName:'المنتج', stkThCat:'الفئة', stkThFam:'العائلة', stkThPack:'التعبئة', stkThType:'النوع', stkThBal:'الرصيد (صندوق)', stkThKg:'الوزن (كغم)', stkKtot:'إجمالي الرصيد', stkKkg:'إجمالي الوزن', stkKprods:'عدد المنتجات', stkKcats:'عدد الفئات', stkOosT:'منتجات نشطة غير متوفرة (مخزون = صفر ولها مبيعات حديثة)',
+ stkChT:'الرصيد حسب الفئة (صندوق)', stkPackChT:'الرصيد حسب التعبئة (صندوق)', stkAsofL:'الرصيد بتاريخ', stkToday:'اليوم', stkOwnL:'العلامة', stkBalL:'الرصيد', stkCatL:'الفئة', prodTitle:'الإنتاج اليومي', prodAsofL:'التاريخ', prodOwnL:'العلامة', prodFFL:'النوع', prodCatL:'الفئة', prodFamL:'العائلة', prodPackL:'التعبئة', prodSearchPH:'ابحث بالاسم أو الكود...', prodTblT:'تفاصيل الإنتاج لكل صنف', prodChT:'الإنتاج حسب الفئة (كغم)', prodCh2T:'حصة كل فئة من الإنتاج', prodNote:'يعرض ما تم إنتاجه في التاريخ المحدد لكل صنف — بالصناديق والوزن وعدد الطيور/القطع.', stkFamL:'العائلة', stkFFL:'النوع', stkTblT:'كل المنتجات التي لها رصيد', stkSearchPH:'ابحث بالاسم أو الكود...', stkThCode:'الكود', stkThName:'المنتج', stkThCat:'الفئة', stkThFam:'العائلة', stkThPack:'التعبئة', stkThType:'النوع', stkThBal:'الرصيد (صندوق)', stkThKg:'الوزن (كغم)', stkKtot:'إجمالي الرصيد', stkKkg:'إجمالي الوزن', stkKprods:'عدد المنتجات', stkKcats:'عدد الفئات', stkOosT:'منتجات نشطة غير متوفرة (مخزون = صفر ولها مبيعات حديثة)',
  stkCover:'تغطية', stkActive:'نشط', stkOOS:'غير متوفر', allIn:'كل المنتجات النشطة متوفرة ✓', s28:'مبيعات آخر 28 يوم',
  stkNote:'قيد التصنيع (WIP) = منتجات نصف مصنعة داخل المجزر لم تُعبّأ كمنتج نهائي بعد. معالجة المخلفات (Rendering) = نواتج تحويل المخلفات. كلاهما ليس منتجات بيع مباشر للسوق.',
  wkTitle:'التحليل الأسبوعي', wkSub:'سبت–جمعة | W1-2026 = 3–9 كانون الثاني — أسابيع مكتملة فقط، الوحدة: صندوق',
@@ -712,7 +752,7 @@ en:{dir:'ltr', title:'Sama Karbala Co. — Poultry Processing Plant', sub:'Execu
  asof:'Data as of', themeD:'🌙 Dark', themeL:'☀️ Light', importBtn:'⟳ Update from Excel',
  months:['January','February','March','April','May','June','July','August','September','October','November','December'],
  days:['Saturday','Sunday','Monday','Tuesday','Wednesday','Thursday','Friday'],
- tabs:{exec:'Executive Overview',rx:'Live Bird Intake',wb:'Whole Bird',cut:'Cutups',ff:'Fresh vs Frozen',stk:'Inventory',plant:'Plant Efficiency',quality:'Carcass Quality',demand:'Forecast & Accuracy',alerts:'Alerts',fpp:'FPP Analysis',top:'Top Products',offals:'Offals Analysis',wip:'WIP Analysis',wdist:'Weight Distribution',cmp:'Order·Prod·Sales',week:'Weekly',month:'Monthly',sku:'Products'},
+ tabs:{exec:'Executive Overview',rx:'Live Bird Intake',wb:'Whole Bird',cut:'Cutups',ff:'Fresh vs Frozen',stk:'Inventory',prod:'Daily Production',plant:'Plant Efficiency',quality:'Carcass Quality',demand:'Forecast & Accuracy',alerts:'Alerts',fpp:'FPP Analysis',top:'Top Products',offals:'Offals Analysis',wip:'WIP Analysis',wdist:'Weight Distribution',cmp:'Order·Prod·Sales',week:'Weekly',month:'Monthly',sku:'Products'},
  chain:{rx:'📥 Live intake',prod:'🏭 Production',sales:'🛒 Sales',ord:'📦 Orders',stk:'🏬 Opening stock'}, rxFromLbl:'From', rxToLbl:'To', rxClear:'Full period',
  birds:'birds', box:'boxes', boxes:'boxes', days_u:'days',
  chainNote:d=>'Latest operating-day chain ('+d+') — product figures in boxes; inventory based on opening balance.',
@@ -790,7 +830,7 @@ en:{dir:'ltr', title:'Sama Karbala Co. — Poultry Processing Plant', sub:'Execu
  wipTblT:'All WIP products', wipNote:'Use the filters for daily/weekly/monthly analysis and by brand/type/family. Figures in boxes.',
  cutTitle:'Cut-ups Analysis', cutSub:'Full analysis of cut-up products by sales, orders and production',
  cutFromLbl:'From', cutToLbl:'To', cutClear:'Full period',
- cutLmetric:'Metric', cutLgran:'Period', cutLff:'Type', cutLown:'Brand', cutLfam:'Family', cutLprod:'Product',
+ cutLmetric:'Metric', cutLgran:'Period', cutLiqf:'IQF', cutLpack:'Packaging', cutLff:'Type', cutLown:'Brand', cutLfam:'Family', cutLprod:'Product',
  cutTsT:'Time-series analysis', cutFFt:'Fresh vs Frozen', cutFamT:'By family',
  cutTblT:'All cut-up products', cutNote:'Use the date filter (daily/weekly/monthly + from/to), metric, type and family. Figures in boxes.',
  wdTitle:'Weight Distribution — where the received weight went', wdSub:'From live weight to net processable weight, and each product\'s share of it',
@@ -838,15 +878,15 @@ en:{dir:'ltr', title:'Sama Karbala Co. — Poultry Processing Plant', sub:'Execu
  wbShareTot:'Whole Bird share of total sales', wbOfSales:m=>'of '+m+' sales',
  wbFreshT:'🟢 Fresh (chilled) — sales', wbFrozenT:'🔵 Frozen — sales', ofWB:'of Whole Bird', birdsSold:'birds sold',
  wbTotBirds:'Total birds sold',
- wbWChT:'Sales by weight class — Fresh vs Frozen (boxes)', wbTblT:'Weight classes — 74% dressing yield', wbWtTblT:'Weight detail — boxes & weight by bird class', wbMetricL:'Metric', wbFFL:'Type', wbOwnL:'Brand', wbFromLbl:'From', wbToLbl:'To', wbClear:'Full period', wbWtMetricL:'Metric', wbWtFFL:'Type', wbWtThClass:'Bird class (product weight)', wbWtThLive:'Live wt/bird', wbWtThType:'Type', wbWtThBoxes:'Boxes', wbWtThPcs:'Birds (count)', wbWtThKg:'Weight (kg)', wbWtNote:'Box weight = pieces × product weight. Live bird weight = product weight ÷ 74%. Pick the metric (sales/production/orders) to see boxes, bird count and total weight per weight class.',
+ wbWChT:'Sales by weight class — Fresh vs Frozen (boxes)', wbTblT:'Weight classes — 74% dressing yield', wbWtTblT:'Weight detail — boxes & weight by bird class', wbMetricL:'Metric', wbFFL:'Type', wbOwnL:'Brand', wbFamL:'Family', wbFromLbl:'From', wbToLbl:'To', wbClear:'Full period', wbWtMetricL:'Metric', wbWtFFL:'Type', wbWtThClass:'Bird class (product weight)', wbWtThLive:'Live wt/bird', wbWtThType:'Type', wbWtThBoxes:'Boxes', wbWtThPcs:'Birds (count)', wbWtThKg:'Weight (kg)', wbWtNote:'Box weight = pieces × product weight. Live bird weight = product weight ÷ 74%. Pick the metric (sales/production/orders) to see boxes, bird count and total weight per weight class.',
  wbSubT:'Sub-families', wbBChT:'Birds sold by weight class',
  thType:'Type',thWt:'Product wt (g)',thLive:'Live wt (g)',thSKUs:'SKUs',thFul:'Fulfil.',thStock:'Stock',thLife:'Lifetime sales',thSubF:'Sub-family',
  ffTitle:'Fresh vs Frozen by Category', ffSub:m=>'Monthly sales comparison (boxes) — '+m+' vs previous month',
- ffMetricL:'Metric', ffOwnL:'Brand', ffGranL:'Period', ffFromL:'From', ffToL:'To', ffClear:'Full period', ffShareF:'Fresh share', ffShareZ:'Frozen share', ffCatTot:'Category total',
+ ffMetricL:'Metric', ffOwnL:'Brand', ffCatL:'Category', ffGranL:'Period', ffFromL:'From', ffToL:'To', ffClear:'Full period', ffShareF:'Fresh share', ffShareZ:'Frozen share', ffCatTot:'Category total',
  ffChT:(a,m)=>a+' — Fresh vs Frozen monthly (boxes)',
  thCat:'Category',thGrow:'Growth',
  stkTitle:'Inventory Report', stkSub:d=>'Opening balance as of '+d+' (boxes)',
- stkChT:'Balance by category (boxes)', stkPackChT:'Balance by packaging (boxes)', stkAsofL:'Balance as of', stkToday:'Today', stkOwnL:'Brand', stkCatL:'Category', stkFamL:'Family', stkFFL:'Type', stkTblT:'All products with a balance', stkSearchPH:'Search by name or code...', stkThCode:'Code', stkThName:'Product', stkThCat:'Category', stkThFam:'Family', stkThPack:'Packaging', stkThType:'Type', stkThBal:'Balance (boxes)', stkThKg:'Weight (kg)', stkKtot:'Total balance', stkKkg:'Total weight', stkKprods:'Products', stkKcats:'Categories', stkOosT:'Active out-of-stock products (zero stock with recent sales)',
+ stkChT:'Balance by category (boxes)', stkPackChT:'Balance by packaging (boxes)', stkAsofL:'Balance as of', stkToday:'Today', stkOwnL:'Brand', stkBalL:'Balance', stkCatL:'Category', prodTitle:'Daily Production', prodAsofL:'Date', prodOwnL:'Brand', prodFFL:'Type', prodCatL:'Category', prodFamL:'Family', prodPackL:'Packaging', prodSearchPH:'Search by name or code...', prodTblT:'Production detail by product', prodChT:'Production by category (kg)', prodCh2T:'Each category share of production', prodNote:'Shows what was produced on the selected date per product — boxes, weight, and bird/piece count.', stkFamL:'Family', stkFFL:'Type', stkTblT:'All products with a balance', stkSearchPH:'Search by name or code...', stkThCode:'Code', stkThName:'Product', stkThCat:'Category', stkThFam:'Family', stkThPack:'Packaging', stkThType:'Type', stkThBal:'Balance (boxes)', stkThKg:'Weight (kg)', stkKtot:'Total balance', stkKkg:'Total weight', stkKprods:'Products', stkKcats:'Categories', stkOosT:'Active out-of-stock products (zero stock with recent sales)',
  stkCover:'cover', stkActive:'active', stkOOS:'out of stock', allIn:'All active products in stock ✓', s28:'Sales last 28 days',
  stkNote:'Work-in-Progress (WIP) = semi-processed in-plant items not yet packed as finished goods. Rendering = by-product processing output. Neither is a direct market sales category.',
  wkTitle:'Weekly Analysis', wkSub:'Sat–Fri | W1-2026 = 3–9 Jan — complete weeks only, unit: boxes',
@@ -1196,13 +1236,13 @@ $('#capIn').addEventListener('input',renderRx);
 
 // Rebuild Whole Bird weight-class rows from per-SKU daily series within a date range.
 // Returns rows shaped like DATA.wb.rows (t,w,live,sku,s,o,p,birds,birdsO,birdsP) but cropped to [from,to].
-function wbRowsForRange(from,to,ownF){
+function wbRowsForRange(from,to,ownF,famF){
   if(!SKU_DATES.length)return null;
   const inR=d=>(!from||d>=from)&&(!to||d<=to);
   const idx=[]; SKU_DATES.forEach((d,i)=>{if(inR(d))idx.push(i);});
   if(!idx.length)return null;
   const map={};  // key = type|w
-  (DATA.sku||[]).filter(p=>p.cat==='Whole Bird'&&(!ownF||ownF==='all'||classifyOwn(p)===ownF)).forEach(p=>{
+  (DATA.sku||[]).filter(p=>p.cat==='Whole Bird'&&(!ownF||ownF==='all'||classifyOwn(p)===ownF)&&msPass(p.fam||'—', famF)).forEach(p=>{
     const w=p.wt, tp=detectType(p), pcs=p.pcs||0;
     let s=0,o=0,pr=0;
     idx.forEach(i=>{s+=(p.dS&&p.dS[i]||0);o+=(p.dO&&p.dO[i]||0);pr+=(p.dP&&p.dP[i]||0);});
@@ -1236,10 +1276,15 @@ function renderWb(){
   const wo=$('#wbOwn');
   if(wo&&!wo.dataset.init){wo.dataset.init='1';wo.onchange=e=>{WBOWN=e.target.value;renderWb();};}
   if(wo)wo.innerHTML=[['all',LANG==='ar'?'الكل':'All'],['own',LANG==='ar'?'علامتنا':'Own brand'],['pl',LANG==='ar'?'علامة خاصة':'Private Label']].map(([v,l])=>`<option value="${v}" ${v===WBOWN?'selected':''}>${l}</option>`).join('');
+  // family multi-select (Whole Bird families)
+  $('#wbFamL')&&($('#wbFamL').textContent=T.wbFamL);
+  const wbFams=[...new Set((DATA.sku||[]).filter(p=>p.cat==='Whole Bird').map(p=>p.fam||'—'))].filter(x=>x&&x!=='—').sort();
+  WBFAM=WBFAM.filter(v=>wbFams.includes(v));
+  msDropdown('wbFam', wbFams.map(f=>[f,f]), WBFAM, (newSel)=>{WBFAM=newSel;renderWb();}, LANG==='ar'?'كل العائلات':'All families');
   let wb=wbBase;
-  // rebuild from daily series when a date range OR a brand filter is active
-  if(WBFROM||WBTO||WBOWN!=='all'){
-    const rr=wbRowsForRange(WBFROM,WBTO,WBOWN);
+  // rebuild from daily series when a date range OR a brand OR a family filter is active
+  if(WBFROM||WBTO||WBOWN!=='all'||WBFAM.length){
+    const rr=wbRowsForRange(WBFROM,WBTO,WBOWN,WBFAM);
     if(rr&&rr.length){
       // rebuild tf (fresh/frozen totals) + sub from the ranged rows
       const tf=['Fresh','Frozen'].map(tp=>{const rs=rr.filter(r=>r.t===tp);
@@ -1334,7 +1379,7 @@ function renderWb(){
 
 
 // ===== Fresh/Frozen engine: per-category fresh vs frozen, metric+date+own filterable =====
-function computeFreshFrozen(from,to,metric,ownF){
+function computeFreshFrozen(from,to,metric,ownF,catArr){
   if(!SKU_DATES.length)return null;
   const inR=d=>(!from||d>=from)&&(!to||d<=to);
   const idx=[]; SKU_DATES.forEach((d,i)=>{if(inR(d))idx.push(i);});
@@ -1342,6 +1387,7 @@ function computeFreshFrozen(from,to,metric,ownF){
   const dKey=metric==='p'?'dP':metric==='o'?'dO':'dS';
   let sku=(DATA.sku||[]);
   if(ownF&&ownF!=='all') sku=sku.filter(p=>classifyOwn(p)===ownF);
+  sku=sku.filter(p=>msPass(p.cat, catArr));
   // aggregate per category: fresh total, frozen total
   const catAgg={};
   sku.forEach(p=>{
@@ -1361,7 +1407,7 @@ function computeFreshFrozen(from,to,metric,ownF){
   return {cats,trend,totF,totZ,tot:totF+totZ,from:SKU_DATES[idx[0]],to:SKU_DATES[idx[idx.length-1]],days:idx.length};
 }
 
-let FFMETRIC='s', FFOWN='all', FFGRAN='day', FFFROM=null, FFTO=null;
+let FFMETRIC='s', FFOWN='all', FFGRAN='day', FFFROM=null, FFTO=null, FFCAT=[];
 function renderFf(){
   const T=t();
   $('#ffTitle').textContent=T.ffTitle;
@@ -1375,6 +1421,11 @@ function renderFf(){
   const fo=$('#ffOwn');
   if(fo&&!fo.dataset.init){fo.dataset.init='1';fo.onchange=e=>{FFOWN=e.target.value;renderFf();};}
   if(fo)fo.innerHTML=[['all',LANG==='ar'?'الكل':'All'],['own',LANG==='ar'?'علامتنا':'Own brand'],['pl',LANG==='ar'?'علامة خاصة':'Private Label']].map(([v,l])=>`<option value="${v}" ${v===FFOWN?'selected':''}>${l}</option>`).join('');
+  // category multi-select
+  $('#ffCatL')&&($('#ffCatL').textContent=T.ffCatL);
+  const ffCats=[...new Set((DATA.sku||[]).map(p=>p.cat))].filter(Boolean).sort();
+  FFCAT=FFCAT.filter(v=>ffCats.includes(v));
+  msDropdown('ffCat', ffCats.map(c=>[c,T.cats[c]||c]), FFCAT, (newSel)=>{FFCAT=newSel;renderFf();}, LANG==='ar'?'كل الفئات':'All categories');
   const fg=$('#ffGran');
   if(fg&&!fg.dataset.init){fg.dataset.init='1';fg.onchange=e=>{FFGRAN=e.target.value;renderFf();};}
   if(fg)fg.innerHTML=[['day',LANG==='ar'?'يومي':'Daily'],['week',LANG==='ar'?'أسبوعي':'Weekly'],['month',LANG==='ar'?'شهري':'Monthly']].map(([v,l])=>`<option value="${v}" ${v===FFGRAN?'selected':''}>${l}</option>`).join('');
@@ -1385,7 +1436,7 @@ function renderFf(){
   if(ffr)ffr.value=FFFROM||''; if(fft)fft.value=FFTO||'';
   if(fcb&&!fcb.dataset.init){fcb.dataset.init='1';fcb.onclick=()=>{FFFROM=null;FFTO=null;renderFf();};}
 
-  const D=computeFreshFrozen(FFFROM,FFTO,FFMETRIC,FFOWN);
+  const D=computeFreshFrozen(FFFROM,FFTO,FFMETRIC,FFOWN,FFCAT);
   const mLabel=FFMETRIC==='s'?T.sales:FFMETRIC==='p'?(LANG==='ar'?'الإنتاج':'Production'):(LANG==='ar'?'الطلب':'Orders');
   if(!D||!D.tot){
     $('#ffSub').textContent='—';
@@ -1426,7 +1477,78 @@ function renderFf(){
 
 // ===== Inventory (stock) engine: per-product balance as-of a chosen date =====
 // Returns products that have a balance on the selected date, with category/family/type filters.
-function computeStockAsOf(asofDate, catF, famF, ffF, ownF){
+
+
+// ===== Reusable multi-select checkbox dropdown =====
+// containerId: the element to render into. options: [[value,label],...]
+// selected: array of selected values ([] or null = ALL). onChange(newSelectedArray).
+// allLabel: text shown when nothing/all selected.
+function msDropdown(containerId, options, selected, onChange, allLabel){
+  const el=document.getElementById(containerId); if(!el)return;
+  const sel=Array.isArray(selected)?selected.slice():[];
+  const isAll=sel.length===0; // empty = all
+  const lbl=isAll?(allLabel||'الكل'):(sel.length===1?(options.find(o=>o[0]===sel[0])||[null,sel[0]])[1]:sel.length+' '+(LANG==='ar'?'محدد':'selected'));
+  const btnId=containerId+'_btn', popId=containerId+'_pop';
+  el.classList.add('msdd');
+  el.innerHTML=`<button type="button" class="msdd-btn" id="${btnId}"><span class="lbl">${lbl}</span><span class="cnt">▾</span></button>`+
+    `<div class="msdd-pop" id="${popId}">`+
+    `<div class="msdd-act"><button type="button" data-act="all">${LANG==='ar'?'الكل':'All'}</button><button type="button" data-act="none">${LANG==='ar'?'مسح':'Clear'}</button></div>`+
+    options.map(([v,l])=>`<div class="msdd-opt"><input type="checkbox" id="${containerId}_o_${btoa(unescape(encodeURIComponent(String(v)))).replace(/=/g,'')}" value="${String(v).replace(/"/g,'&quot;')}" ${(!isAll&&sel.includes(v))?'checked':''}><label for="${containerId}_o_${btoa(unescape(encodeURIComponent(String(v)))).replace(/=/g,'')}">${l}</label></div>`).join('')+
+    `</div>`;
+  const btn=document.getElementById(btnId), pop=document.getElementById(popId);
+  btn.onclick=(e)=>{e.stopPropagation();document.querySelectorAll('.msdd-pop.open').forEach(p=>{if(p!==pop)p.classList.remove('open');});pop.classList.toggle('open');};
+  pop.onclick=(e)=>e.stopPropagation();
+  const getSel=()=>Array.from(pop.querySelectorAll('input[type=checkbox]')).filter(c=>c.checked).map(c=>c.value);
+  pop.querySelectorAll('input[type=checkbox]').forEach(c=>{c.onchange=()=>{onChange(getSel());};});
+  pop.querySelectorAll('.msdd-act button').forEach(b=>{b.onclick=(e)=>{e.stopPropagation();
+    const checks=pop.querySelectorAll('input[type=checkbox]');
+    if(b.dataset.act==='all'){checks.forEach(c=>c.checked=true);}
+    else{checks.forEach(c=>c.checked=false);}
+    onChange(getSel());};});
+}
+// global click closes any open dropdown
+if(!window.__msddClose){window.__msddClose=true;document.addEventListener('click',()=>{document.querySelectorAll('.msdd-pop.open').forEach(p=>p.classList.remove('open'));});}
+// helper: does product pass a multi-select filter? (empty array = all)
+function msPass(val, arr){ return !arr || arr.length===0 || arr.includes(val); }
+
+// ===== Daily Production engine: what each product produced on a chosen date =====
+function computeDailyProduction(asofDate, catArr, famArr, ffF, ownF, packF){
+  if(!SKU_DATES.length)return null;
+  // resolve the date index (on/before the chosen date)
+  let idx=SKU_DATES.length-1;
+  if(asofDate){ idx=-1; for(let i=0;i<SKU_DATES.length;i++){ if(SKU_DATES[i]<=asofDate) idx=i; else break; } if(idx<0)idx=0; }
+  const asof=SKU_DATES[idx]||null;
+  let sku=(DATA.sku||[]).slice();
+  // multi-select filters (empty array = all)
+  sku=sku.filter(p=>msPass(p.cat, catArr));
+  sku=sku.filter(p=>msPass(p.fam||'—', famArr));
+  if(ffF&&ffF!=='all') sku=sku.filter(p=>detectType(p)===ffF);
+  if(ownF&&ownF!=='all') sku=sku.filter(p=>classifyOwn(p)===ownF);
+  if(packF&&packF!=='all') sku=sku.filter(p=>packType(p.n)===packF);
+  const rows=[];
+  sku.forEach(p=>{
+    const prod=(p.dP&&p.dP[idx]!=null)?p.dP[idx]:0;  // boxes produced that day
+    if(prod>0){
+      const boxKg=prodBoxKg(p)||0;
+      const unitG=p.wt||0;                 // unit weight in grams
+      const pcs=p.pcs||0;                  // pieces/birds per box
+      const birds=Math.round(prod*pcs);    // total pieces/birds
+      rows.push({code:p.c,name:p.n,cat:p.cat,fam:p.fam||'—',sub:p.sub||'—',typ:detectType(p),pack:packType(p.n),
+        own:classifyOwn(p), boxes:Math.round(prod), kg:Math.round(prod*boxKg),
+        unitG, pcs, birds, boxKg:+(boxKg).toFixed(2)});
+    }
+  });
+  rows.sort((a,b)=>b.kg-a.kg);
+  // category rollup
+  const catAgg={};
+  rows.forEach(r=>{if(!catAgg[r.cat])catAgg[r.cat]={cat:r.cat,boxes:0,kg:0,birds:0,n:0};
+    const e=catAgg[r.cat];e.boxes+=r.boxes;e.kg+=r.kg;e.birds+=r.birds;e.n++;});
+  const cats=Object.values(catAgg).sort((a,b)=>b.kg-a.kg);
+  const totBoxes=rows.reduce((a,r)=>a+r.boxes,0), totKg=rows.reduce((a,r)=>a+r.kg,0), totBirds=rows.reduce((a,r)=>a+r.birds,0);
+  return {asof, idx, rows, cats, totBoxes, totKg, totBirds, nProducts:rows.length};
+}
+
+function computeStockAsOf(asofDate, catF, famF, ffF, ownF, balF){
   if(!SKU_DATES.length)return null;
   // find the index in SKU_DATES on/before asofDate (the as-of snapshot)
   let idx=SKU_DATES.length-1;  // default latest
@@ -1436,19 +1558,24 @@ function computeStockAsOf(asofDate, catF, famF, ffF, ownF){
     if(idx<0)idx=0;
   }
   const asof=SKU_DATES[idx]||null;
+  const closeDate=asof;  // closing balance is for the SAME selected day (from Close Stock sheet)
   let sku=(DATA.sku||[]).slice();
-  if(catF&&catF!=='all') sku=sku.filter(p=>p.cat===catF);
-  if(famF&&famF!=='all') sku=sku.filter(p=>(p.sub||'—')===famF);
+  sku=sku.filter(p=>msPass(p.cat, catF));
+  sku=sku.filter(p=>msPass(p.fam||'—', famF));
   if(ffF&&ffF!=='all') sku=sku.filter(p=>detectType(p)===ffF);
   if(ownF&&ownF!=='all') sku=sku.filter(p=>classifyOwn(p)===ownF);
   const rows=[];
   sku.forEach(p=>{
-    const bal=(p.dK&&p.dK[idx]!=null)?p.dK[idx]:0;
-    if(bal>0){  // only products WITH a balance
-      const boxKg=prodBoxKg(p)||0;
-      rows.push({code:p.c,name:p.n,cat:p.cat,fam:p.sub||'—',typ:detectType(p),pack:packType(p.n),
-        bal:Math.round(bal), kg:Math.round(bal*boxKg)});
-    }
+    const openBal=(p.dK&&p.dK[idx]!=null)?p.dK[idx]:0;       // opening balance (Open Stock sheet)
+    const closeBal=(p.dC&&p.dC[idx]!=null)?p.dC[idx]:openBal; // closing balance (Close Stock sheet, same day)
+    // balance-status filter: 'has' = has balance, 'none' = zero balance, 'all' = everything
+    const hasBal=closeBal>0;
+    if(balF==='none'){ if(hasBal)return; }       // only zero-balance products
+    else if(balF==='all'){ /* keep all */ }
+    else { if(!hasBal)return; }                   // default 'has': only products with balance
+    const boxKg=prodBoxKg(p)||0;
+    rows.push({code:p.c,name:p.n,cat:p.cat,fam:p.fam||'—',sub:p.sub||'—',typ:detectType(p),pack:packType(p.n),
+      openBal:Math.round(openBal), bal:Math.round(closeBal), kg:Math.round(closeBal*boxKg), openKg:Math.round(openBal*boxKg)});
   });
   rows.sort((a,b)=>b.bal-a.bal);
   // category rollup
@@ -1456,86 +1583,228 @@ function computeStockAsOf(asofDate, catF, famF, ffF, ownF){
   rows.forEach(r=>{if(!catAgg[r.cat])catAgg[r.cat]={cat:r.cat,bal:0,kg:0,n:0};catAgg[r.cat].bal+=r.bal;catAgg[r.cat].kg+=r.kg;catAgg[r.cat].n++;});
   const cats=Object.values(catAgg).sort((a,b)=>b.bal-a.bal);
   const totBal=rows.reduce((a,r)=>a+r.bal,0), totKg=rows.reduce((a,r)=>a+r.kg,0);
-  return {asof, idx, rows, cats, totBal, totKg, nProducts:rows.length};
+  const totOpenBal=rows.reduce((a,r)=>a+r.openBal,0), totOpenKg=rows.reduce((a,r)=>a+r.openKg,0);
+  // previous-day closing total (for change indicator) — uses SAME filters, on the prior index
+  let prevBal=null, prevKg=null, prevDate=null;
+  if(idx>0){
+    const pIdx=idx-1; prevDate=SKU_DATES[pIdx];
+    let pb=0,pk=0;
+    // re-filter the same sku set, read prior day's CLOSING (= this day's opening = dK[idx])
+    let psku=(DATA.sku||[]).slice();
+    psku=psku.filter(p=>msPass(p.cat, catF));
+    psku=psku.filter(p=>msPass(p.fam||'—', famF));
+    if(ffF&&ffF!=='all') psku=psku.filter(p=>detectType(p)===ffF);
+    if(ownF&&ownF!=='all') psku=psku.filter(p=>classifyOwn(p)===ownF);
+    psku.forEach(p=>{ const pv=(p.dC&&p.dC[pIdx]!=null)?p.dC[pIdx]:((p.dK&&p.dK[pIdx]!=null)?p.dK[pIdx]:0); const bk=prodBoxKg(p)||0; pb+=pv; pk+=pv*bk; });
+    prevBal=Math.round(pb); prevKg=Math.round(pk);
+  }
+  return {asof, closeDate, prevDate, idx, rows, cats, totBal, totKg, totOpenBal, totOpenKg, prevBal, prevKg, nProducts:rows.length};
 }
 
-let STK_ASOF=null, STK_CAT='all', STK_FAM='all', STK_FF='all', STK_OWN='all', STK_SEARCH='';
+let STK_ASOF=null, STK_CAT=[], STK_FAM=[], STK_FF='all', STK_OWN='all', STK_BAL='has', STK_SEARCH='';
+
+let PRODUCTION_ASOF=null, PROD_CAT=[], PROD_FAM=[], PROD_FF='all', PROD_OWN='all', PROD_PACK='all', PROD_SEARCH='';
+function renderProd(){
+  const T=t();
+  $('#prodTitle').textContent=T.prodTitle;
+  $('#prodAsofL').textContent=T.prodAsofL; $('#prodOwnL').textContent=T.prodOwnL; $('#prodFFL').textContent=T.prodFFL;
+  $('#prodCatL').textContent=T.prodCatL; $('#prodFamL').textContent=T.prodFamL; $('#prodPackL').textContent=T.prodPackL;
+  $('#prodChT').textContent=T.prodChT; $('#prodCh2T').textContent=T.prodCh2T; $('#prodNote').textContent=T.prodNote;
+  $('#prodTblT').textContent=T.prodTblT;
+  const sb=$('#prodSearch'); if(sb)sb.placeholder=T.prodSearchPH;
+  // date picker
+  const ad=$('#prodAsof');
+  if(SKU_DATES&&SKU_DATES.length){const lo=SKU_DATES[0],hi=SKU_DATES[SKU_DATES.length-1];if(ad){ad.min=lo;ad.max=hi;}}
+  if(ad&&!ad.dataset.init){ad.dataset.init='1';ad.onchange=e=>{PRODUCTION_ASOF=e.target.value||null;renderProd();};ad.onclick=()=>{if(ad.showPicker){try{ad.showPicker();}catch(e){}}};}
+  if(ad)ad.value=PRODUCTION_ASOF||(SKU_DATES.length?SKU_DATES[SKU_DATES.length-1]:'');
+  const allP=(DATA.sku||[]);
+  // category (multi-select checkbox dropdown)
+  const cats=[...new Set(allP.map(p=>p.cat))].filter(Boolean).sort();
+  msDropdown('prodCat', cats.map(c=>[c,T.cats[c]||c]), PROD_CAT, (newSel)=>{PROD_CAT=newSel;
+    // drop any family/sub selections no longer valid under the new category set
+    PROD_FAM=[]; renderProd();}, LANG==='ar'?'كل الفئات':'All categories');
+  // own
+  const os2=$('#prodOwn');
+  if(os2&&!os2.dataset.init){os2.dataset.init='1';os2.onchange=e=>{PROD_OWN=e.target.value;renderProd();};}
+  if(os2)os2.innerHTML=[['all',LANG==='ar'?'الكل':'All'],['own',LANG==='ar'?'علامتنا':'Own brand'],['pl',LANG==='ar'?'علامة خاصة':'Private Label']].map(([v,l])=>`<option value="${v}" ${v===PROD_OWN?'selected':''}>${l}</option>`).join('');
+  // fresh/frozen
+  const ff=$('#prodFF');
+  if(ff&&!ff.dataset.init){ff.dataset.init='1';ff.onchange=e=>{PROD_FF=e.target.value;renderProd();};}
+  if(ff)ff.innerHTML=[['all',LANG==='ar'?'الكل':'All'],['Fresh',LANG==='ar'?'فريش':'Fresh'],['Frozen',LANG==='ar'?'مجمد':'Frozen']].map(([v,l])=>`<option value="${v}" ${v===PROD_FF?'selected':''}>${l}</option>`).join('');
+  // family (depends on selected categories) — Family = broader group (col 7)
+  const catScope=p=>msPass(p.cat, PROD_CAT);
+  const fams=[...new Set(allP.filter(catScope).map(p=>p.fam||'—'))].filter(x=>x&&x!=='—').sort();
+  PROD_FAM=PROD_FAM.filter(v=>fams.includes(v));  // drop invalid
+  msDropdown('prodFam', fams.map(f=>[f,f]), PROD_FAM, (newSel)=>{PROD_FAM=newSel;renderProd();}, LANG==='ar'?'كل العائلات':'All families');
+  // packaging
+  const packs=[...new Set(allP.map(p=>packType(p.n)))].sort();
+  const ps=$('#prodPack');
+  if(ps&&!ps.dataset.init){ps.dataset.init='1';ps.onchange=e=>{PROD_PACK=e.target.value;renderProd();};}
+  if(ps)ps.innerHTML=[['all',LANG==='ar'?'الكل':'All']].concat(packs.map(p=>[p,p])).map(([v,l])=>`<option value="${v}" ${v===PROD_PACK?'selected':''}>${l}</option>`).join('');
+  // search
+  if(sb&&!sb.dataset.init){sb.dataset.init='1';sb.addEventListener('input',e=>{PROD_SEARCH=e.target.value||'';renderProdTable();});}
+
+  const D=computeDailyProduction(PRODUCTION_ASOF,PROD_CAT,PROD_FAM,PROD_FF,PROD_OWN,PROD_PACK);
+  $('#prodSub').textContent=D?((LANG==='ar'?'إنتاج يوم ':'Production on ')+D.asof):'—';
+  if(!D||!D.rows.length){
+    const msg=LANG==='ar'
+      ? 'لا يوجد إنتاج في هذا التاريخ ('+(D?D.asof:PRODUCTION_ASOF||'—')+') بالفلتر الحالي. جرّب تاريخاً آخر أو وسّع الفلتر.'
+      : 'No production on this date ('+(D?D.asof:PRODUCTION_ASOF||'—')+') with the current filter. Try another date or widen the filter.';
+    $('#prodCards').innerHTML='<div class="card" style="grid-column:1/-1"><div class="k" style="line-height:1.7">'+msg+'</div></div>';
+    ['cProd','cProd2'].forEach(id=>{const c=charts[id];if(c){c.destroy();delete charts[id];}}); $('#tProd').innerHTML=''; return;
+  }
+  const kgU=LANG==='ar'?'كغم':'kg', boxU=LANG==='ar'?'صندوق':'boxes', birdU=LANG==='ar'?'طير/قطعة':'birds/pcs';
+  $('#prodCards').innerHTML=[
+    [(LANG==='ar'?'إجمالي الإنتاج':'Total production'),F(D.totKg)+' '+kgU,''],
+    [(LANG==='ar'?'الصناديق':'Boxes'),F(D.totBoxes),boxU],
+    [(LANG==='ar'?'عدد الطيور/القطع':'Birds / pieces'),F(D.totBirds),birdU],
+    [(LANG==='ar'?'أصناف منتَجة':'Products produced'),F(D.nProducts),'']
+  ].map(([k,v,d])=>`<div class="card"><div class="k">${k}</div><div class="v num">${v}</div><div class="d">${d}</div></div>`).join('');
+  // chart 1: production by category (kg)
+  mk('cProd',{type:'bar',data:{labels:D.cats.map(c=>T.cats[c.cat]||c.cat),datasets:[{data:D.cats.map(c=>c.kg),
+    backgroundColor:[GOLD,SKY,GREEN,VIO,RED,'#b88a3e','#6fa8c4'],
+    datalabels:{display:true,color:css('--ink'),font:{size:10,weight:'700'},anchor:'end',align:'end',formatter:v=>Fk(v)}}]},
+   options:{maintainAspectRatio:false,plugins:{legend:{display:false}}}});
+  // chart 2: each category share
+  mk('cProd2',{type:'doughnut',data:{labels:D.cats.map(c=>T.cats[c.cat]||c.cat),datasets:[{data:D.cats.map(c=>c.kg),
+    backgroundColor:[GOLD,SKY,GREEN,VIO,RED,'#b88a3e','#6fa8c4','#8a7']}]},
+   options:{maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:10}}},
+     datalabels:{color:'#fff',font:{weight:'700',size:10},formatter:v=>D.totKg?Math.round(v/D.totKg*100)+'%':''}}}});
+  window.__prodD=D;
+  renderProdTable();
+}
+function renderProdTable(){
+  const T=t(), D=window.__prodD; if(!D)return;
+  let rows=D.rows;
+  const q=(PROD_SEARCH||'').trim().toLowerCase();
+  if(q)rows=rows.filter(r=>String(r.name).toLowerCase().includes(q)||String(r.code).toLowerCase().includes(q));
+  const ffPill=tp=>tp==='Frozen'?`<span class="pill b">${LANG==='ar'?'مجمد':'Frozen'}</span>`:`<span class="pill g">${LANG==='ar'?'فريش':'Fresh'}</span>`;
+  const ownPill=o=>o==='own'?`<span class="pill g">${LANG==='ar'?'علامتنا':'Own'}</span>`:`<span class="pill">${LANG==='ar'?'خاصة':'PL'}</span>`;
+  const H=[LANG==='ar'?'الكود':'Code', LANG==='ar'?'الصنف':'Product', LANG==='ar'?'الفئة':'Category', LANG==='ar'?'العائلة':'Family',
+    LANG==='ar'?'التعبئة':'Pack', LANG==='ar'?'النوع':'Type', LANG==='ar'?'العلامة':'Brand',
+    LANG==='ar'?'وزن الوحدة (غم)':'Unit wt (g)', LANG==='ar'?'وزن الصندوق (كغم)':'Box (kg)',
+    LANG==='ar'?'الصناديق':'Boxes', LANG==='ar'?'الطيور/القطع':'Birds/pcs', LANG==='ar'?'الوزن (كغم)':'Weight (kg)'];
+  $('#tProd').innerHTML=`<tr>${H.map((h,i)=>`<th style="${i===1?'text-align:start':''}">${h}</th>`).join('')}</tr>`+
+    rows.map(r=>`<tr><td>${r.code}</td><td style="text-align:start"><b>${r.name}</b></td><td>${T.cats[r.cat]||r.cat}</td><td>${r.fam}</td><td>${r.pack}</td><td>${ffPill(r.typ)}</td><td>${ownPill(r.own)}</td><td class="num">${F(r.unitG)}</td><td class="num">${r.boxKg}</td><td class="num"><b>${F(r.boxes)}</b></td><td class="num">${F(r.birds)}</td><td class="num"><b>${F(r.kg)}</b></td></tr>`).join('')+
+    `<tr style="background:var(--panel2);font-weight:800"><td>—</td><td style="text-align:start">${LANG==='ar'?'الإجمالي':'Total'} (${rows.length})</td><td colspan="7">—</td><td class="num">${F(rows.reduce((a,r)=>a+r.boxes,0))}</td><td class="num">${F(rows.reduce((a,r)=>a+r.birds,0))}</td><td class="num">${F(rows.reduce((a,r)=>a+r.kg,0))}</td></tr>`;
+}
+
 function renderStk(){
   const T=t();
   $('#stkTitle').textContent=T.stkTitle;
   $('#stkChT').textContent=T.stkChT; $('#stkPackChT').textContent=T.stkPackChT; $('#stkNote').textContent=T.stkNote;
   $('#stkTblT').textContent=T.stkTblT; $('#stkAsofL').textContent=T.stkAsofL;
   $('#stkCatL').textContent=T.stkCatL; $('#stkFamL').textContent=T.stkFamL; $('#stkFFL').textContent=T.stkFFL;
+  $('#stkBalL')&&($('#stkBalL').textContent=T.stkBalL);
   const sb=$('#stkSearch'); if(sb)sb.placeholder=T.stkSearchPH;
   // date picker (single as-of date)
   const ad=$('#stkAsof');
   if(SKU_DATES&&SKU_DATES.length){const lo=SKU_DATES[0],hi=SKU_DATES[SKU_DATES.length-1];if(ad){ad.min=lo;ad.max=hi;}}
   if(ad&&!ad.dataset.init){ad.dataset.init='1';ad.onchange=e=>{STK_ASOF=e.target.value||null;renderStk();};ad.onclick=()=>{if(ad.showPicker){try{ad.showPicker();}catch(e){}}};}
-  if(ad)ad.value=STK_ASOF||(SKU_DATES.length?SKU_DATES[SKU_DATES.length-1]:'');
-  // category selector
+  if(ad){
+    if(STK_ASOF) ad.value=STK_ASOF;
+    else if(SKU_DATES.length){
+      // default to yesterday (today − 1), snapped to the latest available stock date on/before it
+      const ystr=(()=>{const d=new Date();d.setDate(d.getDate()-1);return d.toISOString().slice(0,10);})();
+      let pick=SKU_DATES[SKU_DATES.length-1];
+      for(let i=SKU_DATES.length-1;i>=0;i--){ if(SKU_DATES[i]<=ystr){ pick=SKU_DATES[i]; break; } }
+      ad.value=pick;
+    } else ad.value='';
+  }
+  // category selector (multi-select)
   const allP=(DATA.sku||[]);
   const cats=[...new Set(allP.map(p=>p.cat))].filter(Boolean).sort();
-  const cs=$('#stkCat');
-  if(cs&&!cs.dataset.init){cs.dataset.init='1';cs.onchange=e=>{STK_CAT=e.target.value;STK_FAM='all';renderStk();};}
-  if(cs)cs.innerHTML=[['all',LANG==='ar'?'كل الفئات':'All categories']].concat(cats.map(c=>[c,T.cats[c]||c])).map(([v,l])=>`<option value="${v}" ${v===STK_CAT?'selected':''}>${l}</option>`).join('');
+  msDropdown('stkCat', cats.map(c=>[c,T.cats[c]||c]), STK_CAT, (newSel)=>{STK_CAT=newSel;STK_FAM=[];renderStk();}, LANG==='ar'?'كل الفئات':'All categories');
   // own/private-label selector
   $('#stkOwnL').textContent=T.stkOwnL;
   const os2=$('#stkOwn');
   if(os2&&!os2.dataset.init){os2.dataset.init='1';os2.onchange=e=>{STK_OWN=e.target.value;renderStk();};}
   if(os2)os2.innerHTML=[['all',LANG==='ar'?'الكل':'All'],['own',LANG==='ar'?'علامتنا':'Own brand'],['pl',LANG==='ar'?'علامة خاصة':'Private Label']].map(([v,l])=>`<option value="${v}" ${v===STK_OWN?'selected':''}>${l}</option>`).join('');
-  // family selector (depends on category)
-  const famsP=allP.filter(p=>STK_CAT==='all'||p.cat===STK_CAT);
-  const fams=[...new Set(famsP.map(p=>p.sub||'—'))].sort();
-  const fs=$('#stkFam');
-  if(fs&&!fs.dataset.init){fs.dataset.init='1';fs.onchange=e=>{STK_FAM=e.target.value;renderStk();};}
-  if(fs)fs.innerHTML=[['all',LANG==='ar'?'كل العائلات':'All families']].concat(fams.map(f=>[f,f])).map(([v,l])=>`<option value="${v}" ${v===STK_FAM?'selected':''}>${l}</option>`).join('');
+  // family selector (multi-select, depends on selected categories)
+  const stkFams=[...new Set(allP.filter(p=>msPass(p.cat, STK_CAT)).map(p=>p.fam||'—'))].filter(x=>x&&x!=='—').sort();
+  STK_FAM=STK_FAM.filter(v=>stkFams.includes(v));  // drop invalid after category change
+  msDropdown('stkFam', stkFams.map(f=>[f,f]), STK_FAM, (newSel)=>{STK_FAM=newSel;renderStk();}, LANG==='ar'?'كل العائلات':'All families');
   // fresh/frozen selector
   const ff=$('#stkFF');
   if(ff&&!ff.dataset.init){ff.dataset.init='1';ff.onchange=e=>{STK_FF=e.target.value;renderStk();};}
   if(ff)ff.innerHTML=[['all',LANG==='ar'?'الكل':'All'],['Fresh',LANG==='ar'?'فريش':'Fresh'],['Frozen',LANG==='ar'?'مجمد':'Frozen']].map(([v,l])=>`<option value="${v}" ${v===STK_FF?'selected':''}>${l}</option>`).join('');
+  // balance-status selector
+  const bs=$('#stkBal');
+  if(bs&&!bs.dataset.init){bs.dataset.init='1';bs.onchange=e=>{STK_BAL=e.target.value;renderStk();};}
+  if(bs)bs.innerHTML=[['has',LANG==='ar'?'لديها رصيد':'Has balance'],['none',LANG==='ar'?'بدون رصيد':'No balance'],['all',LANG==='ar'?'الكل':'All']].map(([v,l])=>`<option value="${v}" ${v===STK_BAL?'selected':''}>${l}</option>`).join('');
   // search box
   if(sb&&!sb.dataset.init){sb.dataset.init='1';sb.addEventListener('input',e=>{STK_SEARCH=e.target.value||'';renderStkTable();});}
 
-  const D=computeStockAsOf(STK_ASOF,STK_CAT,STK_FAM,STK_FF,STK_OWN);
-  $('#stkSub').textContent=T.stkSub(D?D.asof:'—');
+  const D=computeStockAsOf(STK_ASOF,STK_CAT,STK_FAM,STK_FF,STK_OWN,STK_BAL);
+  // subtitle: clarify opening vs closing date
+  const subTxt=D?((LANG==='ar'
+      ? 'رصيد الإغلاق ليوم '+D.asof+(D.closeDate?'':' (آخر يوم متاح — لا يوجد إغلاق لاحق)')
+      : 'Closing balance for '+D.asof+(D.closeDate?'':' (latest day — no later close)')))
+    :'—';
+  $('#stkSub').textContent=subTxt;
   if(!D||!D.rows.length){
-    $('#stkCards').innerHTML='<div class="card" style="grid-column:1/-1"><div class="k">'+(LANG==='ar'?'لا توجد منتجات لها رصيد بهذا التاريخ/الفلتر':'No products with a balance for this date/filter')+'</div></div>';
+    const msg=LANG==='ar'
+      ? 'لا توجد أرصدة في هذا التاريخ ('+(D?D.asof:STK_ASOF||'—')+') بالفلتر الحالي. جرّب تاريخاً آخر أو غيّر فلتر الرصيد إلى «الكل»، فقد تكون أرصدة هذا اليوم غير مُدخلة بعد في شيت المخزون.'
+      : 'No balances on this date ('+(D?D.asof:STK_ASOF||'—')+') with the current filter. Try another date or set the balance filter to "All" — this day\'s balances may not be entered in the stock sheet yet.';
+    $('#stkCards').innerHTML='<div class="card" style="grid-column:1/-1"><div class="k" style="line-height:1.7">'+msg+'</div></div>';
     ['cStk','cStkPack'].forEach(id=>{const c=charts[id];if(c){c.destroy();delete charts[id];}}); $('#tStk').innerHTML=''; return;
   }
   const F2=v=>F(v)+' '+(LANG==='ar'?'كغم':'kg');
-  // KPI cards
+  // KPI cards: total stock (boxes+kg), opening, change vs previous day
+  const boxU=LANG==='ar'?'صندوق':'boxes';
+  // change vs previous day (on closing balance, boxes)
+  let changeCard='';
+  if(D.prevBal!=null){
+    const diff=D.totBal-D.prevBal;
+    const pct=D.prevBal>0?(diff/D.prevBal*100):null;
+    const up=diff>0, flat=diff===0;
+    const arrow=flat?'—':(up?'▲':'▼');
+    const col=flat?'var(--mut)':(up?'var(--good)':'var(--bad)');
+    const sign=up?'+':'';
+    const word=flat?(LANG==='ar'?'بدون تغيير':'No change'):(up?(LANG==='ar'?'ارتفاع':'Increase'):(LANG==='ar'?'انخفاض':'Decrease'));
+    const dtxt=(LANG==='ar'?'مقابل '+D.prevDate:'vs '+D.prevDate);
+    changeCard=`<div class="card"><div class="k">${LANG==='ar'?'التغير عن اليوم السابق':'Change vs previous day'}</div>`+
+      `<div class="v num" style="color:${col}">${arrow} ${sign}${F(Math.abs(diff))}</div>`+
+      `<div class="d" style="color:${col}">${word}${pct!=null?' · '+sign+(Math.round(pct*10)/10)+'%':''} — ${dtxt}</div></div>`;
+  } else {
+    changeCard=`<div class="card"><div class="k">${LANG==='ar'?'التغير عن اليوم السابق':'Change vs previous day'}</div><div class="v num" style="color:var(--mut)">—</div><div class="d">${LANG==='ar'?'لا يوجد يوم سابق':'No prior day'}</div></div>`;
+  }
   $('#stkCards').innerHTML=[
-    [T.stkKtot,F(D.totBal),(LANG==='ar'?'صندوق':'boxes')],
-    [T.stkKkg,F2(D.totKg),''],
-    [T.stkKprods,F(D.nProducts),''],
-    [T.stkKcats,F(D.cats.length),'']
-  ].map(([k,v,d])=>`<div class="card"><div class="k">${k}</div><div class="v num">${v}</div><div class="d">${d}</div></div>`).join('');
-  // by-category chart
+    `<div class="card"><div class="k">${(LANG==='ar'?'إجمالي المخزون':'Total stock')+' — '+D.asof}</div><div class="v num">${F(D.totBal)}</div><div class="d">${boxU} · ${F2(D.totKg)}</div></div>`,
+    `<div class="card"><div class="k">${(LANG==='ar'?'رصيد الافتتاح':'Opening balance')+' — '+D.asof}</div><div class="v num">${F(D.totOpenBal)}</div><div class="d">${boxU} · ${F2(D.totOpenKg)}</div></div>`,
+    changeCard,
+    `<div class="card"><div class="k">${LANG==='ar'?'أصناف لها رصيد':'Products with stock'}</div><div class="v num">${F(D.nProducts)}</div><div class="d">${F(D.cats.length)} ${LANG==='ar'?'فئة':'categories'}</div></div>`
+  ].join('');
+  // by-category chart — show PERCENTAGE of total balance per category
+  $('#stkChT').textContent=(LANG==='ar'?'نسبة الرصيد حسب الفئة':'Balance share by category');
   mk('cStk',{type:'bar',data:{labels:D.cats.map(c=>T.cats[c.cat]||c.cat),datasets:[{data:D.cats.map(c=>c.bal),
     backgroundColor:[GOLD,SKY,GREEN,VIO,RED,'#b88a3e','#6fa8c4'],
-    datalabels:{display:true,color:css('--ink'),font:{size:10,weight:'700'},anchor:'end',align:'end',formatter:v=>Fk(v)}}]},
-   options:{maintainAspectRatio:false,plugins:{legend:{display:false}}}});
-  // by-packaging chart
-  const packAgg={}; D.rows.forEach(r=>{packAgg[r.pack]=(packAgg[r.pack]||0)+r.bal;});
-  const packs=Object.entries(packAgg).sort((a,b)=>b[1]-a[1]);
-  mk('cStkPack',{type:'doughnut',data:{labels:packs.map(p=>p[0]),datasets:[{data:packs.map(p=>p[1]),
+    datalabels:{display:true,color:css('--ink'),font:{size:10,weight:'700'},anchor:'end',align:'end',
+      formatter:v=>D.totBal?(Math.round(v/D.totBal*1000)/10)+'% ('+Fk(v)+')':Fk(v)}}]},
+   options:{maintainAspectRatio:false,plugins:{legend:{display:false},
+     tooltip:{callbacks:{label:c=>{const v=c.parsed.y!=null?c.parsed.y:c.parsed;return F(v)+' '+(LANG==='ar'?'صندوق':'box')+' ('+(D.totBal?Math.round(v/D.totBal*100):0)+'%)';}}}}}});
+  // second chart: category percentage as a clear % bar (doughnut replaced per request)
+  $('#stkPackChT').textContent=(LANG==='ar'?'نسبة كل فئة من إجمالي الرصيد':'Each category % of total balance');
+  const catPct=D.cats.map(c=>({cat:c.cat,pct:D.totBal?c.bal/D.totBal*100:0,bal:c.bal}));
+  mk('cStkPack',{type:'doughnut',data:{labels:catPct.map(c=>T.cats[c.cat]||c.cat),datasets:[{data:catPct.map(c=>c.bal),
     backgroundColor:[GOLD,SKY,GREEN,VIO,RED,'#b88a3e','#6fa8c4','#8a7']}]},
    options:{maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:10}}},
-     datalabels:{color:'#fff',font:{weight:'700',size:9},formatter:v=>D.totBal?Math.round(v/D.totBal*100)+'%':''}}}});
-  // products table (separate fn so search can refresh without full re-render)
+     datalabels:{color:'#fff',font:{weight:'700',size:10},formatter:v=>D.totBal?Math.round(v/D.totBal*100)+'%':''},
+     tooltip:{callbacks:{label:c=>{const v=c.parsed;return (T.cats[catPct[c.dataIndex].cat]||catPct[c.dataIndex].cat)+': '+F(v)+' ('+(D.totBal?Math.round(v/D.totBal*100):0)+'%)';}}}}}});
+  // products table
   window.__stkD=D;
   renderStkTable();
 }
 function renderStkTable(){
   const T=t(), D=window.__stkD; if(!D)return;
-  const F2=v=>F(v);
   let rows=D.rows;
   const q=(STK_SEARCH||'').trim().toLowerCase();
   if(q)rows=rows.filter(r=>String(r.name).toLowerCase().includes(q)||String(r.code).toLowerCase().includes(q));
   const ffPill=tp=>tp==='Frozen'?`<span class="pill b">${LANG==='ar'?'مجمد':'Frozen'}</span>`:`<span class="pill g">${LANG==='ar'?'فريش':'Fresh'}</span>`;
-  $('#tStk').innerHTML=`<tr><th>${T.stkThCode}</th><th style="text-align:start">${T.stkThName}</th><th>${T.stkThCat}</th><th>${T.stkThFam}</th><th>${T.stkThPack}</th><th>${T.stkThType}</th><th>${T.stkThBal}</th><th>${T.stkThKg}</th></tr>`+
-    rows.map(r=>`<tr><td>${r.code}</td><td style="text-align:start"><b>${r.name}</b></td><td>${T.cats[r.cat]||r.cat}</td><td>${r.fam}</td><td>${r.pack}</td><td>${ffPill(r.typ)}</td><td class="num"><b>${F(r.bal)}</b></td><td class="num">${F(r.kg)}</td></tr>`).join('')+
-    `<tr style="background:var(--panel2);font-weight:800"><td>—</td><td style="text-align:start">${LANG==='ar'?'الإجمالي':'Total'} (${rows.length})</td><td>—</td><td>—</td><td>—</td><td>—</td><td class="num">${F(rows.reduce((a,r)=>a+r.bal,0))}</td><td class="num">${F(rows.reduce((a,r)=>a+r.kg,0))}</td></tr>`;
+  const oLbl=LANG==='ar'?'الافتتاح':'Opening', cLbl=LANG==='ar'?'الإغلاق':'Closing';
+  $('#tStk').innerHTML=`<tr><th>${T.stkThCode}</th><th style="text-align:start">${T.stkThName}</th><th>${T.stkThCat}</th><th>${T.stkThFam}</th><th>${T.stkThPack}</th><th>${T.stkThType}</th><th>${oLbl}</th><th>${cLbl}</th><th>${T.stkThKg}</th></tr>`+
+    rows.map(r=>`<tr><td>${r.code}</td><td style="text-align:start"><b>${r.name}</b></td><td>${T.cats[r.cat]||r.cat}</td><td>${r.fam}</td><td>${r.pack}</td><td>${ffPill(r.typ)}</td><td class="num" style="opacity:.7">${F(r.openBal)}</td><td class="num"><b>${F(r.bal)}</b></td><td class="num">${F(r.kg)}</td></tr>`).join('')+
+    `<tr style="background:var(--panel2);font-weight:800"><td>—</td><td style="text-align:start">${LANG==='ar'?'الإجمالي':'Total'} (${rows.length})</td><td>—</td><td>—</td><td>—</td><td>—</td><td class="num" style="opacity:.7">${F(rows.reduce((a,r)=>a+r.openBal,0))}</td><td class="num">${F(rows.reduce((a,r)=>a+r.bal,0))}</td><td class="num">${F(rows.reduce((a,r)=>a+r.kg,0))}</td></tr>`;
 }
 
 function renderWeekMonth(){
@@ -1762,7 +2031,7 @@ function renderCmp(){
 
 function recomputeFri(){
   if(RAWMATS){
-    try{ DATA=computeFromMats({S:RAWMATS.S,O:RAWMATS.O,P:RAWMATS.P,K:RAWMATS.K},RAWMATS.RX);
+    try{ DATA=computeFromMats({S:RAWMATS.S,O:RAWMATS.O,P:RAWMATS.P,K:RAWMATS.K,C:RAWMATS.C},RAWMATS.RX);
       try{localStorage.setItem('sk_dash_v4',JSON.stringify(DATA))}catch(e){}
       renderAll(); return;
     }catch(e){console.error('recompute failed',e);}
@@ -2022,7 +2291,7 @@ $('#qLineSel')&&$('#qLineSel').addEventListener('change',e=>{QLINE=e.target.valu
 
 /* ===================== Login & Permissions ===================== */
 let CURRENT_USER=null, USER_PERMS=null;
-const PERM_TABS={tab_exec:'exec',tab_rx:'rx',tab_wb:'wb',tab_cut:'cut',tab_ff:'ff',tab_stk:'stk',tab_plant:'plant',tab_quality:'quality',tab_demand:'demand',tab_alerts:'alerts',tab_fpp:'fpp',tab_top:'top',tab_offals:'offals',tab_wip:'wip',tab_wdist:'wdist',tab_cmp:'cmp',tab_week:'week',tab_month:'month',tab_products:'sku'};
+const PERM_TABS={tab_exec:'exec',tab_rx:'rx',tab_wb:'wb',tab_cut:'cut',tab_ff:'ff',tab_stk:'stk',tab_prod:'prod',tab_plant:'plant',tab_quality:'quality',tab_demand:'demand',tab_alerts:'alerts',tab_fpp:'fpp',tab_top:'top',tab_offals:'offals',tab_wip:'wip',tab_wdist:'wdist',tab_cmp:'cmp',tab_week:'week',tab_month:'month',tab_products:'sku'};
 function parseUsers(mat){
   if(!mat||!mat.length)return [];
   // find header row containing 'username' and 'password'
@@ -2302,6 +2571,7 @@ function injectExportButtons(){
     document.querySelectorAll('.xlsxBtn').forEach(b=>b.style.display='none');
 }
 
+let FPPFAM=[];
 function renderFpp(){
   const T=t();
   $('#fppTitle').textContent=T.fppTitle; $('#fppSub').textContent=T.fppSub;
@@ -2325,12 +2595,12 @@ function renderFpp(){
   // families + products depend on category FPP
   const allFpp=(DATA.sku||[]).filter(p=>p.cat==='FPP');
   const fams=[...new Set(allFpp.map(p=>p.sub||'—'))].sort();
-  setSel('fppFam',[['all',T.fppAll]].concat(fams.map(f=>[f,f])),'all',re);
+  FPPFAM=FPPFAM.filter(v=>fams.includes(v)); msDropdown('fppFam', fams.map(f=>[f,f]), FPPFAM, (newSel)=>{FPPFAM=newSel;renderFpp();}, LANG==='ar'?'كل العائلات':'All families');
   const prods=allFpp.map(p=>[String(p.c),p.n]).sort((a,b)=>a[1].localeCompare(b[1]));
   setSel('fppProd',[['all',T.fppAll]].concat(prods),'all',re);
   // read current filters
   const f={cat:'FPP',metric:$('#fppMetric').value||'dS',gran:$('#fppGran').value||'month',
-    ff:$('#fppFF').value||'all',own:$('#fppOwn').value||'all',family:$('#fppFam').value||'all',product:$('#fppProd').value||'all'};
+    ff:$('#fppFF').value||'all',own:$('#fppOwn').value||'all',family:FPPFAM,product:$('#fppProd').value||'all'};
   const A=computeCatAnalysis(f);
   const D=computeFPP();
   if(!A||!D){ $('#fppKpi').innerHTML='<div class="card" style="grid-column:1/-1"><div class="k">'+(LANG==='ar'?'لا توجد بيانات مصنّعات — اضغط تحديث':'No FPP data — click refresh')+'</div></div>';
@@ -2572,8 +2842,8 @@ function renderWip(){
     `<tr style="background:var(--panel2);font-weight:800"><td>${LANG==='ar'?'الإجمالي':'Total'} (${A.n})</td><td>—</td><td>—</td><td>—</td><td class="num">${F(A.tot.st)}</td><td class="num">${F(A.tot.ot)}</td><td class="num">${F(A.tot.pt)}</td></tr>`;
 }
 
-let WDFROM=null, WDTO=null, WDCAT='all', WDFAM='all', WDCMPGRAN='month';
-let WBFROM=null, WBTO=null, WBOWN='all';  // Whole Bird date range + brand filter state
+let WDFROM=null, WDTO=null, WDCAT='all', WDFAM=[], WDCMPGRAN='month';
+let WBFROM=null, WBTO=null, WBOWN='all', WBFAM=[];  // Whole Bird date range + brand filter state
 function renderWdist(){
   const T=t();
   $('#wdTitle').textContent=T.wdTitle; $('#wdSub').textContent=T.wdSub;
@@ -2595,14 +2865,13 @@ function renderWdist(){
   // category + family selectors
   const allP=(DATA.sku||[]).filter(p=>p.cat!=='Rendering');
   const cats=[...new Set(allP.map(p=>p.cat))].filter(Boolean).sort();
-  const cs=$('#wdCat');
-  if(cs&&!cs.dataset.init){cs.dataset.init='1';cs.onchange=e=>{WDCAT=e.target.value;WDFAM='all';renderWdist();};}
-  if(cs){cs.innerHTML=[['all',T.wdClear===undefined?'All':(LANG==='ar'?'كل الفئات':'All categories')]].concat(cats.map(c=>[c,c])).map(([v,l])=>`<option value="${v}" ${v===WDCAT?'selected':''}>${l}</option>`).join('');}
-  const famsAll=allP.filter(p=>WDCAT==='all'||p.cat===WDCAT);
+  msDropdown('wdCat', cats.map(c=>[c,(T.cats&&T.cats[c])||c]), WDCAT, (newSel)=>{WDCAT=newSel;WDFAM=[];renderWdist();}, LANG==='ar'?'كل الفئات':'All categories');
+  if(false){}
+  const famsAll=allP.filter(p=>msPass(p.cat, WDCAT));
   const fams=[...new Set(famsAll.map(p=>p.sub||'—'))].sort();
-  const fs=$('#wdFam');
-  if(fs&&!fs.dataset.init){fs.dataset.init='1';fs.onchange=e=>{WDFAM=e.target.value;renderWdist();};}
-  if(fs){fs.innerHTML=[['all',LANG==='ar'?'كل العائلات':'All families']].concat(fams.map(f=>[f,f])).map(([v,l])=>`<option value="${v}" ${v===WDFAM?'selected':''}>${l}</option>`).join('');}
+  WDFAM=WDFAM.filter(v=>fams.includes(v));
+  msDropdown('wdFam', fams.map(f=>[f,f]), WDFAM, (newSel)=>{WDFAM=newSel;renderWdist();}, LANG==='ar'?'كل العائلات':'All families');
+  if(false){}
   // packaging selector
   $('#wdLpack').textContent=T.wdLpack;
   const allPacks=[...new Set((DATA.sku||[]).filter(p=>p.cat!=='Offals'&&!(WD_EXCLUDE||[]).includes(p.cat)).map(p=>packType(p.n)))].sort();
@@ -2723,13 +2992,14 @@ function renderWdist(){
       renderWdist();});}
 }
 
-let CUTFROM=null, CUTTO=null;
+let CUTFROM=null, CUTTO=null, CUTFAM=[];
 function renderCut(){
   const T=t();
   $('#cutTitle').textContent=T.cutTitle; $('#cutSub').textContent=T.cutSub;
   $('#cutFFt').textContent=T.cutFFt; $('#cutFamT').textContent=T.cutFamT; $('#cutTblT').textContent=T.cutTblT;
   $('#cutNote').textContent=T.cutNote; $('#cutTsT').textContent=T.cutTsT;
   $('#cutLmetric').textContent=T.cutLmetric; $('#cutLgran').textContent=T.cutLgran; $('#cutLff').textContent=T.cutLff;
+  $('#cutLiqf')&&($('#cutLiqf').textContent=T.cutLiqf); $('#cutLpack')&&($('#cutLpack').textContent=T.cutLpack);
   $('#cutLown').textContent=T.cutLown; $('#cutLfam').textContent=T.cutLfam; $('#cutLprod').textContent=T.cutLprod;
   $('#cutFromLbl').textContent=T.cutFromLbl; $('#cutToLbl').textContent=T.cutToLbl;
   const ccb=$('#cutClearBtn'); if(ccb)ccb.textContent=T.cutClear;
@@ -2749,14 +3019,18 @@ function renderCut(){
   setSel('cutMetric',[['dS',T.fppMsales],['dO',T.fppMorders],['dP',T.fppMprod]],'dS',re);
   setSel('cutGran',[['day',T.fppGday],['week',T.fppGweek],['month',T.fppGmonth]],'month',re);
   setSel('cutFF',[['all',T.fppAll],['Fresh',T.fppFresh],['Frozen',T.fppFrozen]],'all',re);
+  setSel('cutIqf',[['all',T.fppAll],['iqf','IQF'],['regular',LANG==='ar'?'عادية':'Regular']],'all',re);
+  const cutPacks=[...new Set((DATA.sku||[]).filter(p=>p.cat==='Cutups').map(p=>packType(p.n)))].sort();
+  setSel('cutPack',[['all',T.fppAll]].concat(cutPacks.map(p=>[p,p])),'all',re);
   setSel('cutOwn',[['all',T.fppAll],['own',T.fppOwn],['pl',T.fppPL]],'all',re);
   const allCut=(DATA.sku||[]).filter(p=>p.cat==='Cutups');
   const fams=[...new Set(allCut.map(p=>p.sub||'—'))].sort();
-  setSel('cutFam',[['all',T.fppAll]].concat(fams.map(f=>[f,f])),'all',re);
+  CUTFAM=CUTFAM.filter(v=>fams.includes(v)); msDropdown('cutFam', fams.map(f=>[f,f]), CUTFAM, (newSel)=>{CUTFAM=newSel;renderCut();}, LANG==='ar'?'كل العائلات':'All families');
   const prods=allCut.map(p=>[String(p.c),p.n]).sort((a,b)=>a[1].localeCompare(b[1]));
   setSel('cutProd',[['all',T.fppAll]].concat(prods),'all',re);
   const f={cat:'Cutups',metric:$('#cutMetric').value||'dS',gran:$('#cutGran').value||'month',
-    ff:$('#cutFF').value||'all',own:$('#cutOwn').value||'all',family:$('#cutFam').value||'all',product:$('#cutProd').value||'all',
+    ff:$('#cutFF').value||'all',own:$('#cutOwn').value||'all',family:CUTFAM,product:$('#cutProd').value||'all',
+    iqf:$('#cutIqf')?($('#cutIqf').value||'all'):'all', pack:$('#cutPack')?($('#cutPack').value||'all'):'all',
     from:CUTFROM,to:CUTTO};
   const A=computeCatAnalysis(f);
   if(!A){ $('#cutKpi').innerHTML='<div class="card" style="grid-column:1/-1"><div class="k">'+(LANG==='ar'?'لا توجد منتجات مقطّعات':'No cut-up products')+'</div></div>';
@@ -2802,7 +3076,7 @@ function renderCut(){
     `<tr style="background:var(--panel2);font-weight:800"><td>${LANG==='ar'?'الإجمالي':'Total'} (${A.n})</td><td>—</td><td>—</td><td>—</td><td class="num">${F(A.tot.st)}</td><td class="num">${F(A.tot.ot)}</td><td class="num">${F(A.tot.pt)}</td></tr>`;
 }
 
-function renderAll(){loadColors();setChrome();renderTrend();renderExec();renderRx();renderWb();try{renderCut();}catch(e){console.error('renderCut',e);}renderFf();renderStk();renderPlant();renderQuality();renderDemand();renderAlerts();renderFpp();renderTop();try{renderOffals();}catch(e){console.error('renderOffals',e);}try{renderWip();}catch(e){console.error('renderWip',e);}try{renderWdist();}catch(e){console.error('renderWdist',e);}renderCmp();try{injectExportButtons();}catch(e){console.warn('export buttons',e);};renderWeekMonth();renderSku();}
+function renderAll(){loadColors();setChrome();renderTrend();renderExec();renderRx();renderWb();try{renderCut();}catch(e){console.error('renderCut',e);}renderFf();renderStk();try{renderProd();}catch(e){console.error('renderProd',e);}renderPlant();renderQuality();renderDemand();renderAlerts();renderFpp();renderTop();try{renderOffals();}catch(e){console.error('renderOffals',e);}try{renderWip();}catch(e){console.error('renderWip',e);}try{renderWdist();}catch(e){console.error('renderWdist',e);}renderCmp();try{injectExportButtons();}catch(e){console.warn('export buttons',e);};renderWeekMonth();renderSku();}
 
 $('#exportBtn').onclick=()=>{
   try{
@@ -3009,8 +3283,8 @@ function computeFromMats(M, rxMat){
     if(!dts){dts=[];const hdr=m[0];for(let c=INFO;c<hdr.length;c++){const d=xDate(hdr[c]);if(d)dts.push({c,d})}}}
   const ms=M.S,n=ms.length-1,rowsInfo=[];
   for(let r=1;r<=n;r++)rowsInfo.push({code:ms[r][0],nm:String(ms[r][3]||''),cat:String(ms[r][6]||'').trim(),
-    sub:String(ms[r][8]||'').trim(),typ:String(ms[r][9]||'').trim(),pcs:NUM(ms[r][4]),wt:NUM(ms[r][5]),
-    own:String(ms[r][10]||'').trim(),brand:String(ms[r][11]||'').trim(),
+    fam:String(ms[r][7]||'').trim(),sub:String(ms[r][8]||'').trim(),typ:String(ms[r][9]||'').trim(),pcs:NUM(ms[r][4]),wt:NUM(ms[r][5]),
+    packing:String(ms[r][10]||'').trim(),own:String(ms[r][11]||'').trim(),brand:String(ms[r][13]||'').trim(),
     status:String(ms[r][14]||'').trim()});
   const val=(k,r,j)=>NUM(M[k][r][dts[j].c]), nd=dts.length;
   // Friday exclusion: build a usable-day mask. Friday => getUTCDay()===5
@@ -3074,19 +3348,21 @@ function computeFromMats(M, rxMat){
   const skuArr=[];
   for(let r=1;r<=n;r++){const I=rowsInfo[r-1];
    let stt=0,smx=0,smxj=-1,smn=null,smnj=-1,lastj=-1,ott=0,omx=0,ptt=0,pmx=0,lcm=0;
-   const dailyS=[],dailyO=[],dailyP=[],dailyK=[];
+   const dailyS=[],dailyO=[],dailyP=[],dailyK=[],dailyC=[];
+   const hasC=M.C&&M.C[r];
    for(let j=0;j<nd;j++){if(!useDay(j))continue;const s=val('S',r,j);stt+=s;
     if(s>smx){smx=s;smxj=j} if(s>0&&(smn===null||s<smn)){smn=s;smnj=j} if(s>0)lastj=j;
     const o=val('O',r,j);ott+=o;if(o>omx)omx=o;
     const p=val('P',r,j);ptt+=p;if(p>pmx)pmx=p;
-    dailyS.push(Math.round(s));dailyO.push(Math.round(o));dailyP.push(Math.round(p));dailyK.push(Math.round(val('K',r,j)));}
+    dailyS.push(Math.round(s));dailyO.push(Math.round(o));dailyP.push(Math.round(p));dailyK.push(Math.round(val('K',r,j)));
+    dailyC.push(hasC?Math.round(NUM(M.C[r][dts[j].c])):Math.round(val('K',r,j)));}
    for(const j of lcmJ){if(!useDay(j))continue;lcm+=val('S',r,j);}
    skuArr.push({c:I.code,n:String(I.nm).replace(/^Carton |^Box /,''),cat:I.cat,
     st:Math.round(stt),smx:Math.round(smx),smxd:smxj>=0&&smx>0?iso(dts[smxj].d):null,
     smn:smn?+smn.toFixed(1):null,smnd:smnj>=0?iso(dts[smnj].d):null,
     ot:Math.round(ott),omx:Math.round(omx),pt:Math.round(ptt),pmx:Math.round(pmx),
     ful:ott>0?+(stt/ott).toFixed(3):null,last:lastj>=0?iso(dts[lastj].d):null,_lcm:lcm,
-    sub:I.sub,typ:I.typ,own:I.own,brand:I.brand,pcs:I.pcs,wt:I.wt,dS:dailyS,dO:dailyO,dP:dailyP,dK:dailyK});}
+    sub:I.sub,typ:I.typ,own:I.own,brand:I.brand,pcs:I.pcs,wt:I.wt,dS:dailyS,dO:dailyO,dP:dailyP,dK:dailyK,dC:dailyC,fam:I.fam,packing:I.packing});}
   skuArr.sort((a,b)=>b.st-a.st);skuArr.forEach((x,i)=>x.rk=i+1);
   D.sku=skuArr;
   D.top10=[...skuArr].sort((a,b)=>b._lcm-a._lcm).slice(0,10).map(x=>({name:x.n.slice(0,34),v:Math.round(x._lcm)}));
@@ -3269,8 +3545,8 @@ function computeWeightDist(from,to,catF,famF,subF){
   const excl=new Set(['Offals'].concat(WD_EXCLUDE||[]));
   let sku=(DATA.sku||[]).filter(p=>!excl.has(p.cat));
   // category / family / packaging filters
-  if(catF&&catF!=='all') sku=sku.filter(p=>p.cat===catF);
-  if(famF&&famF!=='all') sku=sku.filter(p=>(p.sub||'—')===famF);  // 'sub' holds family
+  sku=sku.filter(p=>msPass(p.cat, catF));
+  sku=sku.filter(p=>msPass(p.sub||'—', famF));  // 'sub' holds family here
   if(typeof WD_PACK!=='undefined' && WD_PACK!=='all') sku=sku.filter(p=>packType(p.n)===WD_PACK);
   // build product rows with weight
   const rows=[];
@@ -3284,7 +3560,7 @@ function computeWeightDist(from,to,catF,famF,subF){
     const kg=boxes*boxKg;
     if(kg>0||boxes>0){
       const sel=hasSel?WD_PRODSEL.has(String(p.c)):true;  // when nothing chosen → all count
-      rows.push({code:p.c,name:p.n,cat:p.cat,fam:p.sub||'—',typ:detectType(p),pack:packType(p.n),boxes:Math.round(boxes),boxKg:+boxKg.toFixed(2),kg:Math.round(kg),
+      rows.push({code:p.c,name:p.n,cat:p.cat,fam:p.fam||'—',sub:p.sub||'—',typ:detectType(p),pack:packType(p.n),boxes:Math.round(boxes),boxKg:+boxKg.toFixed(2),kg:Math.round(kg),
         sel, pctNet:netWt?kg/netWt:null, pctLive:liveWt?kg/liveWt:null});
       prodTotKg+=kg;
       if(sel) selProdKg+=kg;
@@ -3489,13 +3765,14 @@ function bucketSeries(dailyArr, gran, from, to){
 }
 // own/PL classifier (shared)
 function classifyOwn(p){
-  const o=String(p.own||'').toLowerCase();
-  if(o.includes('own')||o==='علامتنا')return 'own';
-  if(o.includes('private')||o.includes('pl')||o.includes('خاص'))return 'pl';
-  const b=String(p.brand||p.n||p.name||'').toLowerCase();
-  if(b.includes('bawadi')||b.includes('بوادي'))return 'pl';
-  if(b.includes('rayan')||b.includes('ريان')||b.includes('sama')||b.includes('سما'))return 'own';
-  return 'own';
+  // The sheet's 'Own/Private Label' column is authoritative — use it directly.
+  const o=String(p.own||'').toLowerCase().trim();
+  if(o.includes('private')||o==='pl'||o.includes('خاص'))return 'pl';   // 'Private Label' / 'private Label'
+  if(o==='own'||o.includes('own')||o==='علامتنا')return 'own';
+  // fallback (only if the column is blank): infer from brand/name
+  const b=(String(p.brand||'')+' '+String(p.n||p.name||'')).toLowerCase();
+  if(/rayan|ريان|sama|سما|karbala|كربلاء|bawadi|بوادي/.test(b))return 'own';
+  return 'pl';
 }
 // Build a filtered, time-bucketed analysis for any category (default FPP)
 // filters: {cat, own:'all'|'own'|'pl', ff:'all'|'Fresh'|'Frozen', metric:'dS'|'dO'|'dP', gran:'day'|'week'|'month', product:code|null, family:sub|null}
@@ -3505,8 +3782,10 @@ function computeCatAnalysis(f){
   let sku=(DATA.sku||[]).filter(p=>p.cat===cat);
   if(f.own&&f.own!=='all') sku=sku.filter(p=>classifyOwn(p)===f.own);
   if(f.ff&&f.ff!=='all') sku=sku.filter(p=>detectType(p)===f.ff);
-  if(f.family&&f.family!=='all') sku=sku.filter(p=>(p.sub||'—')===f.family);
+  if(Array.isArray(f.family)){ if(f.family.length) sku=sku.filter(p=>f.family.includes(p.sub||'—')); } else if(f.family&&f.family!=='all') sku=sku.filter(p=>(p.sub||'—')===f.family);
   if(f.product&&f.product!=='all') sku=sku.filter(p=>String(p.c)===String(f.product));
+  if(f.pack&&f.pack!=='all') sku=sku.filter(p=>packType(p.n)===f.pack);
+  if(f.iqf&&f.iqf!=='all'){ if(f.iqf==='iqf') sku=sku.filter(p=>/iqf/i.test(p.n)); else sku=sku.filter(p=>!/iqf/i.test(p.n)); }
   if(!sku.length)return null;
   // aggregate daily across the filtered products, then bucket
   const len=SKU_DATES.length;
@@ -4068,9 +4347,11 @@ function setLive(html,cls){const el=document.getElementById('liveChip');if(el){e
 async function loadFromSheets(){
   setLive(t().liveLoading);
   try{
-    const [S,O,P,K]=await Promise.all([
+    const [S,O,P,K,C]=await Promise.all([
       fetchTab(GS.db,GS.tabs.S),fetchTab(GS.db,GS.tabs.O),
-      fetchTab(GS.db,GS.tabs.P),fetchTab(GS.db,GS.tabs.K)]);
+      fetchTab(GS.db,GS.tabs.P),fetchTab(GS.db,GS.tabs.K),
+      fetchTab(GS.db,GS.tabs.C).catch(e=>{console.warn('[close] Close Stock fetch failed',(''+e).slice(0,40));return null;})]);
+    console.log('[close] Close Stock rows:', C?C.length:'(none)');
     // NEW receiving sheet: fetch each monthly tab (tolerate missing months)
     let RXmonths=[];
     try{
