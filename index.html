@@ -1742,8 +1742,8 @@ function renderStk(){
   const D=computeStockAsOf(STK_ASOF,STK_CAT,STK_FAM,STK_FF,STK_OWN,STK_BAL);
   // subtitle: clarify opening vs closing date
   const subTxt=D?((LANG==='ar'
-      ? 'رصيد الإغلاق ليوم '+D.asof+(D.closeDate?'':' (آخر يوم متاح — لا يوجد إغلاق لاحق)')
-      : 'Closing balance for '+D.asof+(D.closeDate?'':' (latest day — no later close)')))
+      ? 'أرصدة يوم '+D.asof+' — الافتتاح من شيت Open Stock والإغلاق من شيت Close Stock'
+      : 'Balances for '+D.asof+' — opening from Open Stock, closing from Close Stock'))
     :'—';
   $('#stkSub').textContent=subTxt;
   if(!D||!D.rows.length){
@@ -1774,8 +1774,8 @@ function renderStk(){
     changeCard=`<div class="card"><div class="k">${LANG==='ar'?'التغير عن اليوم السابق':'Change vs previous day'}</div><div class="v num" style="color:var(--mut)">—</div><div class="d">${LANG==='ar'?'لا يوجد يوم سابق':'No prior day'}</div></div>`;
   }
   $('#stkCards').innerHTML=[
-    `<div class="card"><div class="k">${(LANG==='ar'?'إجمالي المخزون':'Total stock')+' — '+D.asof}</div><div class="v num">${F(D.totBal)}</div><div class="d">${boxU} · ${F2(D.totKg)}</div></div>`,
     `<div class="card"><div class="k">${(LANG==='ar'?'رصيد الافتتاح':'Opening balance')+' — '+D.asof}</div><div class="v num">${F(D.totOpenBal)}</div><div class="d">${boxU} · ${F2(D.totOpenKg)}</div></div>`,
+    `<div class="card" style="border-color:var(--gold)"><div class="k">${(LANG==='ar'?'رصيد الإغلاق':'Closing balance')+' — '+D.asof}</div><div class="v num" style="color:var(--gold2)">${F(D.totBal)}</div><div class="d">${boxU} · ${F2(D.totKg)}</div></div>`,
     changeCard,
     `<div class="card"><div class="k">${LANG==='ar'?'أصناف لها رصيد':'Products with stock'}</div><div class="v num">${F(D.nProducts)}</div><div class="d">${F(D.cats.length)} ${LANG==='ar'?'فئة':'categories'}</div></div>`
   ].join('');
@@ -3500,10 +3500,10 @@ $('#doImport').onclick=async()=>{
  try{
   let nd;
   if(fdb){const dbWB=await readWB(fdb);const rxWB=frx?await readWB(frx):null;
-      const sh={S:['Daily Sales'],O:['Act. Orders','Act Orders'],P:['Daily Prod'],K:['Open Stock']};
+      const sh={S:['Daily Sales'],O:['Act. Orders','Act Orders'],P:['Daily Prod'],K:['Open Stock'],C:['Close Stock']};
       const MM={};for(const k in sh){const ws=getSheet(dbWB,sh[k]);if(ws)MM[k]=toM(ws);}
       const RXm=rxWB?toM(rxWB.Sheets[rxWB.SheetNames[0]]):null;
-      RAWMATS={S:MM.S,O:MM.O,P:MM.P,K:MM.K,RX:RXm};
+      RAWMATS={S:MM.S,O:MM.O,P:MM.P,K:MM.K,C:MM.C,RX:RXm};
       nd=computeFromMats(MM,RXm);}
   else{nd={...DATA};
    if(frx){const rxWB=await readWB(frx);const rx=parseRXmat(toM(rxWB.Sheets[rxWB.SheetNames[0]]));
@@ -4416,8 +4416,8 @@ async function loadFromSheets(){
     let PD=null;
     if(GS.demand){try{console.log('[demand] fetching DATABASE from',GS.demand);PD=await fetchTab(GS.demand,'DATABASE',0);console.log('[demand] DATABASE rows:',PD?PD.length:0);}catch(e){console.error('[demand] fetch failed — check sharing & tab name DATABASE:',e);}}
     if(String(S[0][0]).trim()!=='Product Code')throw t().liveTab(GS.tabs.S)+' [A1='+String(S[0][0]).slice(0,20)+']';
-    RAWMATS={S,O,P,K,RX:RXmonths};
-    const nd=computeFromMats({S,O,P,K},null);  // don't use old RX parser
+    RAWMATS={S,O,P,K,C,RX:RXmonths};
+    const nd=computeFromMats({S,O,P,K,C},null);  // include Close Stock (C)
     // build receiving from the NEW monthly tabs
     try{
       const rxNew=buildRXfromMonths(RXmonths);
