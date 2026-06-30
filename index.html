@@ -558,7 +558,7 @@ body.locked .brand, body.locked nav, body.locked main, body.locked section{visib
     <div class="panel"><h3 id="cmpGapT"></h3><div class="ch"><canvas id="cCmpGap"></canvas></div></div>
   </div>
   <div class="secthead" style="margin-top:24px"><h2 id="cmpUncT"></h2><small id="cmpUncSub"></small></div>
-  <div class="search"><select id="cmpUncMetric"></select><select id="cmpUncCat"></select></div>
+  <div class="search"><select id="cmpUncMetric"></select></div>
   <div class="tscroll" style="max-height:480px"><table class="tbl" id="tCmpUnc"></table></div>
   <div class="note" id="cmpNote"></div>
 </div></section>
@@ -1189,6 +1189,10 @@ function renderRx(){
    [T.rxUtil,Pc(rx.avg/cap),T.rxOfCap(F(cap))]];
   if(hasD)cards.push([T.rxDoa,F(totDoa)+' ('+Pc(totDoa/rx.total,2)+')',T.rxDoaStd]);
   if(hasS)cards.push([T.rxSl,F(totSl),'']);
+  // average received bird weight (quantity-weighted over the period) — shown if the receiving file has it
+  let _wtSum=0,_wtQty=0; rx.daily.forEach(e=>{if(e.awt&&e.v){_wtSum+=e.awt*e.v;_wtQty+=e.v;}});
+  if(_wtQty>0){const avgW=_wtSum/_wtQty;
+    cards.push([(LANG==='ar'?'معدل وزن الطائر':'Avg bird weight'), avgW.toFixed(3)+' '+(LANG==='ar'?'كغم':'kg'), (LANG==='ar'?'عند الاستلام':'at receiving')]);}
   $('#rxKpi').innerHTML=cards.map(([k,v,d])=>`<div class="card"><div class="k">${k}</div><div class="v num">${v}</div><div class="d">${d}</div></div>`).join('');
   $('#rxFilter').innerHTML=periodBar('rxFilter','rx',[30,60,90,180,0]);
   const rxView=tail(rx.daily,PERIOD.rx);
@@ -1836,12 +1840,12 @@ function renderFlowTable(P){
   if(S.search){const q=S.search.toLowerCase();rows=rows.filter(r=>String(r.name).toLowerCase().includes(q)||String(r.code).includes(q));}
   const ownL=o=>o==='pl'?(AR?'خاصة':'PL'):(AR?'علامتنا':'Own');
   const showAvg=(P==='sales');  // average column only on the Sales tab
-  const avgHdr=AR?'معدل المبيعات (كغم/يوم)':'Avg sales (kg/day)';
+  const avgHdr=AR?'معدل المبيعات (صندوق/يوم)':'Avg sales (boxes/day)';
   const H=[AR?'الكود':'Code',AR?'المنتج':'Product',AR?'الفئة':'Category',AR?'العائلة':'Family',AR?'النوع':'Type',AR?'التعبئة':'Packing',AR?'البراند':'Brand',AR?'العلامة':'Own/PL',AR?'صناديق':'Boxes',AR?'وحدات':'Units',AR?'الوزن (كغم)':'Weight (kg)'].concat(showAvg?[avgHdr]:[]);
   const tbl=$id('Tbl'); if(!tbl)return;
-  const avgTotKg = D.nDays?Math.round(D.totKg/D.nDays):0;
+  const avgTotKg = D.nDays?Math.round(D.totBoxes/D.nDays):0;
   tbl.innerHTML=`<thead><tr>${H.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>`+
-    rows.slice(0,800).map(r=>`<tr><td>${r.code}</td><td style="text-align:start">${r.name}</td><td>${(t().cats&&t().cats[r.cat])||r.cat}</td><td>${r.fam}</td><td>${r.typ==='Frozen'?(AR?'مجمد':'Frozen'):(AR?'فريش':'Fresh')}</td><td>${r.pack}</td><td>${r.brand}</td><td>${ownL(r.own)}</td><td class="num">${F(r.boxes)}</td><td class="num">${F(r.units)}</td><td class="num">${F(r.kg)}</td>${showAvg?`<td class="num" style="color:var(--gold2);font-weight:700">${F(r.avgKg)}</td>`:''}</tr>`).join('')+
+    rows.slice(0,800).map(r=>`<tr><td>${r.code}</td><td style="text-align:start">${r.name}</td><td>${(t().cats&&t().cats[r.cat])||r.cat}</td><td>${r.fam}</td><td>${r.typ==='Frozen'?(AR?'مجمد':'Frozen'):(AR?'فريش':'Fresh')}</td><td>${r.pack}</td><td>${r.brand}</td><td>${ownL(r.own)}</td><td class="num">${F(r.boxes)}</td><td class="num">${F(r.units)}</td><td class="num">${F(r.kg)}</td>${showAvg?`<td class="num" style="color:var(--gold2);font-weight:700">${F(r.avgBoxes)}</td>`:''}</tr>`).join('')+
     `<tr style="background:var(--panel2);font-weight:800"><td>—</td><td style="text-align:start">${AR?'الإجمالي':'Total'} (${rows.length})</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td class="num">${F(D.totBoxes)}</td><td class="num">${F(D.totUnits)}</td><td class="num">${F(D.totKg)}</td>${showAvg?`<td class="num" style="color:var(--gold2)">${F(avgTotKg)}</td>`:''}</tr></tbody>`;
   try{injectExportButtons();}catch(e){}
 }
@@ -2450,10 +2454,17 @@ function renderCmp(){
   const metrics=[['covP',T.cmpMcovP],['covS',T.cmpMcovS],['shortRate',T.cmpMrate],['shortQty',T.cmpMqty]];
   const curM=mSel.value||'covP';
   mSel.innerHTML=metrics.map(([v,l])=>`<option value="${v}" ${v===curM?'selected':''}>${l}</option>`).join('');
-  const cats=[...new Set(C.prod_cov.map(p=>p.cat))];
-  const cSel=$('#cmpUncCat'); const curC=cSel.value||'';
-  cSel.innerHTML=`<option value="">${T.allCats}</option>`+cats.map(c=>`<option value="${c}" ${c===curC?'selected':''}>${T.cats[c]||c}</option>`).join('');
-  let rows=C.prod_cov.filter(p=>!curC||p.cat===curC);
+  // build the set of product codes passing the MAIN tab filters (CMP_F), then filter the coverage table by it
+  const _passCodes=new Set((DATA.sku||[]).filter(p=>
+      msPass(p.cat,CMP_F.cat) && msPass(p.fam||'—',CMP_F.fam)
+      && (CMP_F.ff==='all'||detectType(p)===CMP_F.ff)
+      && (CMP_F.own==='all'||classifyOwn(p)===CMP_F.own)
+      && (CMP_F.pack==='all'||packType(p.n)===CMP_F.pack)
+      && (!CMP_F.wt.length||CMP_F.wt.includes(String(p.wt||'')))
+      && (!CMP_F.brand.length||CMP_F.brand.includes(String(p.brand||'—')))
+      && (!CMP_F.prod.length||CMP_F.prod.includes(String(p.c)))
+    ).map(p=>String(p.c)));
+  let rows=C.prod_cov.filter(p=>_passCodes.has(String(p.c)));
   // only meaningful: ord>0; sort ascending for coverage metrics, descending for shortRate/shortQty
   if(curM==='covP'||curM==='covS')rows=rows.filter(p=>p[curM]!=null).sort((a,b)=>a[curM]-b[curM]);
   else rows=rows.sort((a,b)=>(b[curM]||0)-(a[curM]||0));
@@ -3369,7 +3380,8 @@ function parseRXmat(m){
             sl:['sluttered','slaughtered','slaughter','kill','مذبوح','ذبح'],
             l1:['line 1','line1','خط 1','خط1'],
             l2:['line 2','line2','خط 2','خط2'],
-            br:['breeder','بريدر','الام','أمهات']};
+            br:['breeder','بريدر','الام','أمهات'],
+            awt:['avg weight','average weight','bird weight','live weight','معدل وزن','متوسط وزن','وزن الطائر','معدل الوزن','وزن الطير']};
   function findCol(keys,nearDateCol,excludeCols){
     let best=null,bestDist=1e9;
     for(let r=0;r<Math.min(8,m.length);r++){const row=m[r]||[];
@@ -3389,7 +3401,7 @@ function parseRXmat(m){
     // for each date column band, resolve its associated metric columns by nearest header match
     const ex=[dc];
     const col={qty:findCol(KW.qty,dc,ex),doa:findCol(KW.doa,dc,ex),sl:findCol(KW.sl,dc,ex),
-               l1:findCol(KW.l1,dc,ex),l2:findCol(KW.l2,dc,ex),br:findCol(KW.br,dc,ex)};
+               l1:findCol(KW.l1,dc,ex),l2:findCol(KW.l2,dc,ex),br:findCol(KW.br,dc,ex),awt:findCol(KW.awt,dc,ex)};
     // fallback: if no quantity header found, assume the column immediately right of date
     if(col.qty==null||col.qty===dc)col.qty=dc+1;
     // POSITIONAL fallback for the fixed receiving layout:
@@ -3415,16 +3427,19 @@ function parseRXmat(m){
       const cell=o=>{if(o==null)return null;const raw=m[r][o];
         if(raw===0||raw===''||raw==null)return null;const v=NUM(raw);return v?Math.round(v):null};
       const q=cell(col.qty); if(q==null)continue;  // skips Total/Daily Average (no date) automatically
+      const cellF=c=>{if(c==null)return null;const raw=(m[r]||[])[c];if(raw==null||raw==='')return null;const v=NUM(raw);return v||null;};  // keep decimals (e.g. 2.35 kg)
       map[iso(d)]={d:iso(d),v:q,doa:cell(col.doa),sl:cell(col.sl),
-                   l1:cell(col.l1),l2:cell(col.l2),br:cell(col.br)};
+                   l1:cell(col.l1),l2:cell(col.l2),br:cell(col.br),awt:cellF(col.awt)};
     }
   }
   const daily=Object.keys(map).sort().map(k=>map[k]);
   if(!daily.length)return null;
   const wmap={};
   daily.forEach(e=>{const sat=satOf(new Date(e.d+'T00:00:00Z'));const k=iso(sat);
-   if(!(k in wmap))wmap[k]={label:wlabel(sat),frm:k,v:0,days:0,doa:0,sl:0};
-   wmap[k].v+=e.v;wmap[k].days++;wmap[k].doa+=e.doa||0;wmap[k].sl+=e.sl||0;});
+   if(!(k in wmap))wmap[k]={label:wlabel(sat),frm:k,v:0,days:0,doa:0,sl:0,_wtSum:0,_wtQty:0};
+   wmap[k].v+=e.v;wmap[k].days++;wmap[k].doa+=e.doa||0;wmap[k].sl+=e.sl||0;
+   if(e.awt&&e.v){wmap[k]._wtSum+=e.awt*e.v;wmap[k]._wtQty+=e.v;}});
+  Object.values(wmap).forEach(w=>{w.awt=w._wtQty?+(w._wtSum/w._wtQty).toFixed(3):null;});
   const tot=daily.reduce((a,e)=>a+e.v,0);
   return {daily,weekly:Object.values(wmap).sort((a,b)=>a.frm.localeCompare(b.frm)),
    total:tot,avg:Math.round(tot/daily.length),mx:daily.reduce((a,e)=>e.v>a.v?e:a,daily[0]),days:daily.length,
@@ -3583,10 +3598,14 @@ function computeFromMats(M, rxMat){
     // per-product coverage (full history, days with orders)
     const cov=[];
     for(let r=1;r<=n;r++){const I=rowsInfo[r-1];
-      let to=0,tp=0,ts=0,sd=0,od=0,sq=0;
+      let to=0,tp=0,ts=0,sd=0,od=0;
       for(let j=0;j<=ai;j++){if(!useDay(j))continue;const o=val('O',r,j),p=val('P',r,j),s=val('S',r,j);
-        to+=o;tp+=p;ts+=s; if(o>0){od++; if(p<o){sd++; sq+=(o-p);}}}
+        to+=o;tp+=p;ts+=s; if(o>0){od++; if(p<o)sd++; }}
       if(to<=0)continue;
+      // shortfall measured on TOTALS (period-level): unmet = ordered − fulfilled, floored at 0.
+      // fulfilled = the better of production or sales (covers cases where order/prod/sales fall on different days).
+      const fulfilled=Math.max(tp,ts);
+      const sq=Math.max(0, to-fulfilled);
       cov.push({c:I.code,n:String(I.nm).replace(/^Carton |^Box /,''),cat:I.cat,
         ord:Math.round(to),prod:Math.round(tp),sales:Math.round(ts),
         covP:to>0?+(tp/to).toFixed(3):null,covS:to>0?+(ts/to).toFixed(3):null,
@@ -4472,7 +4491,6 @@ loadFromSheets();
 
 
 $('#cmpUncMetric')&&$('#cmpUncMetric').addEventListener('change',renderCmp);
-$('#cmpUncCat')&&$('#cmpUncCat').addEventListener('change',renderCmp);
 ;try{initAuth();}catch(e){console.error('auth init failed',e);}
 </script>
 </body>
