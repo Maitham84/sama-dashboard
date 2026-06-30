@@ -125,6 +125,10 @@ html[data-theme="light"] .asof{color:#5C6E82 !important}
 .msdd-pop{position:absolute;top:calc(100% + 4px);inset-inline-start:0;z-index:200;background:var(--panel);border:1px solid var(--bd);border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.25);min-width:210px;max-height:320px;overflow:auto;padding:6px;display:none}
 .msdd-pop.open{display:block}
 .msdd-act{display:flex;gap:6px;padding:4px 6px 8px;border-bottom:1px solid var(--line);margin-bottom:6px}
+.msdd-search{padding:2px 4px 6px}
+.msdd-search .msdd-q{width:100%;box-sizing:border-box;padding:6px 9px;border:1px solid var(--bd);border-radius:7px;background:var(--panel2);color:var(--ink);font-size:12px}
+.msdd-search .msdd-q:focus{outline:none;border-color:var(--gold)}
+.msdd-list{max-height:230px;overflow:auto}
 .msdd-act button{flex:1;font-size:11px;padding:5px 8px;border:1px solid var(--bd);border-radius:6px;background:var(--panel2);color:var(--ink);cursor:pointer}
 .msdd-act button:hover{border-color:var(--gold);color:var(--gold2)}
 .msdd-opt{display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:6px;cursor:pointer;font-size:12.5px}
@@ -331,6 +335,8 @@ body.locked .brand, body.locked nav, body.locked main, body.locked section{visib
     <span class="fgrp"><span class="perlbl" id="prodPackL"></span><select id="prodPack"></select></span>
     <span class="fgrp"><span class="perlbl" id="prodOwnL"></span><select id="prodOwn"></select></span>
     <span class="fgrp"><span class="perlbl" id="prodWtL"></span><span id="prodWt"></span></span>
+    <span class="fgrp"><span class="perlbl" id="prodBrandL"></span><span id="prodBrand"></span></span>
+    <span class="fgrp"><span class="perlbl" id="prodProdL"></span><span id="prodProd"></span></span>
   </div>
   <div class="cards" id="prodCards"></div>
   <div class="grid2">
@@ -360,9 +366,13 @@ body.locked .brand, body.locked nav, body.locked main, body.locked section{visib
     <span class="fgrp"><span class="perlbl" id="salesPackL"></span><select id="salesPack"></select></span>
     <span class="fgrp"><span class="perlbl" id="salesOwnL"></span><select id="salesOwn"></select></span>
     <span class="fgrp"><span class="perlbl" id="salesWtL"></span><span id="salesWt"></span></span>
+    <span class="fgrp"><span class="perlbl" id="salesBrandL"></span><span id="salesBrand"></span></span>
+    <span class="fgrp"><span class="perlbl" id="salesProdL"></span><span id="salesProd"></span></span>
+    <span class="fgrp"><span class="perlbl" id="salesGranL"></span><select id="salesGran"></select></span>
   </div>
   <div class="cards" id="salesCards"></div>
-  <div class="grid2">
+  <div class="panel" style="margin-top:4px"><h3 id="salesTrendT"></h3><div class="ch" style="height:300px"><canvas id="salesTrend"></canvas></div></div>
+  <div class="grid2" style="margin-top:14px">
     <div class="panel"><h3 id="salesCh1T"></h3><div class="ch" style="height:300px"><canvas id="salesCh1"></canvas></div></div>
     <div class="panel"><h3 id="salesCh2T"></h3><div class="ch" style="height:300px"><canvas id="salesCh2"></canvas></div></div>
   </div>
@@ -389,6 +399,8 @@ body.locked .brand, body.locked nav, body.locked main, body.locked section{visib
     <span class="fgrp"><span class="perlbl" id="ordersPackL"></span><select id="ordersPack"></select></span>
     <span class="fgrp"><span class="perlbl" id="ordersOwnL"></span><select id="ordersOwn"></select></span>
     <span class="fgrp"><span class="perlbl" id="ordersWtL"></span><span id="ordersWt"></span></span>
+    <span class="fgrp"><span class="perlbl" id="ordersBrandL"></span><span id="ordersBrand"></span></span>
+    <span class="fgrp"><span class="perlbl" id="ordersProdL"></span><span id="ordersProd"></span></span>
   </div>
   <div class="cards" id="ordersCards"></div>
   <div class="grid2">
@@ -529,6 +541,16 @@ body.locked .brand, body.locked nav, body.locked main, body.locked section{visib
     <span class="fgrp"><span class="perlbl" id="cmpToL"></span><input type="date" id="cmpTo" class="rngDate"></span>
     <button class="btn ghost" id="cmpClearBtn"></button>
   </div>
+  <div class="search" id="cmpFilters2" style="margin-bottom:8px;flex-wrap:wrap;gap:10px">
+    <span class="fgrp"><span class="perlbl" id="cmpCatL"></span><span id="cmpCat"></span></span>
+    <span class="fgrp"><span class="perlbl" id="cmpFamL"></span><span id="cmpFam"></span></span>
+    <span class="fgrp"><span class="perlbl" id="cmpFFL"></span><select id="cmpFF"></select></span>
+    <span class="fgrp"><span class="perlbl" id="cmpPackL"></span><select id="cmpPack"></select></span>
+    <span class="fgrp"><span class="perlbl" id="cmpOwnL"></span><select id="cmpOwn"></select></span>
+    <span class="fgrp"><span class="perlbl" id="cmpWtL"></span><span id="cmpWt"></span></span>
+    <span class="fgrp"><span class="perlbl" id="cmpBrandL"></span><span id="cmpBrand"></span></span>
+    <span class="fgrp"><span class="perlbl" id="cmpProdL"></span><span id="cmpProd"></span></span>
+  </div>
   <div class="cards" id="cmpKpi"></div>
   <div class="panel" style="margin-bottom:14px"><h3 id="cmpTrendT"></h3><div id="cmpFilter"></div><div class="ch" style="height:320px"><canvas id="cCmpTrend"></canvas></div></div>
   <div class="grid2">
@@ -555,7 +577,7 @@ body.locked .brand, body.locked nav, body.locked main, body.locked section{visib
   <div class="secthead"><h2 id="skuTitle"></h2><small id="skuCount"></small></div>
   <div id="skuRange" class="perbar" style="margin-bottom:6px"></div>
   <div class="search">
-    <input id="q"><select id="fcat"></select>
+    <input id="q"><span id="fcat" style="display:inline-block"></span>
     <select id="srt"><option value="st"></option><option value="smx"></option><option value="ot"></option><option value="pt"></option></select>
   </div>
   <div class="tscroll" style="max-height:560px"><table class="tbl" id="tSku"></table></div>
@@ -927,6 +949,7 @@ var WD_PACK='all';  // packaging filter for weight distribution
 var CAT_LABEL={ar:{'Whole Birds':'الدجاج الكامل','Cutups':'المقطعات','Offals':'الأحشاء','FPP':'المصنّعات','WIP':'تحت التشغيل','Rendering':'مخلفات'},en:{'Whole Birds':'Whole Birds','Cutups':'Cutups','Offals':'Offals','FPP':'FPP','WIP':'WIP','Rendering':'Rendering'}};
 var CO_DOW_EN=['Sat','Sun','Mon','Tue','Wed','Thu','Fri'];
 let CMPGRAN='daily';
+const CMP_F={cat:[],fam:[],ff:'all',own:'all',pack:'all',wt:[],brand:[],prod:[]};
 let CMPFROM=null, CMPTO=null;  // cmp date range filter  // daily | weekly
 let PLGRAN='daily'; let QLINE=''; let QDAY='';
 let PLFROM='', PLTO='';  // plant date range (YYYY-MM-DD), empty=all
@@ -937,7 +960,8 @@ let SKU_DATES=[];  // ISO date axis for per-product daily series  // demand week
 let DMCAT='', DMFF='';  // demand FOS-chart filters (category, fresh/frozen)     // quality date range
 let EXCL_FRI=false; try{EXCL_FRI=localStorage.getItem('sk_excl_fri')==='1'}catch(e){}
 let RAWMATS=null;   // {S,O,P,K, RX} kept from last fetch/import for recompute on toggle
-let SKURANGE={mode:'all', from:null, to:null};  // all|30|7|mtd|wk|custom
+let SKURANGE={mode:'all', from:null, to:null};
+let SKU_CATSEL=[];  // all|30|7|mtd|wk|custom
 const PERIOD={ma:90, rx:60, wk:14, mo:0, we:0, rxw:12, wkt:0, mot:0, ffm:0, cmp:90, cmpw:26, qab:0};  // ma/rx days; wk/mo months; we weeks; 0=all
 try{const l=localStorage.getItem('sk_lang'); if(l)LANG=l;}catch(e){}
 const t=()=>I18N[LANG];
@@ -1430,28 +1454,60 @@ let FFMETRIC='s', FFOWN='all', FFGRAN='day', FFFROM=null, FFTO=null, FFCAT=[];
 // containerId: the element to render into. options: [[value,label],...]
 // selected: array of selected values ([] or null = ALL). onChange(newSelectedArray).
 // allLabel: text shown when nothing/all selected.
-function msDropdown(containerId, options, selected, onChange, allLabel){
+function msDropdown(containerId, options, selected, onChange, allLabel, searchable){
   const el=document.getElementById(containerId); if(!el)return;
   const sel=Array.isArray(selected)?selected.slice():[];
   const isAll=sel.length===0; // empty = all
   const lbl=isAll?(allLabel||'الكل'):(sel.length===1?(options.find(o=>o[0]===sel[0])||[null,sel[0]])[1]:sel.length+' '+(LANG==='ar'?'محدد':'selected'));
   const btnId=containerId+'_btn', popId=containerId+'_pop';
+  // auto-enable search for long lists
+  const useSearch = (searchable!==false) && (searchable===true || options.length>8);
+  // preserve open state across re-renders (so multi-select keeps the menu open)
+  const wasOpen = el.querySelector('.msdd-pop.open')!=null || el.dataset.keepOpen==='1';
+  const prevQuery = el.dataset.q || '';
   el.classList.add('msdd');
+  const oid=v=>containerId+'_o_'+btoa(unescape(encodeURIComponent(String(v)))).replace(/=/g,'');
   el.innerHTML=`<button type="button" class="msdd-btn" id="${btnId}"><span class="lbl">${lbl}</span><span class="cnt">▾</span></button>`+
-    `<div class="msdd-pop" id="${popId}">`+
+    `<div class="msdd-pop${wasOpen?' open':''}" id="${popId}">`+
+    (useSearch?`<div class="msdd-search"><input type="text" class="msdd-q" placeholder="${LANG==='ar'?'بحث…':'Search…'}" value="${String(prevQuery).replace(/"/g,'&quot;')}"></div>`:'')+
     `<div class="msdd-act"><button type="button" data-act="all">${LANG==='ar'?'الكل':'All'}</button><button type="button" data-act="none">${LANG==='ar'?'مسح':'Clear'}</button></div>`+
-    options.map(([v,l])=>`<div class="msdd-opt"><input type="checkbox" id="${containerId}_o_${btoa(unescape(encodeURIComponent(String(v)))).replace(/=/g,'')}" value="${String(v).replace(/"/g,'&quot;')}" ${(!isAll&&sel.includes(v))?'checked':''}><label for="${containerId}_o_${btoa(unescape(encodeURIComponent(String(v)))).replace(/=/g,'')}">${l}</label></div>`).join('')+
-    `</div>`;
+    `<div class="msdd-list">`+
+    options.map(([v,l])=>`<div class="msdd-opt" data-lbl="${String(l).toLowerCase().replace(/"/g,'&quot;')}" data-val="${String(v).toLowerCase().replace(/"/g,'&quot;')}"><input type="checkbox" id="${oid(v)}" value="${String(v).replace(/"/g,'&quot;')}" ${(!isAll&&sel.includes(v))?'checked':''}><label for="${oid(v)}">${l}</label></div>`).join('')+
+    `</div></div>`;
   const btn=document.getElementById(btnId), pop=document.getElementById(popId);
-  btn.onclick=(e)=>{e.stopPropagation();document.querySelectorAll('.msdd-pop.open').forEach(p=>{if(p!==pop)p.classList.remove('open');});pop.classList.toggle('open');};
+  btn.onclick=(e)=>{e.stopPropagation();
+    const willOpen=!pop.classList.contains('open');
+    document.querySelectorAll('.msdd-pop.open').forEach(p=>{if(p!==pop){p.classList.remove('open'); const pc=p.closest('.msdd'); if(pc)pc.dataset.keepOpen='0';}});
+    pop.classList.toggle('open');
+    el.dataset.keepOpen = willOpen?'1':'0';
+    if(willOpen){const q=pop.querySelector('.msdd-q'); if(q){setTimeout(()=>q.focus(),0);}}
+  };
   pop.onclick=(e)=>e.stopPropagation();
+  // live search filter (no re-render — just hide/show options)
+  const qbox=pop.querySelector('.msdd-q');
+  if(qbox){
+    const applyQ=()=>{const q=(qbox.value||'').toLowerCase().trim(); el.dataset.q=qbox.value||'';
+      pop.querySelectorAll('.msdd-opt').forEach(o=>{const hit=!q||o.dataset.lbl.includes(q)||o.dataset.val.includes(q); o.style.display=hit?'':'none';});};
+    qbox.oninput=()=>{el.dataset.keepOpen='1';applyQ();};
+    qbox.onclick=e=>e.stopPropagation();
+    if(prevQuery)applyQ();
+  }
   const getSel=()=>Array.from(pop.querySelectorAll('input[type=checkbox]')).filter(c=>c.checked).map(c=>c.value);
-  pop.querySelectorAll('input[type=checkbox]').forEach(c=>{c.onchange=()=>{onChange(getSel());};});
+  pop.querySelectorAll('input[type=checkbox]').forEach(c=>{c.onchange=()=>{el.dataset.keepOpen='1';onChange(getSel());};});
   pop.querySelectorAll('.msdd-act button').forEach(b=>{b.onclick=(e)=>{e.stopPropagation();
-    const checks=pop.querySelectorAll('input[type=checkbox]');
+    el.dataset.keepOpen='1';
+    // when searching, "all"/"none" act on VISIBLE options only
+    const checks=Array.from(pop.querySelectorAll('.msdd-opt')).filter(o=>o.style.display!=='none').map(o=>o.querySelector('input'));
     if(b.dataset.act==='all'){checks.forEach(c=>c.checked=true);}
     else{checks.forEach(c=>c.checked=false);}
     onChange(getSel());};});
+}
+// close any open multi-select dropdown when clicking outside it
+if(!window.__msddDocClick){window.__msddDocClick=1;
+  document.addEventListener('click',(e)=>{
+    if(e.target.closest('.msdd'))return;
+    document.querySelectorAll('.msdd-pop.open').forEach(p=>{p.classList.remove('open'); const pc=p.closest('.msdd'); if(pc)pc.dataset.keepOpen='0';});
+  });
 }
 // global click closes any open dropdown
 if(!window.__msddClose){window.__msddClose=true;document.addEventListener('click',()=>{document.querySelectorAll('.msdd-pop.open').forEach(p=>p.classList.remove('open'));});}
@@ -1463,7 +1519,44 @@ function msPass(val, arr){ return !arr || arr.length===0 || arr.includes(val); }
 // ================= GENERIC FLOW ENGINE (Production / Sales / Orders, date-range) =================
 // metricKey: 'dP' (production) | 'dS' (sales) | 'dO' (orders)
 // filters: {cat:[], fam:[], ff:'all', own:'all', pack:'all', wt:[]}  (wt = piece-weight grams multi-select)
-function computeFlow(metricKey, from, to, F){
+
+// ============== FILTERABLE CMP SERIES (Orders / Production / Sales by weight) ==============
+// Returns daily + weekly comparison series respecting cat/fam/ff/own/pack/wt/brand/prod filters.
+function computeCmpFiltered(from, to, Flt){
+  if(!SKU_DATES.length)return null;
+  Flt=Flt||{};
+  let sku=(DATA.sku||[]).slice();
+  sku=sku.filter(p=>msPass(p.cat, Flt.cat));
+  sku=sku.filter(p=>msPass(p.fam||'—', Flt.fam));
+  if(Flt.ff&&Flt.ff!=='all') sku=sku.filter(p=>detectType(p)===Flt.ff);
+  if(Flt.own&&Flt.own!=='all') sku=sku.filter(p=>classifyOwn(p)===Flt.own);
+  if(Flt.pack&&Flt.pack!=='all') sku=sku.filter(p=>packType(p.n)===Flt.pack);
+  if(Flt.wt&&Flt.wt.length) sku=sku.filter(p=>Flt.wt.includes(String(p.wt||'')));
+  if(Flt.brand&&Flt.brand.length) sku=sku.filter(p=>Flt.brand.includes(String(p.brand||'—')));
+  if(Flt.prod&&Flt.prod.length) sku=sku.filter(p=>Flt.prod.includes(String(p.c)));
+  // per-day totals in WEIGHT (kg)
+  const nD=SKU_DATES.length;
+  const dO=new Array(nD).fill(0), dP=new Array(nD).fill(0), dS=new Array(nD).fill(0);
+  sku.forEach(p=>{const bk=prodBoxKg(p)||0;
+    const so=p.dO||[],sp=p.dP||[],ss=p.dS||[];
+    for(let i=0;i<nD;i++){ dO[i]+=(so[i]||0)*bk; dP[i]+=(sp[i]||0)*bk; dS[i]+=(ss[i]||0)*bk; }});
+  const inR=d=>(!from||d>=from)&&(!to||d<=to);
+  // daily series
+  const daily=[];
+  SKU_DATES.forEach((d,i)=>{ if(!inR(d))return; daily.push({d, o:Math.round(dO[i]), p:Math.round(dP[i]), s:Math.round(dS[i])}); });
+  // weekly series (company week Saturday-start)
+  const wmap={};
+  SKU_DATES.forEach((d,i)=>{ if(!inR(d))return;
+    const dt=new Date(d+'T00:00:00Z'); const wd=(dt.getUTCDay()+1)%7; const sat=new Date(dt); sat.setUTCDate(dt.getUTCDate()-wd);
+    const k=sat.toISOString().slice(0,10);
+    if(!wmap[k])wmap[k]={frm:k,o:0,p:0,s:0};
+    wmap[k].o+=dO[i]; wmap[k].p+=dP[i]; wmap[k].s+=dS[i]; });
+  const weekly=Object.keys(wmap).sort().map(k=>({frm:k,o:Math.round(wmap[k].o),p:Math.round(wmap[k].p),s:Math.round(wmap[k].s)}));
+  const tot=daily.reduce((a,r)=>({o:a.o+r.o,p:a.p+r.p,s:a.s+r.s}),{o:0,p:0,s:0});
+  return {daily, weekly, tot, nProducts:sku.length};
+}
+
+function computeFlow(metricKey, from, to, F, gran){
   if(!SKU_DATES.length)return null;
   F=F||{};
   // resolve date-index range
@@ -1478,6 +1571,8 @@ function computeFlow(metricKey, from, to, F){
   if(F.own&&F.own!=='all') sku=sku.filter(p=>classifyOwn(p)===F.own);
   if(F.pack&&F.pack!=='all') sku=sku.filter(p=>packType(p.n)===F.pack);
   if(F.wt&&F.wt.length) sku=sku.filter(p=>F.wt.includes(String(p.wt||'')));
+  if(F.brand&&F.brand.length) sku=sku.filter(p=>F.brand.includes(String(p.brand||'—')));
+  if(F.prod&&F.prod.length) sku=sku.filter(p=>F.prod.includes(String(p.c)));
   const rows=[];
   sku.forEach(p=>{
     const arr=p[metricKey]||[];
@@ -1486,9 +1581,11 @@ function computeFlow(metricKey, from, to, F){
       const boxKg=prodBoxKg(p)||0;
       const pcs=p.pcs||0;
       const units=Math.round(boxes*pcs);
+      const nd=idxs.length||1;
       rows.push({code:p.c,name:p.n,cat:p.cat,fam:p.fam||'—',sub:p.sub||'—',typ:detectType(p),pack:packType(p.n),
-        own:classifyOwn(p), pcs, unitG:p.wt||0, boxKg:+(boxKg).toFixed(2),
-        boxes:Math.round(boxes), units, kg:Math.round(boxes*boxKg)});
+        own:classifyOwn(p), brand:String(p.brand||'—'), pcs, unitG:p.wt||0, boxKg:+(boxKg).toFixed(2),
+        boxes:Math.round(boxes), units, kg:Math.round(boxes*boxKg),
+        avgKg:Math.round(boxes*boxKg/nd), avgBoxes:+(boxes/nd).toFixed(1), avgUnits:Math.round(units/nd)});
     }
   });
   rows.sort((a,b)=>b.kg-a.kg);
@@ -1498,8 +1595,14 @@ function computeFlow(metricKey, from, to, F){
     const e=catAgg[r.cat];e.boxes+=r.boxes;e.kg+=r.kg;e.units+=r.units;e.n++;});
   const cats=Object.values(catAgg).sort((a,b)=>b.kg-a.kg);
   const totBoxes=rows.reduce((a,r)=>a+r.boxes,0), totKg=rows.reduce((a,r)=>a+r.kg,0), totUnits=rows.reduce((a,r)=>a+r.units,0);
+  // total time-series (weight) over the period, bucketed by granularity (day/week/month)
+  const g=gran||'day';
+  // build a combined daily total weight array aligned to SKU_DATES
+  const dailyKg=new Array(SKU_DATES.length).fill(0);
+  sku.forEach(p=>{const arr=p[metricKey]||[]; const bk=prodBoxKg(p)||0; idxs.forEach(i=>{ dailyKg[i]+=(arr[i]||0)*bk; });});
+  const series=bucketSeries(dailyKg, g, from, to).map(e=>({k:e.k, v:Math.round(e.v)}));
   return {from:SKU_DATES[idxs[0]], to:SKU_DATES[idxs[idxs.length-1]], rows, cats, totBoxes, totKg, totUnits,
-    nProducts:rows.length, nDays:idxs.length};
+    nProducts:rows.length, nDays:idxs.length, series, gran:g};
 }
 
 function computeDailyProduction(asofDate, catArr, famArr, ffF, ownF, packF){
@@ -1596,9 +1699,9 @@ let STK_ASOF=null, STK_CAT=[], STK_FAM=[], STK_FF='all', STK_OWN='all', STK_BAL=
 let PRODUCTION_ASOF=null, PROD_CAT=[], PROD_FAM=[], PROD_FF='all', PROD_OWN='all', PROD_PACK='all', PROD_SEARCH='';
 // Unified state for the three flow tabs (production / sales / orders)
 const FLOW_STATE={
-  prod:{metric:'dP', from:null, to:null, cat:[], fam:[], ff:'all', own:'all', pack:'all', wt:[], search:''},
-  sales:{metric:'dS', from:null, to:null, cat:[], fam:[], ff:'all', own:'all', pack:'all', wt:[], search:''},
-  orders:{metric:'dO', from:null, to:null, cat:[], fam:[], ff:'all', own:'all', pack:'all', wt:[], search:''}
+  prod:{metric:'dP', from:null, to:null, cat:[], fam:[], ff:'all', own:'all', pack:'all', wt:[], brand:[], prod:[], search:'', gran:'day'},
+  sales:{metric:'dS', from:null, to:null, cat:[], fam:[], ff:'all', own:'all', pack:'all', wt:[], brand:[], prod:[], search:'', gran:'day'},
+  orders:{metric:'dO', from:null, to:null, cat:[], fam:[], ff:'all', own:'all', pack:'all', wt:[], brand:[], prod:[], search:'', gran:'day'}
 };
 function renderFlow(tabKey){
   // tabKey: 'prod' | 'sales' | 'orders'   — drives ids prefix prod/sales/orders
@@ -1644,6 +1747,17 @@ function renderFlow(tabKey){
   // weight multi-select (piece weight grams)
   const wts=[...new Set(allP.map(p=>p.wt).filter(w=>w))].sort((a,b)=>a-b);
   msDropdown(P+'Wt', wts.map(w=>[String(w), F(w)+(AR?' غم':' g')]), S.wt, sel=>{S.wt=sel;renderFlow(P);}, AR?'كل الأوزان':'All weights');
+  // brand multi-select (col 13)
+  $id('BrandL')&&($id('BrandL').textContent=AR?'البراند':'Brand');
+  const brands=[...new Set(allP.map(p=>String(p.brand||'—')))].filter(x=>x&&x!=='—').sort();
+  S.brand=(S.brand||[]).filter(v=>brands.includes(v));
+  msDropdown(P+'Brand', brands.map(b=>[b,b]), S.brand, sel=>{S.brand=sel;renderFlow(P);}, AR?'كل البراندات':'All brands');
+  // product (SKU) — searchable multi-select, code + name, scoped to category/brand selection
+  $id('ProdL')&&($id('ProdL').textContent=AR?'المنتج (SKU)':'Product (SKU)');
+  const prodScope=allP.filter(p=>msPass(p.cat,S.cat)&&(!(S.brand&&S.brand.length)||S.brand.includes(String(p.brand||'—'))));
+  const prods=prodScope.map(p=>[String(p.c),(p.c)+' — '+String(p.n).slice(0,45)]).sort((a,b)=>a[1].localeCompare(b[1]));
+  S.prod=(S.prod||[]).filter(v=>prods.some(x=>x[0]===String(v)));
+  msDropdown(P+'Prod', prods, S.prod, sel=>{S.prod=sel;renderFlow(P);}, AR?'كل المنتجات':'All products', true);
   // own select
   const os=$id('Own');
   if(os&&!os.dataset.init){os.dataset.init='1';os.onchange=e=>{S.own=e.target.value;renderFlow(P);};}
@@ -1660,7 +1774,12 @@ function renderFlow(tabKey){
   // search
   if(sb&&!sb.dataset.init){sb.dataset.init='1';sb.addEventListener('input',e=>{S.search=e.target.value||'';renderFlowTable(P);});}
 
-  const D=computeFlow(S.metric,S.from,S.to,{cat:S.cat,fam:S.fam,ff:S.ff,own:S.own,pack:S.pack,wt:S.wt});
+  // granularity select (present on sales tab; harmless elsewhere)
+  $id('GranL')&&($id('GranL').textContent=AR?'التجميع':'Group by');
+  const gs=$id('Gran');
+  if(gs&&!gs.dataset.init){gs.dataset.init='1';gs.onchange=e=>{S.gran=e.target.value;renderFlow(P);};}
+  if(gs)gs.innerHTML=[['day',AR?'يومي':'Daily'],['week',AR?'أسبوعي':'Weekly'],['month',AR?'شهري':'Monthly']].map(([v,l])=>`<option value="${v}" ${v===(S.gran||'day')?'selected':''}>${l}</option>`).join('');
+  const D=computeFlow(S.metric,S.from,S.to,{cat:S.cat,fam:S.fam,ff:S.ff,own:S.own,pack:S.pack,wt:S.wt,brand:S.brand,prod:S.prod},S.gran||'day');
   FLOW_STATE[P]._D=D;
   const sub=$id('Sub');
   if(sub) sub.textContent = D&&D.nDays?((AR?'الفترة: ':'Period: ')+D.from+' → '+D.to+'  ('+D.nDays+(AR?' يوم':' days')+')'):titleMap[P][1];
@@ -1692,6 +1811,19 @@ function renderFlow(tabKey){
     backgroundColor:[GOLD,SKY,GREEN,VIO,RED,'#b88a3e','#6fa8c4','#b06fc4','#8a7']}]},
    options:{maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:10}}},
      datalabels:{color:'#fff',font:{weight:'700',size:10},formatter:v=>D.totKg?Math.round(v/D.totKg*100)+'%':''}}}});
+  // line chart: metric weight over the period (bucketed daily/weekly/monthly) — only if the canvas exists (sales tab)
+  const trendCanvas=document.getElementById(P+'Trend');
+  if(trendCanvas && D.series && D.series.length){
+    const granWord = (S.gran==='week')?(AR?'أسبوعي':'Weekly'):(S.gran==='month')?(AR?'شهري':'Monthly'):(AR?'يومي':'Daily');
+    $id('TrendT')&&($id('TrendT').textContent=(AR?(metricWord[P]+' عبر الفترة (كغم) — '):(metricWord[P]+' over period (kg) — '))+granWord);
+    mk(P+'Trend',{type:'line',data:{labels:D.series.map(e=>e.k),datasets:[{
+      label:metricWord[P],data:D.series.map(e=>e.v),
+      borderColor:css('--gold')||'#c9a14a',backgroundColor:'rgba(201,161,74,.12)',fill:true,tension:.3,pointRadius:D.series.length>40?0:3,
+      datalabels:{display:D.series.length<=20,color:css('--mut'),font:{size:9},align:'top',formatter:v=>Fk(v)}}]},
+     options:{maintainAspectRatio:false,plugins:{legend:{display:false},
+       tooltip:{callbacks:{label:c=>F(c.parsed.y)+' '+(AR?'كغم':'kg')}}},
+       scales:{y:{beginAtZero:true,grid:{color:css('--line')},ticks:{callback:v=>Fk(v)}},x:{grid:{display:false},ticks:{maxRotation:45,font:{size:9}}}}}});
+  } else if(trendCanvas){ const c=charts[P+'Trend']; if(c){c.destroy();delete charts[P+'Trend'];} }
   renderFlowTable(P);
 }
 function renderFlowTable(P){
@@ -1703,11 +1835,14 @@ function renderFlowTable(P){
   let rows=D.rows.slice();
   if(S.search){const q=S.search.toLowerCase();rows=rows.filter(r=>String(r.name).toLowerCase().includes(q)||String(r.code).includes(q));}
   const ownL=o=>o==='pl'?(AR?'خاصة':'PL'):(AR?'علامتنا':'Own');
-  const H=[AR?'الكود':'Code',AR?'المنتج':'Product',AR?'الفئة':'Category',AR?'العائلة':'Family',AR?'النوع':'Type',AR?'التعبئة':'Packing',AR?'العلامة':'Brand',AR?'صناديق':'Boxes',AR?'وحدات':'Units',AR?'الوزن (كغم)':'Weight (kg)'];
+  const showAvg=(P==='sales');  // average column only on the Sales tab
+  const avgHdr=AR?'معدل المبيعات (كغم/يوم)':'Avg sales (kg/day)';
+  const H=[AR?'الكود':'Code',AR?'المنتج':'Product',AR?'الفئة':'Category',AR?'العائلة':'Family',AR?'النوع':'Type',AR?'التعبئة':'Packing',AR?'البراند':'Brand',AR?'العلامة':'Own/PL',AR?'صناديق':'Boxes',AR?'وحدات':'Units',AR?'الوزن (كغم)':'Weight (kg)'].concat(showAvg?[avgHdr]:[]);
   const tbl=$id('Tbl'); if(!tbl)return;
+  const avgTotKg = D.nDays?Math.round(D.totKg/D.nDays):0;
   tbl.innerHTML=`<thead><tr>${H.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>`+
-    rows.slice(0,800).map(r=>`<tr><td>${r.code}</td><td style="text-align:start">${r.name}</td><td>${(t().cats&&t().cats[r.cat])||r.cat}</td><td>${r.fam}</td><td>${r.typ==='Frozen'?(AR?'مجمد':'Frozen'):(AR?'فريش':'Fresh')}</td><td>${r.pack}</td><td>${ownL(r.own)}</td><td class="num">${F(r.boxes)}</td><td class="num">${F(r.units)}</td><td class="num">${F(r.kg)}</td></tr>`).join('')+
-    `<tr style="background:var(--panel2);font-weight:800"><td>—</td><td style="text-align:start">${AR?'الإجمالي':'Total'} (${rows.length})</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td class="num">${F(D.totBoxes)}</td><td class="num">${F(D.totUnits)}</td><td class="num">${F(D.totKg)}</td></tr></tbody>`;
+    rows.slice(0,800).map(r=>`<tr><td>${r.code}</td><td style="text-align:start">${r.name}</td><td>${(t().cats&&t().cats[r.cat])||r.cat}</td><td>${r.fam}</td><td>${r.typ==='Frozen'?(AR?'مجمد':'Frozen'):(AR?'فريش':'Fresh')}</td><td>${r.pack}</td><td>${r.brand}</td><td>${ownL(r.own)}</td><td class="num">${F(r.boxes)}</td><td class="num">${F(r.units)}</td><td class="num">${F(r.kg)}</td>${showAvg?`<td class="num" style="color:var(--gold2);font-weight:700">${F(r.avgKg)}</td>`:''}</tr>`).join('')+
+    `<tr style="background:var(--panel2);font-weight:800"><td>—</td><td style="text-align:start">${AR?'الإجمالي':'Total'} (${rows.length})</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td class="num">${F(D.totBoxes)}</td><td class="num">${F(D.totUnits)}</td><td class="num">${F(D.totKg)}</td>${showAvg?`<td class="num" style="color:var(--gold2)">${F(avgTotKg)}</td>`:''}</tr></tbody>`;
   try{injectExportButtons();}catch(e){}
 }
 function renderProd(){ renderFlow('prod'); }
@@ -2140,9 +2275,9 @@ function renderSku(){
   const T=t();
   $('#skuTitle').textContent=T.skuTitle; $('#skuNote').textContent=T.skuNote;
   $('#q').placeholder=T.qPh;
-  const cats=[...new Set(DATA.sku.map(s=>s.cat))];
-  const fc=$('#fcat'), curF=fc.value;
-  fc.innerHTML=`<option value="">${T.allCats}</option>`+cats.map(c=>`<option value="${c}" ${c===curF?'selected':''}>${T.cats[c]||c}</option>`).join('');
+  const cats=[...new Set(DATA.sku.map(s=>s.cat))].filter(Boolean).sort();
+  SKU_CATSEL=SKU_CATSEL.filter(v=>cats.includes(v));
+  msDropdown('fcat', cats.map(c=>[c,(T.cats&&T.cats[c])||c]), SKU_CATSEL, sel=>{SKU_CATSEL=sel;renderSku();}, T.allCats||'كل الفئات');
   const so=$('#srt'); [...so.options].forEach((o,i)=>o.textContent=T.srt[i]);
   // range bar
   $('#skuRange').innerHTML=`<span class="perlbl">${T.perShow}</span>`+
@@ -2152,8 +2287,8 @@ function renderSku(){
     ` <span class="perlbl">${T.skuTo}</span><input type="date" id="skuTo" class="rngDate" value="${SKURANGE.to||''}">`;
   const win=skuWindowIdx();
   const useWin=SKURANGE.mode!=='all'&&win&&DATA.pdaily;
-  const q=$('#q').value.trim().toLowerCase(), f=fc.value, sr=so.value;
-  let rows=DATA.sku.filter(s=>(!f||s.cat===f)&&(!q||String(s.c).includes(q)||s.n.toLowerCase().includes(q)));
+  const q=$('#q').value.trim().toLowerCase(), sr=so.value;
+  let rows=DATA.sku.filter(s=>(!SKU_CATSEL.length||SKU_CATSEL.includes(s.cat))&&(!q||String(s.c).includes(q)||s.n.toLowerCase().includes(q)));
   // when windowed, recompute the windowed metrics per product and attach as _w
   if(useWin){rows=rows.map(s=>{const w=skuWindowAgg(s.c,win[0],win[1]);return {...s,_w:w}}).filter(s=>s._w);}
   $('#skuCount').textContent=T.skuCount(DATA.sku.length,DATA.kpi.asof,rows.length)+(useWin?' — '+(DATA.pdates[win[0]]+' → '+DATA.pdates[win[1]]):'');
@@ -2177,7 +2312,6 @@ function renderSku(){
   if(to){to.onchange=()=>{SKURANGE={mode:'custom',from:(fr&&fr.value)||null,to:to.value||null};renderSku()}; to.onclick=()=>openCalS(to);}
 }
 ['q','srt'].forEach(id=>document.getElementById(id).addEventListener('input',renderSku));
-$('#fcat').addEventListener('change',renderSku);
 
 function periodBar(targetId,key,opts){
   const T=t();
@@ -2225,6 +2359,48 @@ function renderCmp(){
     `<button class="granBtn ${CMPGRAN==='weekly'?'on':''}" data-g="weekly">${T.cmpGranW}</button>`;
   const isW=CMPGRAN==='weekly';
   let series=isW?C.weekly_cmp:C.daily_cmp;
+  // ===== product-attribute filters (category/family/ff/own/pack/wt/brand/product) =====
+  (function buildCmpFilters(){
+    const AR=LANG==='ar', allP=(DATA.sku||[]);
+    $('#cmpCatL')&&($('#cmpCatL').textContent=AR?'الفئة':'Category');
+    $('#cmpFamL')&&($('#cmpFamL').textContent=AR?'العائلة':'Family');
+    $('#cmpFFL')&&($('#cmpFFL').textContent=AR?'فريش/مجمد':'Fresh/Frozen');
+    $('#cmpPackL')&&($('#cmpPackL').textContent=AR?'التعبئة':'Packaging');
+    $('#cmpOwnL')&&($('#cmpOwnL').textContent=AR?'العلامة':'Brand');
+    $('#cmpWtL')&&($('#cmpWtL').textContent=AR?'الوزن (غم)':'Weight (g)');
+    $('#cmpBrandL')&&($('#cmpBrandL').textContent=AR?'البراند':'Brand');
+    $('#cmpProdL')&&($('#cmpProdL').textContent=AR?'المنتج (SKU)':'Product (SKU)');
+    const cats=[...new Set(allP.map(p=>p.cat))].filter(Boolean).sort();
+    msDropdown('cmpCat', cats.map(c=>[c,(t().cats&&t().cats[c])||c]), CMP_F.cat, sel=>{CMP_F.cat=sel;CMP_F.fam=[];renderCmp();}, AR?'كل الفئات':'All categories');
+    const fams=[...new Set(allP.filter(p=>msPass(p.cat,CMP_F.cat)).map(p=>p.fam||'—'))].filter(x=>x&&x!=='—').sort();
+    CMP_F.fam=CMP_F.fam.filter(v=>fams.includes(v));
+    msDropdown('cmpFam', fams.map(f=>[f,f]), CMP_F.fam, sel=>{CMP_F.fam=sel;renderCmp();}, AR?'كل العائلات':'All families');
+    const wts=[...new Set(allP.map(p=>p.wt).filter(w=>w))].sort((a,b)=>a-b);
+    msDropdown('cmpWt', wts.map(w=>[String(w),F(w)+(AR?' غم':' g')]), CMP_F.wt, sel=>{CMP_F.wt=sel;renderCmp();}, AR?'كل الأوزان':'All weights');
+    const brands=[...new Set(allP.map(p=>String(p.brand||'—')))].filter(x=>x&&x!=='—').sort();
+    CMP_F.brand=CMP_F.brand.filter(v=>brands.includes(v));
+    msDropdown('cmpBrand', brands.map(b=>[b,b]), CMP_F.brand, sel=>{CMP_F.brand=sel;renderCmp();}, AR?'كل البراندات':'All brands');
+    const prodScope=allP.filter(p=>msPass(p.cat,CMP_F.cat)&&(!(CMP_F.brand&&CMP_F.brand.length)||CMP_F.brand.includes(String(p.brand||'—'))));
+    const prods=prodScope.map(p=>[String(p.c),(p.c)+' — '+String(p.n).slice(0,45)]).sort((a,b)=>a[1].localeCompare(b[1]));
+    CMP_F.prod=(CMP_F.prod||[]).filter(v=>prods.some(x=>x[0]===String(v)));
+    msDropdown('cmpProd', prods, CMP_F.prod, sel=>{CMP_F.prod=sel;renderCmp();}, AR?'كل المنتجات':'All products', true);
+    const os=$('#cmpOwn');
+    if(os&&!os.dataset.init){os.dataset.init='1';os.onchange=e=>{CMP_F.own=e.target.value;renderCmp();};}
+    if(os)os.innerHTML=[['all',AR?'الكل':'All'],['own',AR?'علامتنا':'Own brand'],['pl',AR?'علامة خاصة':'Private Label']].map(([v,l])=>`<option value="${v}" ${v===CMP_F.own?'selected':''}>${l}</option>`).join('');
+    const ff=$('#cmpFF');
+    if(ff&&!ff.dataset.init){ff.dataset.init='1';ff.onchange=e=>{CMP_F.ff=e.target.value;renderCmp();};}
+    if(ff)ff.innerHTML=[['all',AR?'الكل':'All'],['Fresh',AR?'فريش':'Fresh'],['Frozen',AR?'مجمد':'Frozen']].map(([v,l])=>`<option value="${v}" ${v===CMP_F.ff?'selected':''}>${l}</option>`).join('');
+    const packs=[...new Set(allP.map(p=>packType(p.n)))].filter(Boolean).sort();
+    const ps=$('#cmpPack');
+    if(ps&&!ps.dataset.init){ps.dataset.init='1';ps.onchange=e=>{CMP_F.pack=e.target.value;renderCmp();};}
+    if(ps)ps.innerHTML=[['all',AR?'الكل':'All']].concat(packs.map(p=>[p,p])).map(([v,l])=>`<option value="${v}" ${v===CMP_F.pack?'selected':''}>${l}</option>`).join('');
+  })();
+  // if any product-attribute filter is active, recompute series from filtered sku data
+  const cmpFltActive = CMP_F.cat.length||CMP_F.fam.length||CMP_F.ff!=='all'||CMP_F.own!=='all'||CMP_F.pack!=='all'||CMP_F.wt.length||CMP_F.brand.length||CMP_F.prod.length;
+  if(cmpFltActive){
+    const CF=computeCmpFiltered(null,null,CMP_F);
+    if(CF){ series = isW?CF.weekly:CF.daily; }
+  }
   // date range filter (uses the daily 'd' or weekly 'frm' key)
   $('#cmpFromL')&&($('#cmpFromL').textContent=T.cmpFromL); $('#cmpToL')&&($('#cmpToL').textContent=T.cmpToL);
   const ccb=$('#cmpClearBtn'); if(ccb)ccb.textContent=T.cmpClearD;
@@ -3328,10 +3504,10 @@ function computeFromMats(M, rxMat){
    let stt=0,smx=0,smxj=-1,smn=null,smnj=-1,lastj=-1,ott=0,omx=0,ptt=0,pmx=0,lcm=0;
    const dailyS=[],dailyO=[],dailyP=[],dailyK=[],dailyC=[];
    const hasC=M.C&&M.C[r];
-   for(let j=0;j<nd;j++){if(!useDay(j))continue;const s=val('S',r,j);stt+=s;
+   for(let j=0;j<nd;j++){const inc=useDay(j);const s=inc?val('S',r,j):0;stt+=s;
     if(s>smx){smx=s;smxj=j} if(s>0&&(smn===null||s<smn)){smn=s;smnj=j} if(s>0)lastj=j;
-    const o=val('O',r,j);ott+=o;if(o>omx)omx=o;
-    const p=val('P',r,j);ptt+=p;if(p>pmx)pmx=p;
+    const o=inc?val('O',r,j):0;ott+=o;if(o>omx)omx=o;
+    const p=inc?val('P',r,j):0;ptt+=p;if(p>pmx)pmx=p;
     dailyS.push(Math.round(s));dailyO.push(Math.round(o));dailyP.push(Math.round(p));dailyK.push(Math.round(val('K',r,j)));
     dailyC.push(hasC?Math.round(NUM(M.C[r][dts[j].c])):Math.round(val('K',r,j)));}
    for(const j of lcmJ){if(!useDay(j))continue;lcm+=val('S',r,j);}
