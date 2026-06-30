@@ -1586,7 +1586,7 @@ function computeFlow(metricKey, from, to, F, gran){
       const pcs=p.pcs||0;
       const units=Math.round(boxes*pcs);
       const nd=idxs.length||1;
-      rows.push({code:p.c,name:p.n,cat:p.cat,fam:p.fam||'—',sub:p.sub||'—',typ:detectType(p),pack:packType(p.n),
+      rows.push({code:p.c,name:p.n,nameAr:p.nAr||'',cat:p.cat,fam:p.fam||'—',sub:p.sub||'—',typ:detectType(p),pack:packType(p.n),
         own:classifyOwn(p), brand:String(p.brand||'—'), pcs, unitG:p.wt||0, boxKg:+(boxKg).toFixed(2),
         boxes:Math.round(boxes), units, kg:Math.round(boxes*boxKg),
         avgKg:Math.round(boxes*boxKg/nd), avgBoxes:+(boxes/nd).toFixed(1), avgUnits:Math.round(units/nd)});
@@ -1630,7 +1630,7 @@ function computeDailyProduction(asofDate, catArr, famArr, ffF, ownF, packF){
       const unitG=p.wt||0;                 // unit weight in grams
       const pcs=p.pcs||0;                  // pieces/birds per box
       const birds=Math.round(prod*pcs);    // total pieces/birds
-      rows.push({code:p.c,name:p.n,cat:p.cat,fam:p.fam||'—',sub:p.sub||'—',typ:detectType(p),pack:packType(p.n),
+      rows.push({code:p.c,name:p.n,nameAr:p.nAr||'',cat:p.cat,fam:p.fam||'—',sub:p.sub||'—',typ:detectType(p),pack:packType(p.n),
         own:classifyOwn(p), boxes:Math.round(prod), kg:Math.round(prod*boxKg),
         unitG, pcs, birds, boxKg:+(boxKg).toFixed(2)});
     }
@@ -1671,7 +1671,7 @@ function computeStockAsOf(asofDate, catF, famF, ffF, ownF, balF){
     else if(balF==='all'){ /* keep all */ }
     else { if(!hasBal)return; }                   // default 'has': only products with balance
     const boxKg=prodBoxKg(p)||0;
-    rows.push({code:p.c,name:p.n,cat:p.cat,fam:p.fam||'—',sub:p.sub||'—',typ:detectType(p),pack:packType(p.n),
+    rows.push({code:p.c,name:p.n,nameAr:p.nAr||'',cat:p.cat,fam:p.fam||'—',sub:p.sub||'—',typ:detectType(p),pack:packType(p.n),
       openBal:Math.round(openBal), bal:Math.round(closeBal), kg:Math.round(closeBal*boxKg), openKg:Math.round(openBal*boxKg)});
   });
   rows.sort((a,b)=>b.bal-a.bal);
@@ -1759,7 +1759,7 @@ function renderFlow(tabKey){
   // product (SKU) — searchable multi-select, code + name, scoped to category/brand selection
   $id('ProdL')&&($id('ProdL').textContent=AR?'المنتج (SKU)':'Product (SKU)');
   const prodScope=allP.filter(p=>msPass(p.cat,S.cat)&&(!(S.brand&&S.brand.length)||S.brand.includes(String(p.brand||'—'))));
-  const prods=prodScope.map(p=>[String(p.c),(p.c)+' — '+String(p.n).slice(0,45)]).sort((a,b)=>a[1].localeCompare(b[1]));
+  const prods=prodScope.map(p=>[String(p.c),(p.c)+' — '+String(prodName(p)).slice(0,45)]).sort((a,b)=>a[1].localeCompare(b[1]));
   S.prod=(S.prod||[]).filter(v=>prods.some(x=>x[0]===String(v)));
   msDropdown(P+'Prod', prods, S.prod, sel=>{S.prod=sel;renderFlow(P);}, AR?'كل المنتجات':'All products', true);
   // own select
@@ -1837,7 +1837,7 @@ function renderFlowTable(P){
   const $id=suffix=>$('#'+P+suffix);
   $id('TblT')&&($id('TblT').textContent=AR?('تفصيل '+metricWord+' حسب المنتج'):(metricWord+' detail by product'));
   let rows=D.rows.slice();
-  if(S.search){const q=S.search.toLowerCase();rows=rows.filter(r=>String(r.name).toLowerCase().includes(q)||String(r.code).includes(q));}
+  if(S.search){const q=S.search.toLowerCase();rows=rows.filter(r=>String(r.name).toLowerCase().includes(q)||String(r.nameAr||'').toLowerCase().includes(q)||String(r.code).includes(q));}
   const ownL=o=>o==='pl'?(AR?'خاصة':'PL'):(AR?'علامتنا':'Own');
   const showAvg=(P==='sales');  // average column only on the Sales tab
   const avgHdr=AR?'معدل المبيعات (صندوق/يوم)':'Avg sales (boxes/day)';
@@ -1845,7 +1845,7 @@ function renderFlowTable(P){
   const tbl=$id('Tbl'); if(!tbl)return;
   const avgTotKg = D.nDays?Math.round(D.totBoxes/D.nDays):0;
   tbl.innerHTML=`<thead><tr>${H.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>`+
-    rows.slice(0,800).map(r=>`<tr><td>${r.code}</td><td style="text-align:start">${r.name}</td><td>${(t().cats&&t().cats[r.cat])||r.cat}</td><td>${r.fam}</td><td>${r.typ==='Frozen'?(AR?'مجمد':'Frozen'):(AR?'فريش':'Fresh')}</td><td>${r.pack}</td><td>${r.brand}</td><td>${ownL(r.own)}</td><td class="num">${F(r.boxes)}</td><td class="num">${F(r.units)}</td><td class="num">${F(r.kg)}</td>${showAvg?`<td class="num" style="color:var(--gold2);font-weight:700">${F(r.avgBoxes)}</td>`:''}</tr>`).join('')+
+    rows.slice(0,800).map(r=>`<tr><td>${r.code}</td><td style="text-align:start">${prodName(r)}</td><td>${(t().cats&&t().cats[r.cat])||r.cat}</td><td>${r.fam}</td><td>${r.typ==='Frozen'?(AR?'مجمد':'Frozen'):(AR?'فريش':'Fresh')}</td><td>${r.pack}</td><td>${r.brand}</td><td>${ownL(r.own)}</td><td class="num">${F(r.boxes)}</td><td class="num">${F(r.units)}</td><td class="num">${F(r.kg)}</td>${showAvg?`<td class="num" style="color:var(--gold2);font-weight:700">${F(r.avgBoxes)}</td>`:''}</tr>`).join('')+
     `<tr style="background:var(--panel2);font-weight:800"><td>—</td><td style="text-align:start">${AR?'الإجمالي':'Total'} (${rows.length})</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td class="num">${F(D.totBoxes)}</td><td class="num">${F(D.totUnits)}</td><td class="num">${F(D.totKg)}</td>${showAvg?`<td class="num" style="color:var(--gold2)">${F(avgTotKg)}</td>`:''}</tr></tbody>`;
   try{injectExportButtons();}catch(e){}
 }
@@ -1864,7 +1864,7 @@ function renderProdTable(){
     LANG==='ar'?'وزن الوحدة (غم)':'Unit wt (g)', LANG==='ar'?'وزن الصندوق (كغم)':'Box (kg)',
     LANG==='ar'?'الصناديق':'Boxes', LANG==='ar'?'الطيور/القطع':'Birds/pcs', LANG==='ar'?'الوزن (كغم)':'Weight (kg)'];
   $('#tProd').innerHTML=`<tr>${H.map((h,i)=>`<th style="${i===1?'text-align:start':''}">${h}</th>`).join('')}</tr>`+
-    rows.map(r=>`<tr><td>${r.code}</td><td style="text-align:start"><b>${r.name}</b></td><td>${T.cats[r.cat]||r.cat}</td><td>${r.fam}</td><td>${r.pack}</td><td>${ffPill(r.typ)}</td><td>${ownPill(r.own)}</td><td class="num">${F(r.unitG)}</td><td class="num">${r.boxKg}</td><td class="num"><b>${F(r.boxes)}</b></td><td class="num">${F(r.birds)}</td><td class="num"><b>${F(r.kg)}</b></td></tr>`).join('')+
+    rows.map(r=>`<tr><td>${r.code}</td><td style="text-align:start"><b>${prodName(r)}</b></td><td>${T.cats[r.cat]||r.cat}</td><td>${r.fam}</td><td>${r.pack}</td><td>${ffPill(r.typ)}</td><td>${ownPill(r.own)}</td><td class="num">${F(r.unitG)}</td><td class="num">${r.boxKg}</td><td class="num"><b>${F(r.boxes)}</b></td><td class="num">${F(r.birds)}</td><td class="num"><b>${F(r.kg)}</b></td></tr>`).join('')+
     `<tr style="background:var(--panel2);font-weight:800"><td>—</td><td style="text-align:start">${LANG==='ar'?'الإجمالي':'Total'} (${rows.length})</td><td colspan="7">—</td><td class="num">${F(rows.reduce((a,r)=>a+r.boxes,0))}</td><td class="num">${F(rows.reduce((a,r)=>a+r.birds,0))}</td><td class="num">${F(rows.reduce((a,r)=>a+r.kg,0))}</td></tr>`;
   try{injectExportButtons();}catch(e){}
 }
@@ -1983,7 +1983,7 @@ function renderWdist(){
   const prows=(D.prows||[]).slice(0,800);
   const ownL=o=>o==='own'?(AR?'علامتنا':'Own'):(AR?'خاصة':'PL');
   $('#tWdProd').innerHTML=`<thead><tr>${PH.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>`+
-    prows.map(r=>`<tr><td>${r.code}</td><td style="text-align:start">${r.name}</td><td>${catLabel(r.cat)}</td><td>${r.fam}</td><td>${r.typ}</td><td>${ownL(r.own)}</td><td class="num">${F(r.boxes)}</td><td class="num">${F(r.units)}</td><td class="num">${F(r.kg)}</td></tr>`).join('')+
+    prows.map(r=>`<tr><td>${r.code}</td><td style="text-align:start">${prodName(r)}</td><td>${catLabel(r.cat)}</td><td>${r.fam}</td><td>${r.typ}</td><td>${ownL(r.own)}</td><td class="num">${F(r.boxes)}</td><td class="num">${F(r.units)}</td><td class="num">${F(r.kg)}</td></tr>`).join('')+
     `<tr style="background:var(--panel2);font-weight:800"><td>—</td><td style="text-align:start">${AR?'الإجمالي':'Total'} (${(D.prows||[]).length})</td><td>—</td><td>—</td><td>—</td><td>—</td><td class="num">${F(D.prodTotBoxes)}</td><td class="num">${F(D.prodTotUnits)}</td><td class="num">${F(D.prodTotKg)}</td></tr></tbody>`;
 
   $('#wdNote').innerHTML=AR
@@ -2206,7 +2206,7 @@ function renderStkTable(){
   const ffPill=tp=>tp==='Frozen'?`<span class="pill b">${LANG==='ar'?'مجمد':'Frozen'}</span>`:`<span class="pill g">${LANG==='ar'?'فريش':'Fresh'}</span>`;
   const oLbl=LANG==='ar'?'الافتتاح':'Opening', cLbl=LANG==='ar'?'الإغلاق':'Closing';
   $('#tStk').innerHTML=`<tr><th>${T.stkThCode}</th><th style="text-align:start">${T.stkThName}</th><th>${T.stkThCat}</th><th>${T.stkThFam}</th><th>${T.stkThPack}</th><th>${T.stkThType}</th><th>${oLbl}</th><th>${cLbl}</th><th>${T.stkThKg}</th></tr>`+
-    rows.map(r=>`<tr><td>${r.code}</td><td style="text-align:start"><b>${r.name}</b></td><td>${T.cats[r.cat]||r.cat}</td><td>${r.fam}</td><td>${r.pack}</td><td>${ffPill(r.typ)}</td><td class="num" style="opacity:.7">${F(r.openBal)}</td><td class="num"><b>${F(r.bal)}</b></td><td class="num">${F(r.kg)}</td></tr>`).join('')+
+    rows.map(r=>`<tr><td>${r.code}</td><td style="text-align:start"><b>${prodName(r)}</b></td><td>${T.cats[r.cat]||r.cat}</td><td>${r.fam}</td><td>${r.pack}</td><td>${ffPill(r.typ)}</td><td class="num" style="opacity:.7">${F(r.openBal)}</td><td class="num"><b>${F(r.bal)}</b></td><td class="num">${F(r.kg)}</td></tr>`).join('')+
     `<tr style="background:var(--panel2);font-weight:800"><td>—</td><td style="text-align:start">${LANG==='ar'?'الإجمالي':'Total'} (${rows.length})</td><td>—</td><td>—</td><td>—</td><td>—</td><td class="num" style="opacity:.7">${F(rows.reduce((a,r)=>a+r.openBal,0))}</td><td class="num">${F(rows.reduce((a,r)=>a+r.bal,0))}</td><td class="num">${F(rows.reduce((a,r)=>a+r.kg,0))}</td></tr>`;
   try{injectExportButtons();}catch(e){}
 }
@@ -2292,7 +2292,7 @@ function renderSku(){
   const win=skuWindowIdx();
   const useWin=SKURANGE.mode!=='all'&&win&&DATA.pdaily;
   const q=$('#q').value.trim().toLowerCase(), sr=so.value;
-  let rows=DATA.sku.filter(s=>(!SKU_CATSEL.length||SKU_CATSEL.includes(s.cat))&&(!q||String(s.c).includes(q)||s.n.toLowerCase().includes(q)));
+  let rows=DATA.sku.filter(s=>(!SKU_CATSEL.length||SKU_CATSEL.includes(s.cat))&&(!q||String(s.c).includes(q)||s.n.toLowerCase().includes(q)||String(s.nAr||'').toLowerCase().includes(q)));
   // when windowed, recompute the windowed metrics per product and attach as _w
   if(useWin){rows=rows.map(s=>{const w=skuWindowAgg(s.c,win[0],win[1]);return {...s,_w:w}}).filter(s=>s._w);}
   $('#skuCount').textContent=T.skuCount(DATA.sku.length,DATA.kpi.asof,rows.length)+(useWin?' — '+(DATA.pdates[win[0]]+' → '+DATA.pdates[win[1]]):'');
@@ -2302,7 +2302,7 @@ function renderSku(){
   rows.map((s,ix)=>{const w=useWin?s._w:null;
    const st=w?w.sales:s.st, smx=w?w.smx:s.smx, smxd=w?w.smxd:s.smxd, smn=w?w.smn:s.smn, smnd=w?w.smnd:s.smnd,
          omx=w?w.omx:s.omx, pmx=w?w.pmx:s.pmx, ful=w?w.ful:s.ful, last=w?w.last:s.last, rk=useWin?ix+1:s.rk;
-   return `<tr><td>${rk}</td><td>${s.c}</td><td style="text-align:start">${s.n}</td><td>${t().cats[s.cat]||s.cat}</td>
+   return `<tr><td>${rk}</td><td>${s.c}</td><td style="text-align:start">${prodName(s)}</td><td>${t().cats[s.cat]||s.cat}</td>
   <td class="num"><b>${F(st)}</b></td><td class="num">${F(smx)}</td><td>${smxd||'—'}</td>
   <td class="num">${smn==null?'—':F(smn)}</td><td>${smnd||'—'}</td>
   <td class="num">${F(omx)}</td><td class="num">${F(pmx)}</td>
@@ -2385,7 +2385,7 @@ function renderCmp(){
     CMP_F.brand=CMP_F.brand.filter(v=>brands.includes(v));
     msDropdown('cmpBrand', brands.map(b=>[b,b]), CMP_F.brand, sel=>{CMP_F.brand=sel;renderCmp();}, AR?'كل البراندات':'All brands');
     const prodScope=allP.filter(p=>msPass(p.cat,CMP_F.cat)&&(!(CMP_F.brand&&CMP_F.brand.length)||CMP_F.brand.includes(String(p.brand||'—'))));
-    const prods=prodScope.map(p=>[String(p.c),(p.c)+' — '+String(p.n).slice(0,45)]).sort((a,b)=>a[1].localeCompare(b[1]));
+    const prods=prodScope.map(p=>[String(p.c),(p.c)+' — '+String(prodName(p)).slice(0,45)]).sort((a,b)=>a[1].localeCompare(b[1]));
     CMP_F.prod=(CMP_F.prod||[]).filter(v=>prods.some(x=>x[0]===String(v)));
     msDropdown('cmpProd', prods, CMP_F.prod, sel=>{CMP_F.prod=sel;renderCmp();}, AR?'كل المنتجات':'All products', true);
     const os=$('#cmpOwn');
@@ -2469,7 +2469,7 @@ function renderCmp(){
   if(curM==='covP'||curM==='covS')rows=rows.filter(p=>p[curM]!=null).sort((a,b)=>a[curM]-b[curM]);
   else rows=rows.sort((a,b)=>(b[curM]||0)-(a[curM]||0));
   $('#tCmpUnc').innerHTML=`<tr><th>#</th><th>${T.skuTh[1]}</th><th style="text-align:start">${T.skuTh[2]}</th><th>${T.thCat}</th><th>${T.thOrd}</th><th>${T.thProd}</th><th>${T.thSale}</th><th>${T.thCovP}</th><th>${T.thCovS}</th><th>${T.thShortRate}</th><th>${T.thShortQty}</th></tr>`+
-   rows.slice(0,60).map((p,i)=>`<tr><td>${i+1}</td><td>${p.c}</td><td style="text-align:start">${p.n}</td><td>${T.cats[p.cat]||p.cat}</td>
+   rows.slice(0,60).map((p,i)=>`<tr><td>${i+1}</td><td>${p.c}</td><td style="text-align:start">${prodName(p)}</td><td>${T.cats[p.cat]||p.cat}</td>
    <td class="num">${F(p.ord)}</td><td class="num">${F(p.prod)}</td><td class="num">${F(p.sales)}</td>
    <td>${p.covP==null?'—':`<span class="pill ${p.covP>=0.95?'g':(p.covP>=0.7?'y':'r')}">${Pc(p.covP,0)}</span>`}</td>
    <td>${p.covS==null?'—':`<span class="pill ${p.covS>=0.95?'g':(p.covS>=0.7?'y':'r')}">${Pc(p.covS,0)}</span>`}</td>
@@ -2976,7 +2976,7 @@ function renderAlerts(){
       </div>
       <div style="font-size:13px;opacity:.85;margin-top:6px">
         ${T.alExpected}: <b>${fmt(Math.round(a.mean))}</b> ${unit} · ${T.alDev}: <b>${(a.pctVsMean>=0?'+':'')+Pc(a.pctVsMean,1)}</b> (${a.absz.toFixed(1)}σ)
-        <span style="opacity:.7"> · ${cmpTxt} (${a.n})</span>
+        <span style="opacity:.7"> · ${cmpTxt} (${prodName(a)})</span>
       </div></div>`;}).join('') + (depthMsg?`<div style="margin-top:8px;font-size:12px;opacity:.65;text-align:center">${depthMsg}</div>`:'');
 }
 
@@ -3078,7 +3078,7 @@ function renderTop(){
     return `<div class="panel" style="margin-bottom:14px">
       <h3 style="margin:0 0 8px">${catLabel(cat)} <span style="font-size:12px;opacity:.6">— ${mLbl}</span>${rangeTxt}</h3>
       <div class="tscroll"><table class="tbl" id="${tid}"><tr><th>${T.topThRank}</th><th>${T.topThProd}</th><th>${T.topThType}</th><th>${mLbl}</th></tr>`+
-      rows.map(p=>`<tr><td><b>${p.rank}</b></td><td>${p.name}</td>
+      rows.map(p=>`<tr><td><b>${p.rank}</b></td><td>${prodName(p)}</td>
         <td>${p.typ?`<span class="pill ${/frozen|مجمد/i.test(p.typ)?'b':'g'}">${/frozen|مجمد/i.test(p.typ)?(LANG==='ar'?'مجمد':'Frozen'):(LANG==='ar'?'فريش':'Fresh')}</span>`:'—'}</td>
         <td class="num"><b>${F(p.val)}</b></td></tr>`).join('')+
       `</table></div></div>`;
@@ -3152,7 +3152,7 @@ function renderOffals(){
   // products table — now with Fresh/Frozen + Expected columns
   const typeLbl=t=>t==='heart'?T.ofHeart:t==='gizzard'?T.ofGizzard:t==='liver'?T.ofLiver:T.ofOther;
   $('#tOffals').innerHTML=`<tr><th>${T.ofThProd}</th><th>${T.ofThType}</th><th>${T.ofThFF}</th><th>${T.ofThBoxes}</th><th>${T.ofThKg}</th></tr>`+
-    D.rows.map(r=>`<tr><td><b>${r.name}</b></td><td>${typeLbl(r.typ)}</td>
+    D.rows.map(r=>`<tr><td><b>${prodName(r)}</b></td><td>${typeLbl(r.typ)}</td>
       <td><span class="pill ${r.ff==='Frozen'?'b':'g'}">${r.ff==='Frozen'?(LANG==='ar'?'مجمد':'Frozen'):(LANG==='ar'?'فريش':'Fresh')}</span></td>
       <td class="num">${F(r.boxes)}</td><td class="num">${F(r.kg)}</td></tr>`).join('')+
     `<tr style="background:var(--panel2);font-weight:800"><td>${T.ofTotal} (${D.rows.length})</td><td>—</td><td>—</td><td>—</td><td class="num">${F(D.kAct)}</td></tr>`+
@@ -3227,7 +3227,7 @@ function renderWip(){
     options:{maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{ticks:{callback:v=>Fk(v)}}}}});
   // table (filtered)
   $('#tWip').innerHTML=`<tr><th>${T.fppThProd}</th><th>${T.fppThType}</th><th>${T.fppThFam}</th><th>${T.fppThBrand}</th><th>${T.fppThSales}</th><th>${T.fppThOrd}</th><th>${T.fppThProd2}</th></tr>`+
-    A.rows.map(r=>`<tr><td><b>${r.name}</b></td>
+    A.rows.map(r=>`<tr><td><b>${prodName(r)}</b></td>
       <td><span class="pill ${r.typ==='Frozen'?'b':'g'}">${r.typ==='Frozen'?(LANG==='ar'?'مجمد':'Frozen'):(LANG==='ar'?'فريش':'Fresh')}</span></td>
       <td>${r.famLabel||r.sub}</td><td>${r.own==='pl'?(LANG==='ar'?'خاصة':'PL'):(LANG==='ar'?'علامتنا':'Own')}</td>
       <td class="num">${F(r.st)}</td><td class="num">${F(r.ot)}</td><td class="num">${F(r.pt)}</td></tr>`).join('')+
@@ -3241,7 +3241,7 @@ let WBFROM=null, WBTO=null, WBOWN='all', WBFAM=[];  // Whole Bird date range + b
 let CUTFROM=null, CUTTO=null, CUTFAM=[];
 
 
-function renderAll(){loadColors();setChrome();renderTrend();renderExec();renderRx();renderWb();renderStk();try{renderProd();}catch(e){console.error('renderProd',e);}try{renderSales();}catch(e){console.error('renderSales',e);}try{renderOrders();}catch(e){console.error('renderOrders',e);}renderPlant();renderQuality();renderDemand();renderAlerts();renderTop();try{renderOffals();}catch(e){console.error('renderOffals',e);}try{renderWip();}catch(e){console.error('renderWip',e);}renderCmp();try{injectExportButtons();}catch(e){console.warn('export buttons',e);};renderWeekMonth();renderSku();try{renderWdist();}catch(e){console.error('renderWdist',e);}}
+function renderAll(){_NAR_MAP=null;loadColors();setChrome();renderTrend();renderExec();renderRx();renderWb();renderStk();try{renderProd();}catch(e){console.error('renderProd',e);}try{renderSales();}catch(e){console.error('renderSales',e);}try{renderOrders();}catch(e){console.error('renderOrders',e);}renderPlant();renderQuality();renderDemand();renderAlerts();renderTop();try{renderOffals();}catch(e){console.error('renderOffals',e);}try{renderWip();}catch(e){console.error('renderWip',e);}renderCmp();try{injectExportButtons();}catch(e){console.warn('export buttons',e);};renderWeekMonth();renderSku();try{renderWdist();}catch(e){console.error('renderWdist',e);}}
 
 $('#exportBtn').onclick=()=>{
   try{
@@ -3451,7 +3451,7 @@ function computeFromMats(M, rxMat){
     const m=M[k]; if(!m)throw 'Missing sheet: '+k;
     if(!dts){dts=[];const hdr=m[0];for(let c=INFO;c<hdr.length;c++){const d=xDate(hdr[c]);if(d)dts.push({c,d})}}}
   const ms=M.S,n=ms.length-1,rowsInfo=[];
-  for(let r=1;r<=n;r++)rowsInfo.push({code:ms[r][0],nm:String(ms[r][3]||''),cat:String(ms[r][6]||'').trim(),
+  for(let r=1;r<=n;r++)rowsInfo.push({code:ms[r][0],nm:String(ms[r][3]||''),nmAr:String(ms[r][1]||''),cat:String(ms[r][6]||'').trim(),
     fam:String(ms[r][7]||'').trim(),sub:String(ms[r][8]||'').trim(),typ:String(ms[r][9]||'').trim(),pcs:NUM(ms[r][4]),wt:NUM(ms[r][5]),
     packing:String(ms[r][10]||'').trim(),own:String(ms[r][11]||'').trim(),brand:String(ms[r][13]||'').trim(),
     status:String(ms[r][14]||'').trim()});
@@ -3526,7 +3526,7 @@ function computeFromMats(M, rxMat){
     dailyS.push(Math.round(s));dailyO.push(Math.round(o));dailyP.push(Math.round(p));dailyK.push(Math.round(val('K',r,j)));
     dailyC.push(hasC?Math.round(NUM(M.C[r][dts[j].c])):Math.round(val('K',r,j)));}
    for(const j of lcmJ){if(!useDay(j))continue;lcm+=val('S',r,j);}
-   skuArr.push({c:I.code,n:String(I.nm).replace(/^Carton |^Box /,''),cat:I.cat,
+   skuArr.push({c:I.code,n:String(I.nm).replace(/^Carton |^Box /,''),nAr:String(I.nmAr||'').replace(/^ك\/ |^ص\/ /,''),cat:I.cat,
     st:Math.round(stt),smx:Math.round(smx),smxd:smxj>=0&&smx>0?iso(dts[smxj].d):null,
     smn:smn?+smn.toFixed(1):null,smnd:smnj>=0?iso(dts[smnj].d):null,
     ot:Math.round(ott),omx:Math.round(omx),pt:Math.round(ptt),pmx:Math.round(pmx),
@@ -3711,6 +3711,19 @@ function offalType(name){
 // 'unitkg' = wt is per-piece weight in kilograms → box kg = wt × pcs
 // 'auto'   = pick per-product based on magnitude (safest default)
 var WT_MODE='auto';
+// product display name by current language (Arabic from col 1, English from col 3)
+var _NAR_MAP=null;
+function narMap(){ if(_NAR_MAP)return _NAR_MAP; _NAR_MAP={}; (DATA.sku||[]).forEach(p=>{ if(p.nAr)_NAR_MAP[String(p.c)]=p.nAr; }); return _NAR_MAP; }
+function prodName(p){
+  if(!p)return '';
+  const enName=p.n||p.name||'';
+  if(LANG==='ar'){
+    let a=(p.nAr||p.nameAr||'').trim();
+    if(!a){ const code=p.c!=null?p.c:(p.code!=null?p.code:null); if(code!=null)a=(narMap()[String(code)]||'').trim(); }
+    if(a)return a;
+  }
+  return enName;
+}
 function prodBoxKg(p){
   const w=p.wt, pcs=p.pcs;
   if(!w) return null;
