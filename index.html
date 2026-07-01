@@ -319,6 +319,101 @@ body.locked .brand, body.locked nav, body.locked main, body.locked section{visib
   <div class="note" id="stkNote"></div>
 </div></section>
 
+<section id="invan"><div class="wrap">
+  <div class="secthead"><h2 id="invanTitle"></h2><small id="invanSub"></small></div>
+  <div class="search" id="invanFilters" style="flex-wrap:wrap;gap:10px">
+    <span class="fgrp"><span class="perlbl" id="invanFromL"></span><input type="date" id="invanFrom" class="rngDate"></span>
+    <span class="fgrp"><span class="perlbl" id="invanToL"></span><input type="date" id="invanTo" class="rngDate"></span>
+    <button class="btn ghost" id="invanR30"></button>
+    <button class="btn ghost" id="invanAllBtn"></button>
+    <span class="fgrp"><span class="perlbl" id="invanDeadL"></span><select id="invanDead"></select></span>
+  </div>
+  <div class="search" id="invanFilters2" style="flex-wrap:wrap;gap:10px;margin-top:8px">
+    <span class="fgrp"><span class="perlbl" id="invanCatL"></span><span id="invanCat"></span></span>
+    <span class="fgrp"><span class="perlbl" id="invanFamL"></span><span id="invanFam"></span></span>
+    <span class="fgrp"><span class="perlbl" id="invanFFL"></span><select id="invanFF"></select></span>
+    <span class="fgrp"><span class="perlbl" id="invanOwnL"></span><select id="invanOwn"></select></span>
+    <span class="fgrp"><span class="perlbl" id="invanBrandL"></span><span id="invanBrand"></span></span>
+    <span class="fgrp"><span class="perlbl" id="invanProdL"></span><span id="invanProd"></span></span>
+  </div>
+  <div class="cards" id="invanCards"></div>
+  <div class="grid2">
+    <div class="panel"><h3 id="invanCh1T"></h3><div class="ch" style="height:300px"><canvas id="invanCh1"></canvas></div></div>
+    <div class="panel"><h3 id="invanCh2T"></h3><div class="ch" style="height:300px"><canvas id="invanCh2"></canvas></div></div>
+  </div>
+  <div class="panel" style="margin-top:14px">
+    <div class="search" style="margin-bottom:10px">
+      <h3 id="invanTblT" style="margin:0 12px 0 0"></h3>
+      <select id="invanView" style="padding:7px 10px;border:1px solid var(--bd);border-radius:8px;background:var(--panel);color:var(--ink)"></select>
+      <input type="text" id="invanSearch" placeholder="" style="flex:1;min-width:180px;padding:7px 12px;border:1px solid var(--bd);border-radius:8px;background:var(--panel);color:var(--ink)">
+    </div>
+    <div class="tscroll" style="max-height:560px"><table class="tbl" id="invanTbl"></table></div>
+  </div>
+  <small id="invanNote" class="muted" style="display:block;margin-top:8px"></small>
+</div></section>
+
+<section id="trends"><div class="wrap">
+  <div class="secthead"><h2 id="trendTitle"></h2><small id="trendSub"></small></div>
+  <div class="search" id="trendFilters" style="flex-wrap:wrap;gap:10px">
+    <span class="fgrp"><span class="perlbl" id="trendMetricL"></span><select id="trendMetric"></select></span>
+    <span class="fgrp"><span class="perlbl" id="trendFromL"></span><input type="date" id="trendFrom" class="rngDate"></span>
+    <span class="fgrp"><span class="perlbl" id="trendToL"></span><input type="date" id="trendTo" class="rngDate"></span>
+    <button class="btn ghost" id="trendAllBtn"></button>
+    <span class="fgrp"><span class="perlbl" id="trendGranL"></span><select id="trendGran"></select></span>
+  </div>
+  <div class="search" id="trendFilters2" style="flex-wrap:wrap;gap:10px;margin-top:8px">
+    <span class="fgrp"><span class="perlbl" id="trendCatL"></span><span id="trendCat"></span></span>
+    <span class="fgrp"><span class="perlbl" id="trendFamL"></span><span id="trendFam"></span></span>
+    <span class="fgrp"><span class="perlbl" id="trendFFL"></span><select id="trendFF"></select></span>
+    <span class="fgrp"><span class="perlbl" id="trendOwnL"></span><select id="trendOwn"></select></span>
+    <span class="fgrp"><span class="perlbl" id="trendBrandL"></span><span id="trendBrand"></span></span>
+    <span class="fgrp"><span class="perlbl" id="trendProdL"></span><span id="trendProd"></span></span>
+  </div>
+  <div class="cards" id="trendCards"></div>
+  <div class="panel" style="margin-top:4px"><h3 id="trendCh1T"></h3><div class="ch" style="height:320px"><canvas id="trendCh1"></canvas></div></div>
+  <div class="grid2" style="margin-top:14px">
+    <div class="panel"><h3 id="trendCh2T"></h3><div class="ch" style="height:300px"><canvas id="trendCh2"></canvas></div></div>
+    <div class="panel"><h3 id="trendCh3T"></h3><div class="ch" style="height:300px"><canvas id="trendCh3"></canvas></div></div>
+  </div>
+  <small id="trendNote" class="muted" style="display:block;margin-top:8px"></small>
+</div></section>
+
+<section id="abc"><div class="wrap">
+  <div class="secthead"><h2 id="abcTitle"></h2><small id="abcSub"></small></div>
+  <div class="search" id="abcFilters" style="flex-wrap:wrap;gap:10px">
+    <span class="fgrp"><span class="perlbl" id="abcMetricL"></span><select id="abcMetric"></select></span>
+    <span class="fgrp"><span class="perlbl" id="abcFromL"></span><input type="date" id="abcFrom" class="rngDate"></span>
+    <span class="fgrp"><span class="perlbl" id="abcToL"></span><input type="date" id="abcTo" class="rngDate"></span>
+    <button class="btn ghost" id="abcAllBtn"></button>
+  </div>
+  <div class="search" id="abcFilters2" style="flex-wrap:wrap;gap:10px;margin-top:8px">
+    <span class="fgrp"><span class="perlbl" id="abcCatL"></span><span id="abcCat"></span></span>
+    <span class="fgrp"><span class="perlbl" id="abcFamL"></span><span id="abcFam"></span></span>
+    <span class="fgrp"><span class="perlbl" id="abcFFL"></span><select id="abcFF"></select></span>
+    <span class="fgrp"><span class="perlbl" id="abcOwnL"></span><select id="abcOwn"></select></span>
+    <span class="fgrp"><span class="perlbl" id="abcBrandL"></span><span id="abcBrand"></span></span>
+    <span class="fgrp"><span class="perlbl" id="abcProdL"></span><span id="abcProd"></span></span>
+  </div>
+  <div class="cards" id="abcCards"></div>
+  <div class="grid2">
+    <div class="panel"><h3 id="abcCh1T"></h3><div class="ch" style="height:320px"><canvas id="abcCh1"></canvas></div></div>
+    <div class="panel"><h3 id="abcCh2T"></h3><div class="ch" style="height:320px"><canvas id="abcCh2"></canvas></div></div>
+  </div>
+  <div class="panel" style="margin-top:14px">
+    <div class="search" style="margin-bottom:10px">
+      <h3 id="abcTblT" style="margin:0 12px 0 0"></h3>
+      <select id="abcView" style="padding:7px 10px;border:1px solid var(--bd);border-radius:8px;background:var(--panel);color:var(--ink)"></select>
+      <input type="text" id="abcSearch" placeholder="" style="flex:1;min-width:180px;padding:7px 12px;border:1px solid var(--bd);border-radius:8px;background:var(--panel);color:var(--ink)">
+    </div>
+    <div class="tscroll" style="max-height:520px"><table class="tbl" id="abcTbl"></table></div>
+  </div>
+  <div class="panel" style="margin-top:14px"><h3 id="abcBrandTblT"></h3>
+    <div class="tscroll" style="max-height:360px"><table class="tbl" id="abcBrandTbl"></table></div>
+  </div>
+  <small id="abcNote" class="muted" style="display:block;margin-top:8px"></small>
+</div></section>
+
+
 <section id="prod"><div class="wrap">
   <div class="secthead"><h2 id="prodTitle"></h2><small id="prodSub"></small></div>
   <div class="search" id="prodFilters" style="flex-wrap:wrap;gap:10px">
@@ -461,6 +556,30 @@ body.locked .brand, body.locked nav, body.locked main, body.locked section{visib
 </div></section>
 <section id="alerts"><div class="wrap">
   <div class="secthead"><h2 id="alTitle"></h2><small id="alSub"></small></div>
+
+  <!-- ===== Smart operational alerts ===== -->
+  <div class="panel" style="margin-bottom:16px">
+    <h3 id="saTitle" style="margin-top:0"></h3>
+    <div class="cards" id="saSummary"></div>
+    <div class="search" id="saFilters" style="flex-wrap:wrap;gap:10px;margin:10px 0">
+      <span class="fgrp"><span class="perlbl" id="saTypeL"></span><span id="saType"></span></span>
+      <span class="fgrp"><span class="perlbl" id="saLevelL"></span><select id="saLevel"></select></span>
+      <span class="fgrp"><span class="perlbl" id="saCatL"></span><span id="saCat"></span></span>
+      <span class="fgrp"><span class="perlbl" id="saBrandL"></span><span id="saBrand"></span></span>
+      <input type="text" id="saSearch" placeholder="" style="flex:1;min-width:160px;padding:7px 12px;border:1px solid var(--bd);border-radius:8px;background:var(--panel);color:var(--ink)">
+    </div>
+    <div class="search" id="saCfg" style="flex-wrap:wrap;gap:12px;margin-bottom:10px;font-size:12px">
+      <span class="fgrp"><span class="perlbl" id="saLowL"></span><input type="number" id="saLow" min="1" max="30" style="width:60px;padding:5px 8px;border:1px solid var(--bd);border-radius:7px;background:var(--panel);color:var(--ink)"></span>
+      <span class="fgrp"><span class="perlbl" id="saDeadL"></span><input type="number" id="saDead" min="3" max="90" style="width:60px;padding:5px 8px;border:1px solid var(--bd);border-radius:7px;background:var(--panel);color:var(--ink)"></span>
+      <span class="fgrp"><span class="perlbl" id="saDevL"></span><input type="number" id="saDev" min="10" max="200" style="width:60px;padding:5px 8px;border:1px solid var(--bd);border-radius:7px;background:var(--panel);color:var(--ink)"></span>
+      <span class="fgrp"><span class="perlbl" id="saGapL"></span><input type="number" id="saGap" min="1" max="30" style="width:60px;padding:5px 8px;border:1px solid var(--bd);border-radius:7px;background:var(--panel);color:var(--ink)"></span>
+    </div>
+    <div id="saList"></div>
+    <small id="saNote" class="muted" style="display:block;margin-top:8px"></small>
+  </div>
+
+  <!-- ===== Statistical anomaly monitor (existing) ===== -->
+  <h3 id="anTitle" style="margin:6px 0 10px"></h3>
   <div class="cards" id="alSummary"></div>
   <div id="alList" style="margin-top:6px"></div>
   <div class="note" id="alNote"></div>
@@ -625,7 +744,7 @@ ar:{dir:'rtl', title:'شركة سما كربلاء — مجزر الدواجن',
  asof:'آخر تحديث للبيانات', themeD:'🌙 داكن', themeL:'☀️ فاتح', importBtn:'⟳ تحديث من إكسل',
  months:['كانون الثاني','شباط','آذار','نيسان','أيار','حزيران','تموز','آب','أيلول','تشرين الأول','تشرين الثاني','كانون الأول'],
  days:['السبت','الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة'],
- tabs:{exec:'النظرة التنفيذية',rx:'الاستلام الحي',wb:'الدجاج الكامل',stk:'المخزون',prod:'الإنتاج',sales:'المبيعات',orders:'الطلب',plant:'كفاءة المجزر',quality:'جودة الذبح',demand:'التنبؤ والدقة',alerts:'التنبيهات',top:'أفضل الأصناف',offals:'تحليل الأحشاء',wip:'تحت التشغيل WIP',wdist:'متابعة الوزن والتصافي',cmp:'الطلب·الإنتاج·المبيعات',week:'أسبوعي',month:'شهري',sku:'المنتجات'},
+ tabs:{exec:'النظرة التنفيذية',rx:'الاستلام الحي',wb:'الدجاج الكامل',stk:'المخزون',invan:'تحليل المخزون',trends:'الاتجاهات والموسمية',abc:'ABC وأداء البراند',prod:'الإنتاج',sales:'المبيعات',orders:'الطلب',plant:'كفاءة المجزر',quality:'جودة الذبح',demand:'التنبؤ والدقة',alerts:'التنبيهات',top:'أفضل الأصناف',offals:'تحليل الأحشاء',wip:'تحت التشغيل WIP',wdist:'متابعة الوزن والتصافي',cmp:'الطلب·الإنتاج·المبيعات',week:'أسبوعي',month:'شهري',sku:'المنتجات'},
  chain:{rx:'📥 استلام حي',prod:'🏭 إنتاج',sales:'🛒 مبيعات',ord:'📦 طلبات',stk:'🏬 مخزون افتتاحي'}, rxFromLbl:'من', rxToLbl:'إلى', rxClear:'كل الفترة',
  birds:'طير', box:'صندوق', boxes:'صندوق', days_u:'يوم',
  chainNote:d=>'سلسلة آخر يوم تشغيلي '+d+' — أرقام المنتجات بالصناديق، المخزون يعتمد الرصيد الافتتاحي.',
@@ -656,7 +775,7 @@ ar:{dir:'rtl', title:'شركة سما كربلاء — مجزر الدواجن',
  plGranD:'يومي', plGranW:'أسبوعي', rngFrom:'من', rngTo:'إلى', rngLbl:'الفترة:', rngReset:'الكل',
  plKbirds:'إجمالي الطيور المعالجة', plKkg:'إجمالي الكيلو', plKavg:'متوسط الوزن', plKyield:'التصافي مقابل الاستلام',
  plKutil:'استغلال الطاقة', plKab:'نسبة الأصناف الممتازة A+B',
- plProdT:'الطيور المعالجة لكل خط', plUtilT:'استغلال الطاقة لكل خط (هل يوجد اختناق؟)', plYieldT:'التصافي: معالَج ÷ مستلم',
+ plProdT:'توزيع الطيور والكمية لكل خط (مكدّس)', plUtilT:'استغلال الطاقة لكل خط (هل يوجد اختناق؟)', plYieldT:'التصافي: معالَج ÷ مستلم',
  plThLine:'الخط', plThBirds:'طيور معالجة', plThKg:'كغم', plThAvg:'متوسط الوزن', plThShare:'حصة من الإجمالي',
  plThCap:'الطاقة/يوم', plThUtil:'الاستغلال%', plThHours:'ساعات العمل',
  plNote2:'الاستغلال% = الطيور ÷ (السعة/ساعة × ساعات العمل). السعة: خط1/خط2=15,000، البريدر=6,000 طير/ساعة. ساعات العمل تُقرأ من شيت Line_Hours؛ النجمة (*) تعني استُخدمت الساعات القياسية (20/20/16) لعدم توفر إدخال لذلك اليوم.', plYieldNote:'التصافي = الطيور المعالجة (الخطين) ÷ الطيور المستلمة (ملف السلتر)',
@@ -783,7 +902,7 @@ en:{dir:'ltr', title:'Sama Karbala Co. — Poultry Processing Plant', sub:'Execu
  asof:'Data as of', themeD:'🌙 Dark', themeL:'☀️ Light', importBtn:'⟳ Update from Excel',
  months:['January','February','March','April','May','June','July','August','September','October','November','December'],
  days:['Saturday','Sunday','Monday','Tuesday','Wednesday','Thursday','Friday'],
- tabs:{exec:'Executive Overview',rx:'Live Bird Intake',wb:'Whole Bird',stk:'Inventory',prod:'Production',sales:'Sales',orders:'Orders',plant:'Plant Efficiency',quality:'Carcass Quality',demand:'Forecast & Accuracy',alerts:'Alerts',top:'Top Products',offals:'Offals Analysis',wip:'WIP Analysis',wdist:'Weight & Yield',cmp:'Order·Prod·Sales',week:'Weekly',month:'Monthly',sku:'Products'},
+ tabs:{exec:'Executive Overview',rx:'Live Bird Intake',wb:'Whole Bird',stk:'Inventory',invan:'Inventory Analysis',trends:'Trends & Seasonality',abc:'ABC & Brand',prod:'Production',sales:'Sales',orders:'Orders',plant:'Plant Efficiency',quality:'Carcass Quality',demand:'Forecast & Accuracy',alerts:'Alerts',top:'Top Products',offals:'Offals Analysis',wip:'WIP Analysis',wdist:'Weight & Yield',cmp:'Order·Prod·Sales',week:'Weekly',month:'Monthly',sku:'Products'},
  chain:{rx:'📥 Live intake',prod:'🏭 Production',sales:'🛒 Sales',ord:'📦 Orders',stk:'🏬 Opening stock'}, rxFromLbl:'From', rxToLbl:'To', rxClear:'Full period',
  birds:'birds', box:'boxes', boxes:'boxes', days_u:'days',
  chainNote:d=>'Latest operating-day chain ('+d+') — product figures in boxes; inventory based on opening balance.',
@@ -814,7 +933,7 @@ en:{dir:'ltr', title:'Sama Karbala Co. — Poultry Processing Plant', sub:'Execu
  plGranD:'Daily', plGranW:'Weekly', rngFrom:'From', rngTo:'To', rngLbl:'Range:', rngReset:'All',
  plKbirds:'Total birds processed', plKkg:'Total kg', plKavg:'Average weight', plKyield:'Yield vs intake',
  plKutil:'Capacity utilisation', plKab:'Premium grades A+B',
- plProdT:'Birds processed per line', plUtilT:'Capacity utilisation per line (any bottleneck?)', plYieldT:'Yield: processed ÷ received',
+ plProdT:'Line loads & received (stacked)', plUtilT:'Capacity utilisation per line (any bottleneck?)', plYieldT:'Yield: processed ÷ received',
  plThLine:'Line', plThBirds:'Birds processed', plThKg:'kg', plThAvg:'Avg weight', plThShare:'Share of total',
  plThCap:'Capacity/day', plThUtil:'Utilisation%', plThHours:'Work hours',
  plNote2:'Utilisation% = birds ÷ (capacity/hr × work hours). Capacity: Line1/Line2=15,000, Breeder=6,000 birds/hr. Work hours read from the Line_Hours sheet; an asterisk (*) means standard hours (20/20/16) were used because no entry exists for that day.', plYieldNote:'Yield = birds processed (both lines) ÷ birds received (intake sheet)',
@@ -1524,6 +1643,64 @@ function msPass(val, arr){ return !arr || arr.length===0 || arr.includes(val); }
 // metricKey: 'dP' (production) | 'dS' (sales) | 'dO' (orders)
 // filters: {cat:[], fam:[], ff:'all', own:'all', pack:'all', wt:[]}  (wt = piece-weight grams multi-select)
 
+
+// ============== INVENTORY ANALYSIS ENGINE (days-of-supply / turnover / dead stock) ==============
+// For each product: current stock (latest close in range), avg daily sales over the period,
+// days-of-supply = stock / avgDailySales, turnover = periodSales / avgStock, dead-stock flag.
+function computeInventory(from, to, F, deadDays){
+  if(!SKU_DATES.length)return null;
+  F=F||{}; deadDays=deadDays||14;
+  const idxs=[]; SKU_DATES.forEach((d,i)=>{ if((!from||d>=from)&&(!to||d<=to)) idxs.push(i); });
+  if(!idxs.length)return {rows:[],nDays:0,from:null,to:null};
+  let sku=(DATA.sku||[]).slice();
+  sku=sku.filter(p=>msPass(p.cat, F.cat));
+  sku=sku.filter(p=>msPass(p.fam||'—', F.fam));
+  if(F.ff&&F.ff!=='all') sku=sku.filter(p=>detectType(p)===F.ff);
+  if(F.own&&F.own!=='all') sku=sku.filter(p=>classifyOwn(p)===F.own);
+  if(F.pack&&F.pack!=='all') sku=sku.filter(p=>packType(p.n)===F.pack);
+  if(F.wt&&F.wt.length) sku=sku.filter(p=>F.wt.includes(String(p.wt||'')));
+  if(F.brand&&F.brand.length) sku=sku.filter(p=>F.brand.includes(String(p.brand||'—')));
+  if(F.prod&&F.prod.length) sku=sku.filter(p=>F.prod.includes(String(p.c)));
+  const nDays=idxs.length;
+  const rows=[];
+  const todayIso=SKU_DATES[idxs[idxs.length-1]];
+  sku.forEach(p=>{
+    const dC=p.dC||[], dS=p.dS||[];
+    const bk=prodBoxKg(p)||0;
+    // current stock = latest non-null close stock within the range
+    let curStock=0, curIdx=-1;
+    for(let k=idxs.length-1;k>=0;k--){ const i=idxs[k]; if(dC[i]!=null && dC[i]>0){ curStock=dC[i]; curIdx=i; break; } }
+    // period sales (boxes) + avg stock (avg of non-zero closes)
+    let salesBoxes=0, stockSum=0, stockCnt=0, lastSaleIdx=-1;
+    idxs.forEach(i=>{ const s=dS[i]||0; salesBoxes+=s; if(s>0)lastSaleIdx=i;
+      const c=dC[i]; if(c!=null&&c>0){stockSum+=c;stockCnt++;} });
+    const avgStock = stockCnt?stockSum/stockCnt:0;
+    const avgDailySales = nDays?salesBoxes/nDays:0;
+    const dos = avgDailySales>0 ? curStock/avgDailySales : (curStock>0?999:0); // days of supply
+    const turnover = avgStock>0 ? salesBoxes/avgStock : 0;
+    // days since last sale (dead stock indicator)
+    let daysSinceSale = lastSaleIdx>=0 ? (idxs.length-1 - idxs.indexOf(lastSaleIdx)) : nDays;
+    const isDead = curStock>0 && (lastSaleIdx<0 || daysSinceSale>=deadDays);
+    const isLow  = curStock>0 && avgDailySales>0 && dos<7;   // low: less than a week of supply
+    if(curStock>0 || salesBoxes>0){
+      rows.push({code:p.c,name:p.n,nameAr:p.nAr||'',cat:p.cat,fam:p.fam||'—',typ:detectType(p),own:classifyOwn(p),brand:String(p.brand||'—'),
+        boxKg:+bk.toFixed(2), curStock:Math.round(curStock), curStockKg:Math.round(curStock*bk),
+        avgDailySales:+avgDailySales.toFixed(1), salesBoxes:Math.round(salesBoxes),
+        dos:dos>=999?999:+dos.toFixed(1), turnover:+turnover.toFixed(2),
+        avgStock:Math.round(avgStock), daysSinceSale, isDead, isLow});
+    }
+  });
+  // summary
+  const totStockBoxes=rows.reduce((a,r)=>a+r.curStock,0), totStockKg=rows.reduce((a,r)=>a+r.curStockKg,0);
+  const deadRows=rows.filter(r=>r.isDead), lowRows=rows.filter(r=>r.isLow);
+  const deadKg=deadRows.reduce((a,r)=>a+r.curStockKg,0);
+  const avgTurnover = rows.length?rows.reduce((a,r)=>a+r.turnover,0)/rows.length:0;
+  return {rows, nDays, from:SKU_DATES[idxs[0]], to:todayIso,
+    totStockBoxes, totStockKg, nProducts:rows.length,
+    deadCount:deadRows.length, deadKg, lowCount:lowRows.length,
+    avgTurnover:+avgTurnover.toFixed(2), deadDays};
+}
+
 // ============== FILTERABLE CMP SERIES (Orders / Production / Sales by weight) ==============
 // Returns daily + weekly comparison series respecting cat/fam/ff/own/pack/wt/brand/prod filters.
 function computeCmpFiltered(from, to, Flt){
@@ -1849,6 +2026,592 @@ function renderFlowTable(P){
     `<tr style="background:var(--panel2);font-weight:800"><td>—</td><td style="text-align:start">${AR?'الإجمالي':'Total'} (${rows.length})</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td class="num">${F(D.totBoxes)}</td><td class="num">${F(D.totUnits)}</td><td class="num">${F(D.totKg)}</td>${showAvg?`<td class="num" style="color:var(--gold2)">${F(avgTotKg)}</td>`:''}</tr></tbody>`;
   try{injectExportButtons();}catch(e){}
 }
+
+
+// ============== TRENDS & SEASONALITY ENGINE ==============
+// metric: 'dS'/'dP'/'dO'. Returns time-series (bucketed), weekday pattern, month-over-month, and trend slope.
+function computeTrends(metricKey, from, to, F, gran){
+  if(!SKU_DATES.length)return null;
+  F=F||{}; gran=gran||'day';
+  let sku=(DATA.sku||[]).slice();
+  sku=sku.filter(p=>msPass(p.cat,F.cat));
+  sku=sku.filter(p=>msPass(p.fam||'—',F.fam));
+  if(F.ff&&F.ff!=='all') sku=sku.filter(p=>detectType(p)===F.ff);
+  if(F.own&&F.own!=='all') sku=sku.filter(p=>classifyOwn(p)===F.own);
+  if(F.pack&&F.pack!=='all') sku=sku.filter(p=>packType(p.n)===F.pack);
+  if(F.wt&&F.wt.length) sku=sku.filter(p=>F.wt.includes(String(p.wt||'')));
+  if(F.brand&&F.brand.length) sku=sku.filter(p=>F.brand.includes(String(p.brand||'—')));
+  if(F.prod&&F.prod.length) sku=sku.filter(p=>F.prod.includes(String(p.c)));
+  const inR=d=>(!from||d>=from)&&(!to||d<=to);
+  const nD=SKU_DATES.length;
+  // daily total in BOXES (sales unit) and KG
+  const dBox=new Array(nD).fill(0), dKg=new Array(nD).fill(0);
+  sku.forEach(p=>{const arr=p[metricKey]||[]; const bk=prodBoxKg(p)||0;
+    for(let i=0;i<nD;i++){const v=arr[i]||0; dBox[i]+=v; dKg[i]+=v*bk;}});
+  // bucketed series (boxes) using the shared helper
+  const series=bucketSeries(dBox, gran, from, to);
+  const seriesKg=bucketSeries(dKg, gran, from, to);
+  // weekday pattern (avg boxes per weekday, company week Sat..Fri)
+  const wdSum=new Array(7).fill(0), wdCnt=new Array(7).fill(0);
+  SKU_DATES.forEach((d,i)=>{ if(!inR(d))return; const dt=new Date(d+'T00:00:00Z'); const wd=dt.getUTCDay(); // 0=Sun..6=Sat
+    wdSum[wd]+=dBox[i]; wdCnt[wd]++; });
+  // reorder to company week: Sat(6),Sun(0),Mon(1),Tue(2),Wed(3),Thu(4),Fri(5)
+  const order=[6,0,1,2,3,4,5];
+  const weekday=order.map(wd=>({wd, avg: wdCnt[wd]?Math.round(wdSum[wd]/wdCnt[wd]):0}));
+  // month-over-month (boxes per YYYY-MM)
+  const mmap={};
+  SKU_DATES.forEach((d,i)=>{ if(!inR(d))return; const k=d.slice(0,7); mmap[k]=(mmap[k]||0)+dBox[i]; });
+  const months=Object.keys(mmap).sort().map(k=>({k,v:Math.round(mmap[k])}));
+  // simple linear trend slope on the bucketed series (least squares)
+  let slope=0, trendPct=0;
+  if(series.length>=2){
+    const n=series.length; let sx=0,sy=0,sxy=0,sxx=0;
+    series.forEach((e,i)=>{sx+=i;sy+=e.v;sxy+=i*e.v;sxx+=i*i;});
+    const denom=(n*sxx-sx*sx); slope=denom?(n*sxy-sx*sy)/denom:0;
+    const first=series[0].v||1; trendPct=first?Math.round(slope*(n-1)/first*100):0;
+  }
+  const tot=series.reduce((a,e)=>a+e.v,0);
+  const totKg=seriesKg.reduce((a,e)=>a+e.v,0);
+  return {series, seriesKg, weekday, months, slope, trendPct, tot, totKg, gran, nProducts:sku.length,
+    from:from||SKU_DATES[0], to:to||SKU_DATES[nD-1]};
+}
+
+
+
+
+// ============== OPERATIONAL EFFICIENCY ENGINE ==============
+// Combines receiving (rx) data — received count, DOA, slaughtered, bird weight, line loads —
+// with daily production weight (from sku dP × boxKg) to derive yield, DOA rate, and line efficiency.
+function computeOpsEff(from, to){
+  const rx = DATA.rx;
+  if(!rx || !rx.daily || !rx.daily.length) return null;
+  const inR=d=>(!from||d>=from)&&(!to||d<=to);
+  // build per-day production weight (kg) map from sku daily production
+  const prodKgByDate={};
+  if(SKU_DATES&&SKU_DATES.length){
+    (DATA.sku||[]).forEach(p=>{const bk=prodBoxKg(p)||0; const arr=p.dP||[];
+      for(let i=0;i<SKU_DATES.length;i++){const d=SKU_DATES[i]; const v=arr[i]||0; if(v){prodKgByDate[d]=(prodKgByDate[d]||0)+v*bk;}}});
+  }
+  const rows=[];
+  rx.daily.forEach(e=>{ if(!inR(e.d))return;
+    const qty=e.v||0, doa=e.doa||0, sl=e.sl||0, awt=e.awt||0;
+    const liveKg = awt>0 ? qty*awt : 0;                 // live weight received (kg)
+    const prodKg = prodKgByDate[e.d]||0;                // production output weight (kg) same day
+    const yieldPct = liveKg>0 ? prodKg/liveKg*100 : null;  // dressing/processing yield
+    const doaPct = qty>0 ? doa/qty*100 : null;          // dead-on-arrival rate
+    const slGap = qty>0 ? (qty-doa-sl) : 0;             // received minus DOA minus slaughtered (unprocessed)
+    rows.push({d:e.d, qty, doa, sl, awt, liveKg:Math.round(liveKg), prodKg:Math.round(prodKg),
+      yieldPct: yieldPct==null?null:+yieldPct.toFixed(1), doaPct: doaPct==null?null:+doaPct.toFixed(2),
+      slGap, l1:e.l1||0, l2:e.l2||0, br:e.br||0});
+  });
+  if(!rows.length)return {rows:[],nDays:0,from:null,to:null};
+  // summary
+  const totQty=rows.reduce((a,r)=>a+r.qty,0), totDoa=rows.reduce((a,r)=>a+r.doa,0), totSl=rows.reduce((a,r)=>a+r.sl,0);
+  const totLiveKg=rows.reduce((a,r)=>a+r.liveKg,0), totProdKg=rows.reduce((a,r)=>a+r.prodKg,0);
+  const totL1=rows.reduce((a,r)=>a+r.l1,0), totL2=rows.reduce((a,r)=>a+r.l2,0), totBr=rows.reduce((a,r)=>a+r.br,0);
+  const avgYield = totLiveKg>0 ? totProdKg/totLiveKg*100 : 0;
+  const doaRate = totQty>0 ? totDoa/totQty*100 : 0;
+  const slRate = totQty>0 ? totSl/totQty*100 : 0;
+  // qty-weighted avg bird weight
+  let wSum=0,wQty=0; rows.forEach(r=>{if(r.awt&&r.qty){wSum+=r.awt*r.qty;wQty+=r.qty;}});
+  const avgAwt = wQty?wSum/wQty:0;
+  return {rows, nDays:rows.length, from:rows[0].d, to:rows[rows.length-1].d,
+    totQty, totDoa, totSl, totLiveKg, totProdKg, totL1, totL2, totBr,
+    avgYield:+avgYield.toFixed(1), doaRate:+doaRate.toFixed(2), slRate:+slRate.toFixed(1), avgAwt:+avgAwt.toFixed(3)};
+}
+
+// ============== ABC / PARETO + BRAND PERFORMANCE ENGINE ==============
+// metric: 'dS'/'dP'/'dO'. Ranks products by value (boxes), classifies A/B/C by cumulative %,
+// and rolls up performance by brand.
+function computeABC(metricKey, from, to, F){
+  if(!SKU_DATES.length)return null;
+  F=F||{};
+  const idxs=[]; SKU_DATES.forEach((d,i)=>{ if((!from||d>=from)&&(!to||d<=to)) idxs.push(i); });
+  if(!idxs.length)return {rows:[],brands:[],nDays:0};
+  let sku=(DATA.sku||[]).slice();
+  sku=sku.filter(p=>msPass(p.cat,F.cat));
+  sku=sku.filter(p=>msPass(p.fam||'—',F.fam));
+  if(F.ff&&F.ff!=='all') sku=sku.filter(p=>detectType(p)===F.ff);
+  if(F.own&&F.own!=='all') sku=sku.filter(p=>classifyOwn(p)===F.own);
+  if(F.pack&&F.pack!=='all') sku=sku.filter(p=>packType(p.n)===F.pack);
+  if(F.wt&&F.wt.length) sku=sku.filter(p=>F.wt.includes(String(p.wt||'')));
+  if(F.brand&&F.brand.length) sku=sku.filter(p=>F.brand.includes(String(p.brand||'—')));
+  if(F.prod&&F.prod.length) sku=sku.filter(p=>F.prod.includes(String(p.c)));
+  // per-product value (boxes + kg) over the range
+  const rows=[];
+  sku.forEach(p=>{
+    const arr=p[metricKey]||[]; const bk=prodBoxKg(p)||0;
+    let boxes=0; idxs.forEach(i=>{boxes+=(arr[i]||0);});
+    if(boxes>0) rows.push({code:p.c,name:p.n,nameAr:p.nAr||'',cat:p.cat,brand:String(p.brand||'—'),own:classifyOwn(p),
+      boxes:Math.round(boxes), kg:Math.round(boxes*bk)});
+  });
+  rows.sort((a,b)=>b.boxes-a.boxes);
+  const totBoxes=rows.reduce((a,r)=>a+r.boxes,0);
+  // cumulative % and ABC class (A=top 80%, B=next 15%, C=last 5%)
+  let cum=0;
+  rows.forEach((r,i)=>{ cum+=r.boxes; r.cumPct=totBoxes?+(cum/totBoxes*100).toFixed(1):0; r.pct=totBoxes?+(r.boxes/totBoxes*100).toFixed(2):0; r.rank=i+1;
+    r.abc = r.cumPct<=80?'A':(r.cumPct<=95?'B':'C'); });
+  const aCount=rows.filter(r=>r.abc==='A').length, bCount=rows.filter(r=>r.abc==='B').length, cCount=rows.filter(r=>r.abc==='C').length;
+  const aBoxes=rows.filter(r=>r.abc==='A').reduce((a,r)=>a+r.boxes,0);
+  // brand rollup (boxes + kg + product count + own/pl)
+  const bmap={};
+  rows.forEach(r=>{ if(!bmap[r.brand])bmap[r.brand]={brand:r.brand,boxes:0,kg:0,n:0,own:r.own}; const e=bmap[r.brand]; e.boxes+=r.boxes;e.kg+=r.kg;e.n++; });
+  const brands=Object.values(bmap).sort((a,b)=>b.boxes-a.boxes).map(b=>({...b, pct: totBoxes?+(b.boxes/totBoxes*100).toFixed(1):0}));
+  return {rows, brands, totBoxes, nDays:idxs.length, from:SKU_DATES[idxs[0]], to:SKU_DATES[idxs[idxs.length-1]],
+    aCount, bCount, cCount, aBoxes, aPctOfProducts: rows.length?+(aCount/rows.length*100).toFixed(0):0,
+    aPctOfValue: totBoxes?+(aBoxes/totBoxes*100).toFixed(0):0, nProducts:rows.length};
+}
+
+
+
+// ============== OPERATIONAL EFFICIENCY TAB ==============
+const OPS_STATE={from:null,to:null,gran:'day'};
+function renderOps(){
+  const S=OPS_STATE, AR=LANG==='ar';
+  const $id=x=>$('#ops'+x);
+  $id('Title')&&($id('Title').textContent=AR?'مؤشرات كفاءة التشغيل':'Operational Efficiency');
+  $id('FromL')&&($id('FromL').textContent=AR?'من':'From'); $id('ToL')&&($id('ToL').textContent=AR?'إلى':'To');
+  $id('R30')&&($id('R30').textContent=AR?'آخر 30 يوم':'Last 30d');
+  $id('AllBtn')&&($id('AllBtn').textContent=AR?'كل المدة':'All dates');
+  $id('GranL')&&($id('GranL').textContent=AR?'التجميع':'Group by');
+  // date range wiring — bounds from rx data
+  const rx=DATA.rx;
+  const lo = rx&&rx.daily&&rx.daily.length?rx.daily[0].d:(SKU_DATES.length?SKU_DATES[0]:'');
+  const hi = rx&&rx.daily&&rx.daily.length?rx.daily[rx.daily.length-1].d:(SKU_DATES.length?SKU_DATES[SKU_DATES.length-1]:'');
+  const fr=$id('From'), to=$id('To');
+  if(fr){fr.min=lo;fr.max=hi;} if(to){to.min=lo;to.max=hi;}
+  if(fr&&!fr.dataset.init){fr.dataset.init='1';fr.onchange=e=>{S.from=e.target.value||null;renderOps();};}
+  if(to&&!to.dataset.init){to.dataset.init='1';to.onchange=e=>{S.to=e.target.value||null;renderOps();};}
+  if(fr)fr.value=S.from||''; if(to)to.value=S.to||'';
+  const b30=$id('R30'); if(b30&&!b30.dataset.init){b30.dataset.init='1';b30.onclick=()=>{if(!hi)return;const dt=new Date(hi);dt.setDate(dt.getDate()-29);S.from=dt.toISOString().slice(0,10);S.to=hi;renderOps();};}
+  const ab=$id('AllBtn'); if(ab&&!ab.dataset.init){ab.dataset.init='1';ab.onclick=()=>{S.from=null;S.to=null;renderOps();};}
+  const gs=$id('Gran');
+  if(gs&&!gs.dataset.init){gs.dataset.init='1';gs.onchange=e=>{S.gran=e.target.value;renderOps();};}
+  if(gs)gs.innerHTML=[['day',AR?'يومي':'Daily'],['week',AR?'أسبوعي':'Weekly']].map(([v,l])=>`<option value="${v}" ${v===S.gran?'selected':''}>${l}</option>`).join('');
+
+  const D=computeOpsEff(S.from,S.to);
+  if(!D||!D.rows||!D.rows.length){
+    const sub0=$id('Sub'); if(sub0)sub0.textContent='';
+    $id('Cards')&&($id('Cards').innerHTML='<div class="card" style="grid-column:1/-1"><div class="k">'+(AR?'لا توجد بيانات استلام حي في هذه الفترة':'No live-receiving data for this period')+'</div></div>');
+    ['opsCh1','opsCh2','opsCh3'].forEach(id=>{const c=charts[id];if(c){c.destroy();delete charts[id];}});
+    $id('Tbl')&&($id('Tbl').innerHTML=''); return;
+  }
+  const sub=$id('Sub'); if(sub)sub.textContent=(AR?'الاستلام الحي ← الذبح ← الإنتاج':'Live receiving → slaughter → production')+' · '+D.from+' → '+D.to;
+  const kgU=AR?'كغم':'kg';
+  $id('Cards')&&($id('Cards').innerHTML=[
+    [(AR?'الطيور المستلمة':'Birds received'),F(D.totQty),F(D.nDays)+(AR?' يوم':' days')],
+    [(AR?'التصافي':'Yield'),(D.avgYield||0)+'%',(AR?'إنتاج ÷ وزن حي':'output ÷ live weight')],
+    [(AR?'معدل النافق (DOA)':'DOA rate'),D.doaRate+'%',F(D.totDoa)+(AR?' طائر':' birds')],
+    [(AR?'معدل وزن الطائر':'Avg bird weight'),(D.avgAwt||0)+' '+kgU,(AR?'عند الاستلام':'at receiving')],
+    [(AR?'الوزن الحي':'Live weight'),F(D.totLiveKg)+' '+kgU,''],
+    [(AR?'وزن الإنتاج':'Production weight'),F(D.totProdKg)+' '+kgU,'']
+  ].map(([k,v,d])=>`<div class="card"><div class="k">${k}</div><div class="v num">${v}</div><div class="d">${d}</div></div>`).join(''));
+
+  // bucket helper for daily/weekly (company week Saturday-start)
+  function bucket(rows){
+    if(S.gran==='day')return rows.map(r=>({k:r.d, ...r}));
+    const wmap={};
+    rows.forEach(r=>{const dt=new Date(r.d+'T00:00:00Z');const wd=(dt.getUTCDay()+1)%7;const sat=new Date(dt);sat.setUTCDate(dt.getUTCDate()-wd);const k=sat.toISOString().slice(0,10);
+      if(!wmap[k])wmap[k]={k,qty:0,doa:0,sl:0,liveKg:0,prodKg:0,l1:0,l2:0,br:0};
+      const e=wmap[k];e.qty+=r.qty;e.doa+=r.doa;e.sl+=r.sl;e.liveKg+=r.liveKg;e.prodKg+=r.prodKg;e.l1+=r.l1;e.l2+=r.l2;e.br+=r.br;});
+    return Object.values(wmap).sort((a,b)=>a.k.localeCompare(b.k)).map(e=>({...e,
+      yieldPct:e.liveKg>0?+(e.prodKg/e.liveKg*100).toFixed(1):null,
+      doaPct:e.qty>0?+(e.doa/e.qty*100).toFixed(2):null}));
+  }
+  const B=bucket(D.rows);
+
+  // chart 1: yield over time (%)
+  $id('Ch1T')&&($id('Ch1T').textContent=AR?'التصافي عبر الزمن (%)':'Yield over time (%)');
+  mk('opsCh1',{type:'line',data:{labels:B.map(b=>b.k),datasets:[{label:AR?'التصافي %':'Yield %',
+    data:B.map(b=>b.yieldPct),borderColor:GREEN,backgroundColor:'rgba(62,158,111,.12)',fill:true,tension:.3,pointRadius:B.length>30?0:3,spanGaps:true}]},
+   options:{maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>(c.parsed.y==null?'—':c.parsed.y+'%')}}},
+     scales:{y:{beginAtZero:false,grid:{color:css('--line')},ticks:{callback:v=>v+'%'}},x:{grid:{display:false},ticks:{maxRotation:45,font:{size:8}}}}}});
+
+  // chart 2: DOA rate over time (%)
+  $id('Ch2T')&&($id('Ch2T').textContent=AR?'معدل النافق DOA عبر الزمن (%)':'DOA rate over time (%)');
+  mk('opsCh2',{type:'line',data:{labels:B.map(b=>b.k),datasets:[{label:'DOA %',
+    data:B.map(b=>b.doaPct),borderColor:RED,backgroundColor:'rgba(192,57,43,.10)',fill:true,tension:.3,pointRadius:B.length>30?0:3,spanGaps:true}]},
+   options:{maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>(c.parsed.y==null?'—':c.parsed.y+'%')}}},
+     scales:{y:{beginAtZero:true,grid:{color:css('--line')},ticks:{callback:v=>v+'%'}},x:{grid:{display:false},ticks:{maxRotation:45,font:{size:8}}}}}});
+
+  // chart 3: line loads (stacked bars: L1 / L2 / Breeder) + received line
+  $id('Ch3T')&&($id('Ch3T').textContent=AR?'توزيع الخطوط والاستلام':'Line loads & receiving');
+  mk('opsCh3',{type:'bar',data:{labels:B.map(b=>b.k),datasets:[
+    {label:AR?'خط 1':'Line 1',data:B.map(b=>b.l1),backgroundColor:GOLD,stack:'s'},
+    {label:AR?'خط 2':'Line 2',data:B.map(b=>b.l2),backgroundColor:SKY,stack:'s'},
+    {label:AR?'خط الأمهات':'Breeder',data:B.map(b=>b.br),backgroundColor:VIO,stack:'s'},
+    {type:'line',label:AR?'المستلم':'Received',data:B.map(b=>b.qty),borderColor:GREEN,backgroundColor:'transparent',pointRadius:0,tension:.3}
+  ]},options:{maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:9}}}},
+    scales:{y:{beginAtZero:true,stacked:true,grid:{color:css('--line')},ticks:{callback:v=>Fk(v)}},x:{stacked:true,grid:{display:false},ticks:{maxRotation:45,font:{size:8}}}}}});
+
+  // table: daily detail
+  $id('TblT')&&($id('TblT').textContent=AR?'تفاصيل يومية':'Daily detail');
+  const H=[AR?'التاريخ':'Date',AR?'مستلم':'Received',AR?'نافق':'DOA',AR?'مذبوح':'Slaughtered',AR?'وزن الطائر':'Bird wt',AR?'وزن حي (كغم)':'Live kg',AR?'إنتاج (كغم)':'Prod kg',AR?'التصافي %':'Yield %',AR?'DOA %':'DOA %'];
+  const tbl=$id('Tbl');
+  if(tbl)tbl.innerHTML=`<thead><tr>${H.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>`+
+    D.rows.slice().reverse().map(r=>`<tr><td>${r.d}</td><td class="num">${F(r.qty)}</td><td class="num">${F(r.doa)}</td><td class="num">${F(r.sl)}</td><td class="num">${r.awt||'—'}</td><td class="num">${F(r.liveKg)}</td><td class="num">${F(r.prodKg)}</td><td class="num">${r.yieldPct==null?'—':r.yieldPct+'%'}</td><td class="num">${r.doaPct==null?'—':r.doaPct+'%'}</td></tr>`).join('')+`</tbody>`;
+  $id('Note')&&($id('Note').textContent=AR?'التصافي = وزن الإنتاج ÷ الوزن الحي (عدد الطيور × معدل وزن الطائر). يظهر فقط للأيام التي فيها بيانات استلام وإنتاج متطابقة. DOA = النافق ÷ المستلم.':'Yield = production weight ÷ live weight (birds × avg bird weight). Shown only for days with matching receiving + production data. DOA = dead-on-arrival ÷ received.');
+  try{injectExportButtons();}catch(e){}
+}
+
+// ============== ABC / PARETO + BRAND TAB ==============
+const ABC_STATE={metric:'dS',from:null,to:null,cat:[],fam:[],ff:'all',own:'all',pack:'all',wt:[],brand:[],prod:[],view:'all',search:''};
+function renderABC(){
+  const S=ABC_STATE, AR=LANG==='ar';
+  const $id=x=>$('#abc'+x);
+  const metricWord={dS:(AR?'المبيعات':'Sales'),dP:(AR?'الإنتاج':'Production'),dO:(AR?'الطلب':'Orders')}[S.metric];
+  $id('Title')&&($id('Title').textContent=AR?'تحليل ABC وأداء البراند':'ABC Analysis & Brand Performance');
+  $id('MetricL')&&($id('MetricL').textContent=AR?'المقياس':'Metric');
+  $id('FromL')&&($id('FromL').textContent=AR?'من':'From'); $id('ToL')&&($id('ToL').textContent=AR?'إلى':'To');
+  $id('AllBtn')&&($id('AllBtn').textContent=AR?'كل المدة':'All dates');
+  $id('CatL')&&($id('CatL').textContent=AR?'الفئة':'Category');
+  $id('FamL')&&($id('FamL').textContent=AR?'العائلة':'Family');
+  $id('FFL')&&($id('FFL').textContent=AR?'فريش/مجمد':'Fresh/Frozen');
+  $id('OwnL')&&($id('OwnL').textContent=AR?'العلامة':'Brand');
+  $id('BrandL')&&($id('BrandL').textContent=AR?'البراند':'Brand');
+  $id('ProdL')&&($id('ProdL').textContent=AR?'المنتج (SKU)':'Product (SKU)');
+  const sb=$id('Search'); if(sb)sb.placeholder=AR?'بحث باسم المنتج…':'Search product…';
+
+  const ms=$id('Metric');
+  if(ms&&!ms.dataset.init){ms.dataset.init='1';ms.onchange=e=>{S.metric=e.target.value;renderABC();};}
+  if(ms)ms.innerHTML=[['dS',AR?'المبيعات':'Sales'],['dP',AR?'الإنتاج':'Production'],['dO',AR?'الطلب':'Orders']].map(([v,l])=>`<option value="${v}" ${v===S.metric?'selected':''}>${l}</option>`).join('');
+  const fr=$id('From'), to=$id('To');
+  if(SKU_DATES&&SKU_DATES.length){const lo=SKU_DATES[0],hi=SKU_DATES[SKU_DATES.length-1];if(fr){fr.min=lo;fr.max=hi;}if(to){to.min=lo;to.max=hi;}}
+  if(fr&&!fr.dataset.init){fr.dataset.init='1';fr.onchange=e=>{S.from=e.target.value||null;renderABC();};}
+  if(to&&!to.dataset.init){to.dataset.init='1';to.onchange=e=>{S.to=e.target.value||null;renderABC();};}
+  if(fr)fr.value=S.from||''; if(to)to.value=S.to||'';
+  const ab=$id('AllBtn'); if(ab&&!ab.dataset.init){ab.dataset.init='1';ab.onclick=()=>{S.from=null;S.to=null;renderABC();};}
+
+  const allP=(DATA.sku||[]);
+  const cats=[...new Set(allP.map(p=>p.cat))].filter(Boolean).sort();
+  msDropdown('abcCat', cats.map(c=>[c,(t().cats&&t().cats[c])||c]), S.cat, sel=>{S.cat=sel;S.fam=[];renderABC();}, AR?'كل الفئات':'All categories');
+  const fams=[...new Set(allP.filter(p=>msPass(p.cat,S.cat)).map(p=>p.fam||'—'))].filter(x=>x&&x!=='—').sort();
+  S.fam=S.fam.filter(v=>fams.includes(v));
+  msDropdown('abcFam', fams.map(f=>[f,f]), S.fam, sel=>{S.fam=sel;renderABC();}, AR?'كل العائلات':'All families');
+  const brands=[...new Set(allP.map(p=>String(p.brand||'—')))].filter(x=>x&&x!=='—').sort();
+  S.brand=S.brand.filter(v=>brands.includes(v));
+  msDropdown('abcBrand', brands.map(b=>[b,b]), S.brand, sel=>{S.brand=sel;renderABC();}, AR?'كل البراندات':'All brands');
+  const prodScope=allP.filter(p=>msPass(p.cat,S.cat)&&(!(S.brand&&S.brand.length)||S.brand.includes(String(p.brand||'—'))));
+  const prods=prodScope.map(p=>[String(p.c),(p.c)+' — '+String(prodName(p)).slice(0,45)]).sort((a,b)=>a[1].localeCompare(b[1]));
+  S.prod=(S.prod||[]).filter(v=>prods.some(x=>x[0]===String(v)));
+  msDropdown('abcProd', prods, S.prod, sel=>{S.prod=sel;renderABC();}, AR?'كل المنتجات':'All products', true);
+  const os=$id('Own');
+  if(os&&!os.dataset.init){os.dataset.init='1';os.onchange=e=>{S.own=e.target.value;renderABC();};}
+  if(os)os.innerHTML=[['all',AR?'الكل':'All'],['own',AR?'علامتنا':'Own brand'],['pl',AR?'علامة خاصة':'Private Label']].map(([v,l])=>`<option value="${v}" ${v===S.own?'selected':''}>${l}</option>`).join('');
+  const ff=$id('FF');
+  if(ff&&!ff.dataset.init){ff.dataset.init='1';ff.onchange=e=>{S.ff=e.target.value;renderABC();};}
+  if(ff)ff.innerHTML=[['all',AR?'الكل':'All'],['Fresh',AR?'فريش':'Fresh'],['Frozen',AR?'مجمد':'Frozen']].map(([v,l])=>`<option value="${v}" ${v===S.ff?'selected':''}>${l}</option>`).join('');
+  const vs=$id('View');
+  if(vs&&!vs.dataset.init){vs.dataset.init='1';vs.onchange=e=>{S.view=e.target.value;renderABCTable();};}
+  if(vs)vs.innerHTML=[['all',AR?'كل الفئات':'All classes'],['A',AR?'الفئة A فقط':'Class A only'],['B',AR?'الفئة B فقط':'Class B only'],['C',AR?'الفئة C فقط':'Class C only']].map(([v,l])=>`<option value="${v}" ${v===S.view?'selected':''}>${l}</option>`).join('');
+  if(sb&&!sb.dataset.init){sb.dataset.init='1';sb.addEventListener('input',e=>{S.search=e.target.value||'';renderABCTable();});}
+
+  const D=computeABC(S.metric,S.from,S.to,{cat:S.cat,fam:S.fam,ff:S.ff,own:S.own,pack:S.pack,wt:S.wt,brand:S.brand,prod:S.prod});
+  S._D=D;
+  if(!D||!D.rows||!D.rows.length){
+    const sub0=$id('Sub'); if(sub0)sub0.textContent='';
+    $id('Cards')&&($id('Cards').innerHTML='<div class="card" style="grid-column:1/-1"><div class="k">'+(AR?'لا توجد بيانات في هذه الفترة/الفلتر':'No data for this period/filter')+'</div></div>');
+    ['abcCh1','abcCh2'].forEach(id=>{const c=charts[id];if(c){c.destroy();delete charts[id];}});
+    $id('Tbl')&&($id('Tbl').innerHTML=''); $id('BrandTbl')&&($id('BrandTbl').innerHTML=''); return;
+  }
+  const sub=$id('Sub'); if(sub)sub.textContent=metricWord+' · '+D.from+' → '+D.to;
+  const boxU=AR?'صندوق':'boxes';
+  $id('Cards')&&($id('Cards').innerHTML=[
+    [(AR?'الفئة A':'Class A'),F(D.aCount)+(AR?' صنف':' items'),D.aPctOfProducts+'% '+(AR?'من الأصناف = ':'of items = ')+D.aPctOfValue+'% '+(AR?'من القيمة':'of value')],
+    [(AR?'الفئة B':'Class B'),F(D.bCount)+(AR?' صنف':' items'),''],
+    [(AR?'الفئة C':'Class C'),F(D.cCount)+(AR?' صنف':' items'),(AR?'الأقل مساهمة':'lowest contribution')],
+    [(AR?'إجمالي':'Total'),F(D.totBoxes)+' '+boxU,F(D.nProducts)+(AR?' صنف':' products')]
+  ].map(([k,v,d])=>`<div class="card"><div class="k">${k}</div><div class="v num">${v}</div><div class="d">${d}</div></div>`).join(''));
+
+  // chart 1: Pareto — top 30 products bars (boxes) + cumulative % line
+  const top=D.rows.slice(0,30);
+  $id('Ch1T')&&($id('Ch1T').textContent=AR?'باريتو — أعلى 30 صنف (صناديق + تراكمي %)':'Pareto — top 30 (boxes + cumulative %)');
+  mk('abcCh1',{type:'bar',data:{labels:top.map((p,i)=>'#'+(i+1)),datasets:[
+    {type:'bar',label:boxU,data:top.map(p=>p.boxes),backgroundColor:top.map(p=>p.abc==='A'?GREEN:p.abc==='B'?GOLD:'#c0392b'),yAxisID:'y',
+      datalabels:{display:false}},
+    {type:'line',label:AR?'تراكمي %':'Cumulative %',data:top.map(p=>p.cumPct),borderColor:SKY,backgroundColor:'transparent',yAxisID:'y1',pointRadius:2,tension:.2,
+      datalabels:{display:false}}
+  ]},options:{maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:10}}},
+    tooltip:{callbacks:{title:items=>{const i=items[0].dataIndex;return '#'+(i+1)+' '+prodName(top[i]);},
+      label:c=>c.datasetIndex===0?(F(c.parsed.y)+' '+boxU):(c.parsed.y+'% '+(AR?'تراكمي':'cumulative'))}}},
+    scales:{y:{position:AR?'right':'left',beginAtZero:true,grid:{color:css('--line')},ticks:{callback:v=>Fk(v)}},
+      y1:{position:AR?'left':'right',beginAtZero:true,max:100,grid:{display:false},ticks:{callback:v=>v+'%'}},
+      x:{grid:{display:false},ticks:{font:{size:8}}}}}});
+
+  // chart 2: brand share doughnut (boxes)
+  const topBrands=D.brands.slice(0,8);
+  $id('Ch2T')&&($id('Ch2T').textContent=AR?'حصة البراند (صناديق)':'Brand share (boxes)');
+  mk('abcCh2',{type:'doughnut',data:{labels:topBrands.map(b=>b.brand),datasets:[{data:topBrands.map(b=>b.boxes),
+    backgroundColor:[GOLD,SKY,GREEN,VIO,RED,'#b88a3e','#6fa8c4','#b06fc4']}]},
+   options:{maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:9}}},
+     datalabels:{color:'#fff',font:{weight:'700',size:10},formatter:(v)=>D.totBoxes?Math.round(v/D.totBoxes*100)+'%':''},
+     tooltip:{callbacks:{label:c=>c.label+': '+F(c.parsed)+' '+boxU+' ('+(D.totBoxes?Math.round(c.parsed/D.totBoxes*100):0)+'%)'}}}}});
+
+  renderABCTable(); renderABCBrandTable();
+}
+function renderABCTable(){
+  const S=ABC_STATE, D=S._D, AR=LANG==='ar';
+  if(!D)return;
+  const $id=x=>$('#abc'+x);
+  const metricWord={dS:(AR?'المبيعات':'Sales'),dP:(AR?'الإنتاج':'Production'),dO:(AR?'الطلب':'Orders')}[S.metric];
+  $id('TblT')&&($id('TblT').textContent=AR?'ترتيب الأصناف (ABC)':'Product ranking (ABC)');
+  let rows=D.rows.slice();
+  if(S.view!=='all')rows=rows.filter(r=>r.abc===S.view);
+  if(S.search){const q=S.search.toLowerCase();rows=rows.filter(r=>String(r.name).toLowerCase().includes(q)||String(r.nameAr||'').toLowerCase().includes(q)||String(r.code).includes(q));}
+  const boxU=AR?'صندوق':'boxes';
+  const H=['#',AR?'الكود':'Code',AR?'المنتج':'Product',AR?'البراند':'Brand',AR?'صناديق':'Boxes',AR?'الوزن (كغم)':'Weight (kg)',AR?'الحصة %':'Share %',AR?'تراكمي %':'Cumulative %',AR?'الفئة':'Class'];
+  const cls=a=>a==='A'?'g':a==='B'?'y':'r';
+  const tbl=$id('Tbl'); if(!tbl)return;
+  tbl.innerHTML=`<thead><tr>${H.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>`+
+    rows.slice(0,800).map(r=>`<tr><td><b>${r.rank}</b></td><td>${r.code}</td><td style="text-align:start">${prodName(r)}</td><td>${r.brand}</td><td class="num">${F(r.boxes)}</td><td class="num">${F(r.kg)}</td><td class="num">${r.pct}%</td><td class="num">${r.cumPct}%</td><td><span class="pill ${cls(r.abc)}">${r.abc}</span></td></tr>`).join('')+`</tbody>`;
+  try{injectExportButtons();}catch(e){}
+}
+function renderABCBrandTable(){
+  const S=ABC_STATE, D=S._D, AR=LANG==='ar';
+  if(!D)return;
+  const $id=x=>$('#abc'+x);
+  $id('BrandTblT')&&($id('BrandTblT').textContent=AR?'أداء البراند':'Brand performance');
+  const boxU=AR?'صندوق':'boxes';
+  const ownL=o=>o==='pl'?(AR?'خاصة':'PL'):(AR?'علامتنا':'Own');
+  const H=['#',AR?'البراند':'Brand',AR?'العلامة':'Own/PL',AR?'الأصناف':'Products',AR?'صناديق':'Boxes',AR?'الوزن (كغم)':'Weight (kg)',AR?'الحصة %':'Share %'];
+  const tbl=$id('BrandTbl'); if(!tbl)return;
+  tbl.innerHTML=`<thead><tr>${H.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>`+
+    D.brands.map((b,i)=>`<tr><td><b>${i+1}</b></td><td style="text-align:start">${b.brand}</td><td>${ownL(b.own)}</td><td class="num">${F(b.n)}</td><td class="num">${F(b.boxes)}</td><td class="num">${F(b.kg)}</td><td class="num">${b.pct}%</td></tr>`).join('')+`</tbody>`;
+}
+
+// ============== TRENDS & SEASONALITY TAB ==============
+const TREND_STATE={metric:'dS',from:null,to:null,cat:[],fam:[],ff:'all',own:'all',pack:'all',wt:[],brand:[],prod:[],gran:'week'};
+function renderTrends(){
+  const S=TREND_STATE, AR=LANG==='ar';
+  const $id=x=>$('#trend'+x);
+  const metricWord={dS:(AR?'المبيعات':'Sales'),dP:(AR?'الإنتاج':'Production'),dO:(AR?'الطلب':'Orders')}[S.metric];
+  $id('Title')&&($id('Title').textContent=AR?'الاتجاهات والموسمية':'Trends & Seasonality');
+  $id('MetricL')&&($id('MetricL').textContent=AR?'المقياس':'Metric');
+  $id('FromL')&&($id('FromL').textContent=AR?'من':'From'); $id('ToL')&&($id('ToL').textContent=AR?'إلى':'To');
+  $id('AllBtn')&&($id('AllBtn').textContent=AR?'كل المدة':'All dates');
+  $id('GranL')&&($id('GranL').textContent=AR?'التجميع':'Group by');
+  $id('CatL')&&($id('CatL').textContent=AR?'الفئة':'Category');
+  $id('FamL')&&($id('FamL').textContent=AR?'العائلة':'Family');
+  $id('FFL')&&($id('FFL').textContent=AR?'فريش/مجمد':'Fresh/Frozen');
+  $id('OwnL')&&($id('OwnL').textContent=AR?'العلامة':'Brand');
+  $id('BrandL')&&($id('BrandL').textContent=AR?'البراند':'Brand');
+  $id('ProdL')&&($id('ProdL').textContent=AR?'المنتج (SKU)':'Product (SKU)');
+
+  // metric select
+  const ms=$id('Metric');
+  if(ms&&!ms.dataset.init){ms.dataset.init='1';ms.onchange=e=>{S.metric=e.target.value;renderTrends();};}
+  if(ms)ms.innerHTML=[['dS',AR?'المبيعات':'Sales'],['dP',AR?'الإنتاج':'Production'],['dO',AR?'الطلب':'Orders']].map(([v,l])=>`<option value="${v}" ${v===S.metric?'selected':''}>${l}</option>`).join('');
+  // gran select
+  const gs=$id('Gran');
+  if(gs&&!gs.dataset.init){gs.dataset.init='1';gs.onchange=e=>{S.gran=e.target.value;renderTrends();};}
+  if(gs)gs.innerHTML=[['day',AR?'يومي':'Daily'],['week',AR?'أسبوعي':'Weekly'],['month',AR?'شهري':'Monthly']].map(([v,l])=>`<option value="${v}" ${v===S.gran?'selected':''}>${l}</option>`).join('');
+  // date range
+  const fr=$id('From'), to=$id('To');
+  if(SKU_DATES&&SKU_DATES.length){const lo=SKU_DATES[0],hi=SKU_DATES[SKU_DATES.length-1];if(fr){fr.min=lo;fr.max=hi;}if(to){to.min=lo;to.max=hi;}}
+  if(fr&&!fr.dataset.init){fr.dataset.init='1';fr.onchange=e=>{S.from=e.target.value||null;renderTrends();};}
+  if(to&&!to.dataset.init){to.dataset.init='1';to.onchange=e=>{S.to=e.target.value||null;renderTrends();};}
+  if(fr)fr.value=S.from||''; if(to)to.value=S.to||'';
+  const ab=$id('AllBtn'); if(ab&&!ab.dataset.init){ab.dataset.init='1';ab.onclick=()=>{S.from=null;S.to=null;renderTrends();};}
+
+  const allP=(DATA.sku||[]);
+  const cats=[...new Set(allP.map(p=>p.cat))].filter(Boolean).sort();
+  msDropdown('trendCat', cats.map(c=>[c,(t().cats&&t().cats[c])||c]), S.cat, sel=>{S.cat=sel;S.fam=[];renderTrends();}, AR?'كل الفئات':'All categories');
+  const fams=[...new Set(allP.filter(p=>msPass(p.cat,S.cat)).map(p=>p.fam||'—'))].filter(x=>x&&x!=='—').sort();
+  S.fam=S.fam.filter(v=>fams.includes(v));
+  msDropdown('trendFam', fams.map(f=>[f,f]), S.fam, sel=>{S.fam=sel;renderTrends();}, AR?'كل العائلات':'All families');
+  const brands=[...new Set(allP.map(p=>String(p.brand||'—')))].filter(x=>x&&x!=='—').sort();
+  S.brand=S.brand.filter(v=>brands.includes(v));
+  msDropdown('trendBrand', brands.map(b=>[b,b]), S.brand, sel=>{S.brand=sel;renderTrends();}, AR?'كل البراندات':'All brands');
+  const prodScope=allP.filter(p=>msPass(p.cat,S.cat)&&(!(S.brand&&S.brand.length)||S.brand.includes(String(p.brand||'—'))));
+  const prods=prodScope.map(p=>[String(p.c),(p.c)+' — '+String(prodName(p)).slice(0,45)]).sort((a,b)=>a[1].localeCompare(b[1]));
+  S.prod=(S.prod||[]).filter(v=>prods.some(x=>x[0]===String(v)));
+  msDropdown('trendProd', prods, S.prod, sel=>{S.prod=sel;renderTrends();}, AR?'كل المنتجات':'All products', true);
+  const os=$id('Own');
+  if(os&&!os.dataset.init){os.dataset.init='1';os.onchange=e=>{S.own=e.target.value;renderTrends();};}
+  if(os)os.innerHTML=[['all',AR?'الكل':'All'],['own',AR?'علامتنا':'Own brand'],['pl',AR?'علامة خاصة':'Private Label']].map(([v,l])=>`<option value="${v}" ${v===S.own?'selected':''}>${l}</option>`).join('');
+  const ff=$id('FF');
+  if(ff&&!ff.dataset.init){ff.dataset.init='1';ff.onchange=e=>{S.ff=e.target.value;renderTrends();};}
+  if(ff)ff.innerHTML=[['all',AR?'الكل':'All'],['Fresh',AR?'فريش':'Fresh'],['Frozen',AR?'مجمد':'Frozen']].map(([v,l])=>`<option value="${v}" ${v===S.ff?'selected':''}>${l}</option>`).join('');
+
+  const D=computeTrends(S.metric,S.from,S.to,{cat:S.cat,fam:S.fam,ff:S.ff,own:S.own,pack:S.pack,wt:S.wt,brand:S.brand,prod:S.prod},S.gran);
+  if(!D||!D.series||!D.series.length){
+    const sub0=$id('Sub'); if(sub0)sub0.textContent='';
+    $id('Cards')&&($id('Cards').innerHTML='<div class="card" style="grid-column:1/-1"><div class="k">'+(AR?'لا توجد بيانات في هذه الفترة/الفلتر':'No data for this period/filter')+'</div></div>');
+    ['trendCh1','trendCh2','trendCh3'].forEach(id=>{const c=charts[id];if(c){c.destroy();delete charts[id];}}); return;
+  }
+  const sub=$id('Sub'); if(sub)sub.textContent=metricWord+' · '+D.from+' → '+D.to;
+  const boxU=AR?'صندوق':'boxes';
+  const trendArrow=D.trendPct>2?'▲':D.trendPct<-2?'▼':'▬';
+  const trendCol=D.trendPct>2?GREEN:D.trendPct<-2?RED:GOLD;
+  // best weekday
+  const dayNames=AR?['السبت','الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة']:['Sat','Sun','Mon','Tue','Wed','Thu','Fri'];
+  let bestWd=0,bestV=-1; D.weekday.forEach((w,i)=>{if(w.avg>bestV){bestV=w.avg;bestWd=i;}});
+  $id('Cards')&&($id('Cards').innerHTML=[
+    [metricWord+(AR?' الإجمالي':' total'),F(D.tot)+' '+boxU,F(D.totKg)+(AR?' كغم':' kg')],
+    [(AR?'الاتجاه':'Trend'),`<span style="color:${trendCol}">${trendArrow} ${Math.abs(D.trendPct)}%</span>`,(D.trendPct>2?(AR?'صاعد':'rising'):D.trendPct<-2?(AR?'هابط':'falling'):(AR?'مستقر':'stable'))],
+    [(AR?'أعلى يوم مبيعاً':'Peak weekday'),dayNames[bestWd],F(bestV)+(AR?' صندوق/يوم':' boxes/day')],
+    [(AR?'عدد الأصناف':'Products'),F(D.nProducts),'']
+  ].map(([k,v,d])=>`<div class="card"><div class="k">${k}</div><div class="v num">${v}</div><div class="d">${d}</div></div>`).join(''));
+
+  // chart 1: main trend line with trendline
+  const granW=(S.gran==='week')?(AR?'أسبوعي':'weekly'):(S.gran==='month')?(AR?'شهري':'monthly'):(AR?'يومي':'daily');
+  $id('Ch1T')&&($id('Ch1T').textContent=(AR?(metricWord+' عبر الزمن — '):(metricWord+' over time — '))+granW);
+  // compute the linear trendline points
+  const tl=D.series.map((e,i)=>({x:e.k, y: Math.round((D.series[0].v||0)+D.slope*i)}));
+  mk('trendCh1',{type:'line',data:{labels:D.series.map(e=>e.k),datasets:[
+    {label:metricWord,data:D.series.map(e=>e.v),borderColor:css('--gold')||GOLD,backgroundColor:'rgba(201,161,74,.10)',fill:true,tension:.3,pointRadius:D.series.length>40?0:3,
+      datalabels:{display:D.series.length<=16,color:css('--mut'),font:{size:9},align:'top',formatter:v=>Fk(v)}},
+    {label:(AR?'خط الاتجاه':'Trendline'),data:tl.map(p=>p.y),borderColor:D.trendPct>=0?GREEN:RED,borderDash:[6,4],pointRadius:0,fill:false,tension:0,datalabels:{display:false}}
+  ]},options:{maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:10}}},
+    tooltip:{callbacks:{label:c=>c.dataset.label+': '+F(c.parsed.y)+' '+boxU}}},
+    scales:{y:{beginAtZero:true,grid:{color:css('--line')},ticks:{callback:v=>Fk(v)}},x:{grid:{display:false},ticks:{maxRotation:45,font:{size:9}}}}}});
+
+  // chart 2: weekday pattern (company week)
+  $id('Ch2T')&&($id('Ch2T').textContent=AR?'النمط الأسبوعي (متوسط صناديق/يوم)':'Weekday pattern (avg boxes/day)');
+  mk('trendCh2',{type:'bar',data:{labels:dayNames,datasets:[{data:D.weekday.map(w=>w.avg),
+    backgroundColor:D.weekday.map((w,i)=>i===bestWd?GREEN:SKY),
+    datalabels:{display:true,color:css('--ink'),font:{size:9,weight:'700'},anchor:'end',align:'end',formatter:v=>Fk(v)}}]},
+   options:{maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,grid:{color:css('--line')},ticks:{callback:v=>Fk(v)}},x:{grid:{display:false}}}}});
+
+  // chart 3: month-over-month
+  $id('Ch3T')&&($id('Ch3T').textContent=AR?'مقارنة شهرية (صندوق)':'Month-over-month (boxes)');
+  mk('trendCh3',{type:'bar',data:{labels:D.months.map(m=>m.k),datasets:[{data:D.months.map(m=>m.v),
+    backgroundColor:GOLD,
+    datalabels:{display:true,color:css('--ink'),font:{size:9,weight:'700'},anchor:'end',align:'end',formatter:v=>Fk(v)}}]},
+   options:{maintainAspectRatio:false,plugins:{legend:{display:false},
+     tooltip:{callbacks:{label:c=>F(c.parsed.y)+' '+boxU,afterLabel:c=>{const i=c.dataIndex;if(i>0){const prev=D.months[i-1].v;const ch=prev?Math.round((c.parsed.y-prev)/prev*100):0;return (AR?'التغير: ':'Change: ')+(ch>0?'+':'')+ch+'%';}return '';}}}},
+     scales:{y:{beginAtZero:true,grid:{color:css('--line')},ticks:{callback:v=>Fk(v)}},x:{grid:{display:false}}}}});
+  $id('Note')&&($id('Note').textContent=AR?'خط الاتجاه محسوب بالانحدار الخطي. النمط الأسبوعي يبدأ السبت (أسبوع الشركة). الجمعة عطلة افتراضياً.':'Trendline via linear regression. Weekday pattern starts Saturday (company week). Friday off by default.');
+}
+
+// ============== INVENTORY ANALYSIS TAB ==============
+const INVAN_STATE={from:null,to:null,cat:[],fam:[],ff:'all',own:'all',pack:'all',wt:[],brand:[],prod:[],dead:14,view:'all',search:''};
+function renderInvan(){
+  const S=INVAN_STATE, AR=LANG==='ar';
+  const $id=x=>$('#invan'+x);
+  $id('Title')&&($id('Title').textContent=AR?'تحليل المخزون':'Inventory Analysis');
+  $id('FromL')&&($id('FromL').textContent=AR?'من':'From'); $id('ToL')&&($id('ToL').textContent=AR?'إلى':'To');
+  $id('R30')&&($id('R30').textContent=AR?'آخر 30 يوم':'Last 30d');
+  $id('AllBtn')&&($id('AllBtn').textContent=AR?'كل المدة':'All dates');
+  $id('DeadL')&&($id('DeadL').textContent=AR?'حد الركود':'Dead threshold');
+  $id('CatL')&&($id('CatL').textContent=AR?'الفئة':'Category');
+  $id('FamL')&&($id('FamL').textContent=AR?'العائلة':'Family');
+  $id('FFL')&&($id('FFL').textContent=AR?'فريش/مجمد':'Fresh/Frozen');
+  $id('OwnL')&&($id('OwnL').textContent=AR?'العلامة':'Brand');
+  $id('BrandL')&&($id('BrandL').textContent=AR?'البراند':'Brand');
+  $id('ProdL')&&($id('ProdL').textContent=AR?'المنتج (SKU)':'Product (SKU)');
+  const sb=$id('Search'); if(sb)sb.placeholder=AR?'بحث باسم المنتج…':'Search product…';
+
+  // date range wiring
+  const fr=$id('From'), to=$id('To');
+  if(SKU_DATES&&SKU_DATES.length){const lo=SKU_DATES[0],hi=SKU_DATES[SKU_DATES.length-1];if(fr){fr.min=lo;fr.max=hi;}if(to){to.min=lo;to.max=hi;}}
+  if(fr&&!fr.dataset.init){fr.dataset.init='1';fr.onchange=e=>{S.from=e.target.value||null;renderInvan();};}
+  if(to&&!to.dataset.init){to.dataset.init='1';to.onchange=e=>{S.to=e.target.value||null;renderInvan();};}
+  if(fr)fr.value=S.from||''; if(to)to.value=S.to||'';
+  const b30=$id('R30'); if(b30&&!b30.dataset.init){b30.dataset.init='1';b30.onclick=()=>{if(!SKU_DATES.length)return;const last=SKU_DATES[SKU_DATES.length-1];const dt=new Date(last);dt.setDate(dt.getDate()-29);S.from=dt.toISOString().slice(0,10);S.to=last;renderInvan();};}
+  const ab=$id('AllBtn'); if(ab&&!ab.dataset.init){ab.dataset.init='1';ab.onclick=()=>{S.from=null;S.to=null;renderInvan();};}
+  // dead threshold select
+  const ds=$id('Dead');
+  if(ds&&!ds.dataset.init){ds.dataset.init='1';ds.onchange=e=>{S.dead=+e.target.value;renderInvan();};}
+  if(ds)ds.innerHTML=[[7,AR?'7 أيام':'7 days'],[14,AR?'14 يوم':'14 days'],[30,AR?'30 يوم':'30 days']].map(([v,l])=>`<option value="${v}" ${v===S.dead?'selected':''}>${l}</option>`).join('');
+
+  const allP=(DATA.sku||[]);
+  const cats=[...new Set(allP.map(p=>p.cat))].filter(Boolean).sort();
+  msDropdown('invanCat', cats.map(c=>[c,(t().cats&&t().cats[c])||c]), S.cat, sel=>{S.cat=sel;S.fam=[];renderInvan();}, AR?'كل الفئات':'All categories');
+  const fams=[...new Set(allP.filter(p=>msPass(p.cat,S.cat)).map(p=>p.fam||'—'))].filter(x=>x&&x!=='—').sort();
+  S.fam=S.fam.filter(v=>fams.includes(v));
+  msDropdown('invanFam', fams.map(f=>[f,f]), S.fam, sel=>{S.fam=sel;renderInvan();}, AR?'كل العائلات':'All families');
+  const brands=[...new Set(allP.map(p=>String(p.brand||'—')))].filter(x=>x&&x!=='—').sort();
+  S.brand=S.brand.filter(v=>brands.includes(v));
+  msDropdown('invanBrand', brands.map(b=>[b,b]), S.brand, sel=>{S.brand=sel;renderInvan();}, AR?'كل البراندات':'All brands');
+  const prodScope=allP.filter(p=>msPass(p.cat,S.cat)&&(!(S.brand&&S.brand.length)||S.brand.includes(String(p.brand||'—'))));
+  const prods=prodScope.map(p=>[String(p.c),(p.c)+' — '+String(prodName(p)).slice(0,45)]).sort((a,b)=>a[1].localeCompare(b[1]));
+  S.prod=(S.prod||[]).filter(v=>prods.some(x=>x[0]===String(v)));
+  msDropdown('invanProd', prods, S.prod, sel=>{S.prod=sel;renderInvan();}, AR?'كل المنتجات':'All products', true);
+  const os=$id('Own');
+  if(os&&!os.dataset.init){os.dataset.init='1';os.onchange=e=>{S.own=e.target.value;renderInvan();};}
+  if(os)os.innerHTML=[['all',AR?'الكل':'All'],['own',AR?'علامتنا':'Own brand'],['pl',AR?'علامة خاصة':'Private Label']].map(([v,l])=>`<option value="${v}" ${v===S.own?'selected':''}>${l}</option>`).join('');
+  const ff=$id('FF');
+  if(ff&&!ff.dataset.init){ff.dataset.init='1';ff.onchange=e=>{S.ff=e.target.value;renderInvan();};}
+  if(ff)ff.innerHTML=[['all',AR?'الكل':'All'],['Fresh',AR?'فريش':'Fresh'],['Frozen',AR?'مجمد':'Frozen']].map(([v,l])=>`<option value="${v}" ${v===S.ff?'selected':''}>${l}</option>`).join('');
+  // view select (table filter: all / dead / low)
+  const vs=$id('View');
+  if(vs&&!vs.dataset.init){vs.dataset.init='1';vs.onchange=e=>{S.view=e.target.value;renderInvanTable();};}
+  if(vs)vs.innerHTML=[['all',AR?'كل المنتجات':'All products'],['dead',AR?'الراكدة فقط':'Dead stock only'],['low',AR?'منخفضة المخزون':'Low stock'],['high',AR?'فائض/بطيء الحركة':'Excess / slow-moving']].map(([v,l])=>`<option value="${v}" ${v===S.view?'selected':''}>${l}</option>`).join('');
+  if(sb&&!sb.dataset.init){sb.dataset.init='1';sb.addEventListener('input',e=>{S.search=e.target.value||'';renderInvanTable();});}
+
+  const D=computeInventory(S.from,S.to,{cat:S.cat,fam:S.fam,ff:S.ff,own:S.own,pack:S.pack,wt:S.wt,brand:S.brand,prod:S.prod},S.dead);
+  S._D=D;
+  const sub=$id('Sub');
+  if(sub)sub.textContent = D&&D.nDays?((AR?'حتى ':'As of ')+D.to+'  ('+(AR?'الفترة ':'period ')+D.nDays+(AR?' يوم':' days')+')'):'';
+  if(!D||!D.rows.length){
+    $id('Cards')&&($id('Cards').innerHTML='<div class="card" style="grid-column:1/-1"><div class="k">'+(AR?'لا توجد بيانات مخزون في هذه الفترة/الفلتر':'No inventory data for this period/filter')+'</div></div>');
+    ['invanCh1','invanCh2'].forEach(id=>{const c=charts[id];if(c){c.destroy();delete charts[id];}});
+    $id('Tbl')&&($id('Tbl').innerHTML=''); return;
+  }
+  const kgU=AR?'كغم':'kg';
+  $id('Cards')&&($id('Cards').innerHTML=[
+    [(AR?'المخزون الحالي':'Current stock'),F(D.totStockKg)+' '+kgU,F(D.totStockBoxes)+(AR?' صندوق':' boxes')],
+    [(AR?'منتجات راكدة':'Dead stock'),F(D.deadCount),F(D.deadKg)+' '+kgU+(AR?' معطّلة':' idle')],
+    [(AR?'منخفضة المخزون':'Low stock'),F(D.lowCount),(AR?'أقل من أسبوع تغطية':'< 1 week supply')],
+    [(AR?'متوسط الدوران':'Avg turnover'),D.avgTurnover,(AR?'مرة/الفترة':'x per period')]
+  ].map(([k,v,d])=>`<div class="card"><div class="k">${k}</div><div class="v num">${v}</div><div class="d">${d}</div></div>`).join(''));
+
+  // chart 1: stock by category — boxes (bars) + kg + share% (in labels/tooltip)
+  const catAgg={}; D.rows.forEach(r=>{if(!catAgg[r.cat])catAgg[r.cat]={box:0,kg:0};catAgg[r.cat].box+=r.curStock;catAgg[r.cat].kg+=r.curStockKg;});
+  const catArr=Object.entries(catAgg).map(([c,o])=>({c,box:o.box,kg:o.kg})).sort((a,b)=>b.box-a.box);
+  const totBox=catArr.reduce((a,x)=>a+x.box,0), totKg=catArr.reduce((a,x)=>a+x.kg,0);
+  $id('Ch1T')&&($id('Ch1T').textContent=AR?'المخزون حسب الفئة (صندوق · كغم · %)':'Stock by category (boxes · kg · %)');
+  mk('invanCh1',{type:'bar',data:{labels:catArr.map(x=>(t().cats&&t().cats[x.c])||x.c),datasets:[{
+    data:catArr.map(x=>x.box), _kg:catArr.map(x=>x.kg),
+    backgroundColor:[GOLD,SKY,GREEN,VIO,RED,'#b88a3e','#6fa8c4','#b06fc4','#8a7'],
+    datalabels:{display:true,color:css('--ink'),font:{size:9,weight:'700'},anchor:'end',align:'end',
+      formatter:(v,ctx)=>{const pct=totBox?Math.round(v/totBox*100):0;return Fk(v)+(AR?' ص':' bx')+' · '+pct+'%';}}}]},
+   options:{maintainAspectRatio:false,plugins:{legend:{display:false},
+     tooltip:{callbacks:{label:c=>{const i=c.dataIndex,box=catArr[i].box,kg=catArr[i].kg;
+       const pctB=totBox?Math.round(box/totBox*100):0, pctK=totKg?Math.round(kg/totKg*100):0;
+       return [(AR?'صناديق: ':'Boxes: ')+F(box)+' ('+pctB+'%)', (AR?'الوزن: ':'Weight: ')+F(kg)+' '+(AR?'كغم':'kg')+' ('+pctK+'%)'];}}}},
+     scales:{y:{beginAtZero:true,grid:{color:css('--line')},ticks:{callback:v=>Fk(v)}},x:{grid:{display:false}}}}});
+  // chart 2: days-of-supply distribution (buckets)
+  const buckets=[[0,7,AR?'أقل من 7':'<7'],[7,14,'7–14'],[14,30,'14–30'],[30,60,'30–60'],[60,999,AR?'أكثر من 60':'60+']];
+  const bCount=buckets.map(([lo,hi])=>D.rows.filter(r=>r.dos>=lo&&r.dos<hi&&r.curStock>0).length);
+  $id('Ch2T')&&($id('Ch2T').textContent=AR?'توزيع أيام التغطية (عدد المنتجات)':'Days-of-supply distribution (products)');
+  mk('invanCh2',{type:'bar',data:{labels:buckets.map(b=>b[2]+(AR?' يوم':'d')),datasets:[{data:bCount,
+    backgroundColor:[RED,'#e0873a',GOLD,GREEN,SKY],
+    datalabels:{display:true,color:css('--ink'),font:{size:11,weight:'700'},anchor:'end',align:'end',formatter:v=>v||''}}]},
+   options:{maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,grid:{color:css('--line')}},x:{grid:{display:false}}}}});
+  renderInvanTable();
+}
+function renderInvanTable(){
+  const S=INVAN_STATE, D=S._D, AR=LANG==='ar';
+  if(!D)return;
+  const $id=x=>$('#invan'+x);
+  $id('TblT')&&($id('TblT').textContent=AR?'تفاصيل المخزون حسب المنتج':'Inventory detail by product');
+  let rows=D.rows.slice();
+  // apply the view filter — each view shows a genuinely different subset
+  if(S.view==='dead')rows=rows.filter(r=>r.isDead);
+  else if(S.view==='low')rows=rows.filter(r=>r.isLow);
+  else if(S.view==='high')rows=rows.filter(r=>r.dos>=60||r.turnover<0.5); // slow-moving / excess stock
+  // always sort by current stock (kg) descending
+  rows.sort((a,b)=>b.curStockKg-a.curStockKg);
+  if(S.search){const q=S.search.toLowerCase();rows=rows.filter(r=>String(r.name).toLowerCase().includes(q)||String(r.nameAr||'').toLowerCase().includes(q)||String(r.code).includes(q));}
+  const ownL=o=>o==='pl'?(AR?'خاصة':'PL'):(AR?'علامتنا':'Own');
+  const H=[AR?'الكود':'Code',AR?'المنتج':'Product',AR?'الفئة':'Category',AR?'البراند':'Brand',AR?'المخزون (صندوق)':'Stock (boxes)',AR?'المخزون (كغم)':'Stock (kg)',AR?'معدل البيع/يوم':'Avg sales/day',AR?'أيام التغطية':'Days supply',AR?'الدوران':'Turnover',AR?'الحالة':'Status'];
+  const tbl=$id('Tbl'); if(!tbl)return;
+  const statusPill=r=>{
+    if(r.isDead)return `<span class="pill r">${AR?'راكد':'Dead'}</span>`;
+    if(r.isLow)return `<span class="pill y">${AR?'منخفض':'Low'}</span>`;
+    if(r.dos>=60)return `<span class="pill" style="background:#5b8db8;color:#fff">${AR?'فائض':'Excess'}</span>`;
+    return `<span class="pill g">${AR?'جيد':'OK'}</span>`;
+  };
+  const dosTxt=r=>r.dos>=999?'∞':(r.dos+(AR?' يوم':'d'));
+  tbl.innerHTML=`<thead><tr>${H.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>`+
+    rows.slice(0,800).map(r=>`<tr><td>${r.code}</td><td style="text-align:start">${prodName(r)}</td><td>${(t().cats&&t().cats[r.cat])||r.cat}</td><td>${r.brand}</td><td class="num">${F(r.curStock)}</td><td class="num">${F(r.curStockKg)}</td><td class="num">${r.avgDailySales}</td><td class="num">${dosTxt(r)}</td><td class="num">${r.turnover}</td><td>${statusPill(r)}</td></tr>`).join('')+
+    `</tbody>`;
+  $id('Note')&&($id('Note').textContent=AR?('أيام التغطية = المخزون الحالي ÷ معدل البيع اليومي. الدوران = مبيعات الفترة ÷ متوسط المخزون. "راكد" = لم يُبع منذ '+S.dead+' يوم أو أكثر مع وجود مخزون.'):('Days supply = current stock ÷ avg daily sales. Turnover = period sales ÷ avg stock. "Dead" = no sales for '+S.dead+'+ days with stock on hand.'));
+  try{injectExportButtons();}catch(e){}
+}
+
 function renderProd(){ renderFlow('prod'); }
 function renderSales(){ renderFlow('sales'); }
 function renderOrders(){ renderFlow('orders'); }
@@ -2576,8 +3339,21 @@ function renderPlant(){
     prodData=lineNames.map((ln,i)=>({label:ln,backgroundColor:colors[i%colors.length],datalabels:dl,
       data:days.map(e=> ln===BREEDER ? rxBr(e.d) : (e.lines[ln]?e.lines[ln].count:0) )}));
   }
-  mk('cPlProd',{type:'bar',data:{labels:lbl,datasets:prodData},
-    options:{maintainAspectRatio:false,plugins:{legend:{labels:{boxWidth:12}}},scales:{x:{ticks:{font:{size:9},maxRotation:90}}}}});
+  // stacked line-load chart (quantity per line) + received overlay — matches the ops-style visual
+  prodData.forEach(ds=>{ds.stack='lines';});
+  // add a "received" overlay line from rx intake (total birds received per bucket)
+  let recvData=null;
+  if(DATA.rx&&DATA.rx.daily){
+    if(isW){const wmap={}; DATA.rx.daily.forEach(x=>{if(!winDays.has(x.d))return;const sat=satOf(new Date(x.d+'T00:00:00Z'));const k=iso(sat);wmap[k]=(wmap[k]||0)+(x.v||0);});
+      recvData=Object.keys(wmap).sort().map(k=>wmap[k]);}
+    else {recvData=days.map(e=>{const x=DATA.rx.daily.find(y=>y.d===e.d);return x&&x.v?x.v:0;});}
+  }
+  const cplDatasets=prodData.slice();
+  if(recvData&&recvData.some(v=>v>0))cplDatasets.push({type:'line',label:(LANG==='ar'?'المستلم':'Received'),data:recvData,borderColor:GREEN,backgroundColor:'transparent',pointRadius:0,tension:.3,datalabels:{display:false}});
+  mk('cPlProd',{type:'bar',data:{labels:lbl,datasets:cplDatasets},
+    options:{maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:9}}},
+      tooltip:{callbacks:{label:c=>c.dataset.label+': '+F(c.parsed.y)}}},
+      scales:{y:{stacked:true,beginAtZero:true,grid:{color:css('--line')},ticks:{callback:v=>Fk(v)}},x:{stacked:true,ticks:{font:{size:9},maxRotation:90},grid:{display:false}}}}});
   // yield trend within window (processed vs intake per day)
   const yldDays=days.filter(e=>DATA.rx&&DATA.rx.daily&&DATA.rx.daily.find(x=>x.d===e.d));
   mk('cPlYield',{type:'line',data:{labels:yldDays.map(e=>e.d.slice(5)),datasets:[{
@@ -2742,7 +3518,7 @@ $('#qLineSel')&&$('#qLineSel').addEventListener('change',e=>{QLINE=e.target.valu
 
 /* ===================== Login & Permissions ===================== */
 let CURRENT_USER=null, USER_PERMS=null;
-const PERM_TABS={tab_exec:'exec',tab_rx:'rx',tab_wb:'wb',tab_stk:'stk',tab_prod:'prod',tab_sales:'sales',tab_orders:'orders',tab_plant:'plant',tab_quality:'quality',tab_demand:'demand',tab_alerts:'alerts',tab_top:'top',tab_offals:'offals',tab_wip:'wip',tab_wdist:'wdist',tab_cmp:'cmp',tab_week:'week',tab_month:'month',tab_products:'sku'};
+const PERM_TABS={tab_exec:'exec',tab_rx:'rx',tab_wb:'wb',tab_stk:'stk',tab_invan:'invan',tab_trends:'trends',tab_abc:'abc',tab_prod:'prod',tab_sales:'sales',tab_orders:'orders',tab_plant:'plant',tab_quality:'quality',tab_demand:'demand',tab_alerts:'alerts',tab_top:'top',tab_offals:'offals',tab_wip:'wip',tab_wdist:'wdist',tab_cmp:'cmp',tab_week:'week',tab_month:'month',tab_products:'sku'};
 function parseUsers(mat){
   if(!mat||!mat.length)return [];
   // find header row containing 'username' and 'password'
@@ -2948,9 +3724,155 @@ function renderDemand(){
   $('#dmRngReset').onclick=()=>{DMWKFROM=wkOpts[0];DMWKTO=wkOpts[wkOpts.length-1];renderDemand();};
 }
 
+
+
+// ============== SMART ALERTS TAB (inside alerts) ==============
+const SA_STATE={type:[],level:'all',cat:[],brand:[],search:'',low:7,dead:14,dev:40,gap:3};
+function renderSmartAlerts(){
+  const S=SA_STATE, AR=LANG==='ar';
+  const $id=x=>$('#sa'+x);
+  $id('Title')&&($id('Title').textContent=AR?'🔔 التنبيهات الذكية':'🔔 Smart Alerts');
+  $id('TypeL')&&($id('TypeL').textContent=AR?'النوع':'Type');
+  $id('LevelL')&&($id('LevelL').textContent=AR?'الشدة':'Severity');
+  $id('CatL')&&($id('CatL').textContent=AR?'الفئة':'Category');
+  $id('BrandL')&&($id('BrandL').textContent=AR?'البراند':'Brand');
+  $id('LowL')&&($id('LowL').textContent=AR?'حد قرب النفاد (يوم)':'Low-stock (days)');
+  $id('DeadL')&&($id('DeadL').textContent=AR?'حد الركود (يوم)':'Dead (days)');
+  $id('DevL')&&($id('DevL').textContent=AR?'حد الانحراف (%)':'Deviation (%)');
+  $id('GapL')&&($id('GapL').textContent=AR?'حد الفجوة (يوم)':'Gap (days)');
+  const sb=$id('Search'); if(sb)sb.placeholder=AR?'بحث باسم المنتج…':'Search product…';
+
+  // config number inputs
+  const wire=(id,key,min,max)=>{const el=$id(id); if(el){ if(!el.dataset.init){el.dataset.init='1'; el.onchange=e=>{let v=+e.target.value||S[key]; v=Math.max(min,Math.min(max,v)); S[key]=v; el.value=v; renderSmartAlerts();};} el.value=S[key]; }};
+  wire('Low','low',1,30); wire('Dead','dead',3,90); wire('Dev','dev',10,200); wire('Gap','gap',1,30);
+
+  const D=computeSmartAlerts({lowDays:S.low,deadDays:S.dead,devPct:S.dev,gapDays:S.gap,lookback:30});
+  S._D=D;
+
+  // summary cards (by severity)
+  $id('Summary')&&($id('Summary').innerHTML=[
+    [AR?'حرجة':'Critical',D.counts.crit,'var(--red)'],
+    [AR?'تحذير':'Warning',D.counts.warn,'var(--gold)'],
+    [AR?'مراقبة':'Watch',D.counts.watch,'var(--sky)'],
+    [AR?'الإجمالي':'Total',D.alerts.length,'var(--ink)']
+  ].map(([k,v,c])=>`<div class="card"><div class="k">${k}</div><div class="v num" style="color:${c}">${v}</div></div>`).join(''));
+
+  // type multi-select
+  const types=[['low',AR?'قرب النفاد':'Near depletion'],['dead',AR?'راكد':'Dead stock'],['dev',AR?'انحراف':'Deviation'],['gap',AR?'فجوة طلب-إنتاج':'Order-prod gap']];
+  msDropdown('saType', types, S.type, sel=>{S.type=sel;renderSmartAlertsList();}, AR?'كل الأنواع':'All types', false);
+  // category + brand from alert set
+  const cats=[...new Set(D.alerts.map(a=>a.cat))].filter(Boolean).sort();
+  S.cat=S.cat.filter(v=>cats.includes(v));
+  msDropdown('saCat', cats.map(c=>[c,(t().cats&&t().cats[c])||c]), S.cat, sel=>{S.cat=sel;renderSmartAlertsList();}, AR?'كل الفئات':'All categories');
+  const brands=[...new Set(D.alerts.map(a=>a.brand))].filter(x=>x&&x!=='—').sort();
+  S.brand=S.brand.filter(v=>brands.includes(v));
+  msDropdown('saBrand', brands.map(b=>[b,b]), S.brand, sel=>{S.brand=sel;renderSmartAlertsList();}, AR?'كل البراندات':'All brands');
+  // level select
+  const ls=$id('Level');
+  if(ls&&!ls.dataset.init){ls.dataset.init='1';ls.onchange=e=>{S.level=e.target.value;renderSmartAlertsList();};}
+  if(ls)ls.innerHTML=[['all',AR?'الكل':'All'],['crit',AR?'حرجة':'Critical'],['warn',AR?'تحذير':'Warning'],['watch',AR?'مراقبة':'Watch']].map(([v,l])=>`<option value="${v}" ${v===S.level?'selected':''}>${l}</option>`).join('');
+  if(sb&&!sb.dataset.init){sb.dataset.init='1';sb.addEventListener('input',e=>{S.search=e.target.value||'';renderSmartAlertsList();});}
+
+  $id('Note')&&($id('Note').textContent=AR?('يفحص آخر 30 يوم. قرب النفاد=تغطية أقل من '+S.low+' يوم، راكد=بدون بيع '+S.dead+' يوم، انحراف=آخر يوم يبعد '+S.dev+'% عن المتوسط، فجوة=الطلب أكبر من الإنتاج '+S.gap+' أيام أو أكثر.'):('Scans last 30 days. Near-depletion < '+S.low+'d supply, dead > '+S.dead+'d no sale, deviation ±'+S.dev+'% vs mean, gap = order>production on '+S.gap+'+ days.'));
+  renderSmartAlertsList();
+}
+function renderSmartAlertsList(){
+  const S=SA_STATE, D=S._D, AR=LANG==='ar';
+  if(!D)return;
+  let rows=D.alerts.slice();
+  if(S.type&&S.type.length)rows=rows.filter(a=>S.type.includes(a.type));
+  if(S.level!=='all')rows=rows.filter(a=>a.level===S.level);
+  if(S.cat&&S.cat.length)rows=rows.filter(a=>S.cat.includes(a.cat));
+  if(S.brand&&S.brand.length)rows=rows.filter(a=>S.brand.includes(a.brand));
+  if(S.search){const q=S.search.toLowerCase();rows=rows.filter(a=>String(a.name).toLowerCase().includes(q)||String(a.nameAr||'').toLowerCase().includes(q)||String(a.code).includes(q));}
+  const list=$('#saList'); if(!list)return;
+  if(!rows.length){ list.innerHTML='<div class="panel" style="text-align:center;padding:24px;color:var(--green);font-weight:700">'+(AR?'✓ لا توجد تنبيهات ضمن هذا الفلتر':'✓ No alerts for this filter')+'</div>'; return; }
+  const typeIcon={low:'⏳',dead:'📦',dev:'📈',gap:'⚠️'};
+  const typeLbl={low:(AR?'قرب النفاد':'Near depletion'),dead:(AR?'راكد':'Dead'),dev:(AR?'انحراف':'Deviation'),gap:(AR?'فجوة':'Gap')};
+  const pill=l=>l==='crit'?'r':l==='warn'?'y':'g';
+  const lvlLbl=l=>l==='crit'?(AR?'حرجة':'Critical'):l==='warn'?(AR?'تحذير':'Warning'):(AR?'مراقبة':'Watch');
+  list.innerHTML=rows.slice(0,400).map(a=>`
+    <div class="panel" style="padding:10px 14px;margin-bottom:8px;display:flex;align-items:center;gap:12px;border-inline-start:3px solid ${a.level==='crit'?'var(--red)':a.level==='warn'?'var(--gold)':'var(--sky)'}">
+      <div style="font-size:20px">${typeIcon[a.type]||'•'}</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-weight:700;font-size:13px">${prodName(a)} <span style="opacity:.5;font-weight:400">· ${a.code}</span></div>
+        <div style="font-size:12px;opacity:.85;margin-top:2px">${AR?a.msgAr:a.msgEn}</div>
+      </div>
+      <span class="pill" style="opacity:.7">${typeLbl[a.type]}</span>
+      <span class="pill ${pill(a.level)}">${lvlLbl(a.level)}</span>
+    </div>`).join('') + (rows.length>400?`<div style="text-align:center;opacity:.6;font-size:12px;padding:8px">${AR?'عرض أول 400 من ':'showing first 400 of '}${rows.length}</div>`:'');
+}
+
+// ============== SMART ALERTS ENGINE ==============
+// Actionable operational alerts: near-depletion, dead stock, big sales deviation, recurring order-production gap.
+// cfg: {lowDays, deadDays, devPct, gapDays, lookback} — sensible defaults provided.
+function computeSmartAlerts(cfg){
+  cfg=cfg||{};
+  const lowDays=cfg.lowDays||7, deadDays=cfg.deadDays||14, devPct=cfg.devPct||40, gapDays=cfg.gapDays||3, lookback=cfg.lookback||30;
+  if(!SKU_DATES.length)return {alerts:[],counts:{crit:0,warn:0,watch:0},nDays:0};
+  const nD=SKU_DATES.length;
+  const lastIdx=nD-1;
+  const fromIdx=Math.max(0,nD-lookback);
+  const rangeFrom=SKU_DATES[fromIdx], rangeTo=SKU_DATES[lastIdx];
+  const alerts=[];
+  // --- use inventory engine for stock-based alerts (last `lookback` days) ---
+  let inv=null; try{ inv=computeInventory(rangeFrom,rangeTo,{},deadDays); }catch(e){}
+  if(inv&&inv.rows){
+    inv.rows.forEach(r=>{
+      // 1) near depletion (low days of supply)
+      if(r.curStock>0 && r.avgDailySales>0 && r.dos<lowDays){
+        const lvl=r.dos<3?'crit':(r.dos<lowDays?'warn':'watch');
+        alerts.push({type:'low', level:lvl, code:r.code, name:r.name, nameAr:r.nameAr, cat:r.cat, brand:r.brand,
+          metric:r.dos, msgAr:'قرب النفاد — تغطية '+r.dos+' يوم فقط ('+F(r.curStock)+' صندوق مخزون)',
+          msgEn:'Near depletion — '+r.dos+' days of supply left ('+F(r.curStock)+' boxes)'});
+      }
+      // 2) dead / stagnant stock
+      if(r.isDead){
+        alerts.push({type:'dead', level:r.curStockKg>50000?'warn':'watch', code:r.code, name:r.name, nameAr:r.nameAr, cat:r.cat, brand:r.brand,
+          metric:r.daysSinceSale, msgAr:'مخزون راكد — لم يُبع منذ '+r.daysSinceSale+' يوم ('+F(r.curStockKg)+' كغم معطّلة)',
+          msgEn:'Dead stock — no sales for '+r.daysSinceSale+' days ('+F(r.curStockKg)+' kg idle)'});
+      }
+    });
+  }
+  // --- product-level series alerts (deviation + order/prod gap) ---
+  (DATA.sku||[]).forEach(p=>{
+    const dS=p.dS||[], dO=p.dO||[], dP=p.dP||[];
+    // 3) big sales deviation: compare last value vs mean of the lookback window
+    const win=[]; for(let i=fromIdx;i<=lastIdx;i++){const v=dS[i]; if(v!=null&&v>0)win.push(v);}
+    if(win.length>=5){
+      const mean=win.reduce((a,b)=>a+b,0)/win.length;
+      // find the most recent non-null sales day
+      let lastV=null; for(let i=lastIdx;i>=fromIdx;i--){if(dS[i]!=null&&dS[i]>0){lastV=dS[i];break;}}
+      if(lastV!=null && mean>0){
+        const chg=(lastV-mean)/mean*100;
+        if(Math.abs(chg)>=devPct){
+          alerts.push({type:'dev', level:Math.abs(chg)>=devPct*2?'warn':'watch', code:p.c, name:p.n, nameAr:p.nAr, cat:p.cat, brand:String(p.brand||'—'),
+            metric:Math.round(chg), msgAr:'انحراف مبيعات — آخر يوم '+(chg>0?'أعلى':'أقل')+' بـ'+Math.abs(Math.round(chg))+'% عن المتوسط',
+            msgEn:'Sales deviation — last day '+(chg>0?'up':'down')+' '+Math.abs(Math.round(chg))+'% vs average'});
+        }
+      }
+    }
+    // 4) recurring order-production gap: count days where order>production within lookback
+    let gapCount=0, totGap=0;
+    for(let i=fromIdx;i<=lastIdx;i++){const o=dO[i]||0, pr=dP[i]||0; if(o>0 && pr<o){gapCount++; totGap+=(o-pr);}}
+    if(gapCount>=gapDays){
+      alerts.push({type:'gap', level:gapCount>=gapDays*2?'warn':'watch', code:p.c, name:p.n, nameAr:p.nAr, cat:p.cat, brand:String(p.brand||'—'),
+        metric:gapCount, msgAr:'فجوة طلب-إنتاج متكررة — '+gapCount+' يوم الطلب فيها أكبر من الإنتاج',
+        msgEn:'Recurring order-production gap — '+gapCount+' days order exceeded production'});
+    }
+  });
+  // sort by level severity then metric
+  const order={crit:0,warn:1,watch:2};
+  alerts.sort((a,b)=>order[a.level]-order[b.level]);
+  const counts={crit:0,warn:0,watch:0}; alerts.forEach(a=>counts[a.level]++);
+  return {alerts, counts, nDays:nD, from:rangeFrom, to:rangeTo, cfg:{lowDays,deadDays,devPct,gapDays,lookback}};
+}
+
 function renderAlerts(){
   const T=t();
   $('#alTitle').textContent=T.alTitle; $('#alSub').textContent=T.alSub; $('#alNote').textContent=T.alNote;
+  $('#anTitle')&&($('#anTitle').textContent=(LANG==='ar'?'📊 مراقبة الانحرافات الإحصائية':'📊 Statistical Anomaly Monitor'));
+  try{ renderSmartAlerts(); }catch(e){ console.error('renderSmartAlerts',e); }
   let an=[]; try{ an=computeAnomalies(); }catch(e){ console.error('computeAnomalies failed',e); }
   const counts={crit:0,warn:0,watch:0}; an.forEach(a=>counts[a.anom.level]++);
   $('#alSummary').innerHTML=[
@@ -2996,6 +3918,9 @@ const EXPORT_TABLES=[
   {id:'tMonth', ar:'شهري', en:'Monthly'},
   {id:'tCmpUnc', ar:'الطلب·الإنتاج·المبيعات', en:'Orders·Prod·Sales'},
   {id:'tFulCh', ar:'سلسلة الإيفاء', en:'Fulfilment Chain'},
+  {id:'invanTbl', ar:'تحليل المخزون', en:'Inventory Analysis'},
+  {id:'abcTbl', ar:'ترتيب ABC', en:'ABC Ranking'},
+  {id:'abcBrandTbl', ar:'أداء البراند', en:'Brand Performance'},
   {id:'prodTbl', ar:'تفاصيل الإنتاج', en:'Production Detail'},
   {id:'salesTbl', ar:'تفاصيل المبيعات', en:'Sales Detail'},
   {id:'ordersTbl', ar:'تفاصيل الطلب', en:'Orders Detail'},
@@ -3241,7 +4166,7 @@ let WBFROM=null, WBTO=null, WBOWN='all', WBFAM=[];  // Whole Bird date range + b
 let CUTFROM=null, CUTTO=null, CUTFAM=[];
 
 
-function renderAll(){_NAR_MAP=null;loadColors();setChrome();renderTrend();renderExec();renderRx();renderWb();renderStk();try{renderProd();}catch(e){console.error('renderProd',e);}try{renderSales();}catch(e){console.error('renderSales',e);}try{renderOrders();}catch(e){console.error('renderOrders',e);}renderPlant();renderQuality();renderDemand();renderAlerts();renderTop();try{renderOffals();}catch(e){console.error('renderOffals',e);}try{renderWip();}catch(e){console.error('renderWip',e);}renderCmp();try{injectExportButtons();}catch(e){console.warn('export buttons',e);};renderWeekMonth();renderSku();try{renderWdist();}catch(e){console.error('renderWdist',e);}}
+function renderAll(){_NAR_MAP=null;loadColors();setChrome();renderTrend();renderExec();renderRx();renderWb();renderStk();try{renderInvan();}catch(e){console.error('renderInvan',e);}try{renderTrends();}catch(e){console.error('renderTrends',e);}try{renderABC();}catch(e){console.error('renderABC',e);}try{renderProd();}catch(e){console.error('renderProd',e);}try{renderSales();}catch(e){console.error('renderSales',e);}try{renderOrders();}catch(e){console.error('renderOrders',e);}renderPlant();renderQuality();renderDemand();renderAlerts();renderTop();try{renderOffals();}catch(e){console.error('renderOffals',e);}try{renderWip();}catch(e){console.error('renderWip',e);}renderCmp();try{injectExportButtons();}catch(e){console.warn('export buttons',e);};renderWeekMonth();renderSku();try{renderWdist();}catch(e){console.error('renderWdist',e);}}
 
 $('#exportBtn').onclick=()=>{
   try{
