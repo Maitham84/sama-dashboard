@@ -2321,12 +2321,8 @@ function renderABC(){
     ['dP',AR?'الإنتاج (فئة/عائلة)':'Production (cat/family)'],
     ['dO',AR?'الطلب (فئة/عائلة)':'Orders (cat/family)'],
     ['fulfil',AR?'الوفاء بالطلب':'Order fulfilment'],
-    ['stockmove',AR?'حركة المخزون':'Stock movement'],
-    ['wow',AR?'أسبوعي مقارن':'Week-over-week'],
     ['brand',AR?'أداء البراند':'Brand performance'],
-    ['ffrep',AR?'فريش مقابل مجمد':'Fresh vs Frozen'],
-    ['rxrep',AR?'الاستلام والذبح الشهري':'Monthly receiving'],
-    ['critical',AR?'المنتجات الحرجة':'Critical products']
+    ['ffrep',AR?'فريش مقابل مجمد':'Fresh vs Frozen']
   ].map(([v,l])=>`<option value="${v}" ${v===S.metric?'selected':''}>${l}</option>`).join('');
   const fr=$id('From'), to=$id('To');
   if(SKU_DATES&&SKU_DATES.length){const lo=SKU_DATES[0],hi=SKU_DATES[SKU_DATES.length-1];if(fr){fr.min=lo;fr.max=hi;}if(to){to.min=lo;to.max=hi;}}
@@ -2458,12 +2454,8 @@ function renderTrends(){
     ['dP',AR?'الإنتاج (فئة/عائلة)':'Production (cat/family)'],
     ['dO',AR?'الطلب (فئة/عائلة)':'Orders (cat/family)'],
     ['fulfil',AR?'الوفاء بالطلب':'Order fulfilment'],
-    ['stockmove',AR?'حركة المخزون':'Stock movement'],
-    ['wow',AR?'أسبوعي مقارن':'Week-over-week'],
     ['brand',AR?'أداء البراند':'Brand performance'],
-    ['ffrep',AR?'فريش مقابل مجمد':'Fresh vs Frozen'],
-    ['rxrep',AR?'الاستلام والذبح الشهري':'Monthly receiving'],
-    ['critical',AR?'المنتجات الحرجة':'Critical products']
+    ['ffrep',AR?'فريش مقابل مجمد':'Fresh vs Frozen']
   ].map(([v,l])=>`<option value="${v}" ${v===S.metric?'selected':''}>${l}</option>`).join('');
   // gran select
   const gs=$id('Gran');
@@ -3969,49 +3961,10 @@ function computeRptFulfil(from,to,F){
 }
 
 // (2) Stock Movement: per cat — opening, production, sales, computed closing vs actual closing, variance
-function computeRptStockMove(from,to,F){
-  if(!SKU_DATES.length)return null;
-  const idxs=_rptIdxs(from,to); if(!idxs.length)return null;
-  const sku=_rptFilterSku(F||{});
-  const first=idxs[0];
-  // find latest idx in range with stock balances (actual closing)
-  let closeIdx=-1;
-  for(let k=idxs.length-1;k>=0;k--){const i=idxs[k]; if(sku.some(p=>(p.dC&&p.dC[i]>0)||(p.dK&&p.dK[i]>0))){closeIdx=i;break;}}
-  const groups={};
-  sku.forEach(p=>{const bk=prodBoxKg(p)||0;
-    const open=(p.dK&&p.dK[first])||((p.dC&&p.dC[first])||0);
-    let pr=0,s=0; idxs.forEach(i=>{pr+=(p.dP&&p.dP[i])||0;s+=(p.dS&&p.dS[i])||0;});
-    let close=0; if(closeIdx>=0){close=(p.dC&&p.dC[closeIdx]>0)?p.dC[closeIdx]:((p.dK&&p.dK[closeIdx])||0);}
-    if(open<=0&&pr<=0&&s<=0&&close<=0)return;
-    const cK=p.cat||'—';
-    if(!groups[cK])groups[cK]={cat:cK,open:0,p:0,s:0,close:0,kg:0,n:0};
-    const g=groups[cK]; g.open+=open;g.p+=pr;g.s+=s;g.close+=close;g.kg+=close*bk;g.n++;});
-  const cats=Object.values(groups).map(g=>{const calc=g.open+g.p-g.s;
-    return {cat:g.cat,n:g.n,open:Math.round(g.open),p:Math.round(g.p),s:Math.round(g.s),
-      calc:Math.round(calc),close:Math.round(g.close),closeKg:Math.round(g.kg),
-      variance:Math.round(g.close-calc)};}).sort((a,b)=>b.close-a.close);
-  const tot=cats.reduce((a,g)=>({open:a.open+g.open,p:a.p+g.p,s:a.s+g.s,calc:a.calc+g.calc,close:a.close+g.close,closeKg:a.closeKg+g.closeKg,variance:a.variance+g.variance,n:a.n+g.n}),{open:0,p:0,s:0,calc:0,close:0,closeKg:0,variance:0,n:0});
-  return {cats,tot,nDays:idxs.length,from:SKU_DATES[first],to:SKU_DATES[idxs[idxs.length-1]],closeAsof:closeIdx>=0?SKU_DATES[closeIdx]:null};
-}
+
 
 // (3) Week-over-week: per company week — sales/production/orders boxes + % change vs previous week
-function computeRptWoW(from,to,F){
-  if(!SKU_DATES.length)return null;
-  const idxs=_rptIdxs(from,to); if(!idxs.length)return null;
-  const sku=_rptFilterSku(F||{});
-  const wmap={};
-  idxs.forEach(i=>{const d=SKU_DATES[i];const dt=new Date(d+'T00:00:00Z');const wd=(dt.getUTCDay()+1)%7;const sat=new Date(dt);sat.setUTCDate(dt.getUTCDate()-wd);const k=sat.toISOString().slice(0,10);
-    if(!wmap[k])wmap[k]={frm:k,s:0,p:0,o:0,sKg:0};
-    sku.forEach(pp=>{const bk=prodBoxKg(pp)||0;const sv=(pp.dS&&pp.dS[i])||0;
-      wmap[k].s+=sv;wmap[k].p+=(pp.dP&&pp.dP[i])||0;wmap[k].o+=(pp.dO&&pp.dO[i])||0;wmap[k].sKg+=sv*bk;});});
-  const weeks=Object.values(wmap).sort((a,b)=>a.frm.localeCompare(b.frm)).map(w=>({frm:w.frm,s:Math.round(w.s),p:Math.round(w.p),o:Math.round(w.o),sKg:Math.round(w.sKg)}));
-  weeks.forEach((w,i)=>{if(i>0){const pv=weeks[i-1];
-    w.sChg=pv.s?+((w.s-pv.s)/pv.s*100).toFixed(1):null;
-    w.pChg=pv.p?+((w.p-pv.p)/pv.p*100).toFixed(1):null;
-    w.oChg=pv.o?+((w.o-pv.o)/pv.o*100).toFixed(1):null;}});
-  const tot=weeks.reduce((a,w)=>({s:a.s+w.s,p:a.p+w.p,o:a.o+w.o}),{s:0,p:0,o:0});
-  return {weeks,tot,from:SKU_DATES[idxs[0]],to:SKU_DATES[idxs[idxs.length-1]]};
-}
+
 
 // (4) Brand performance: per brand — boxes, kg, share %, daily avg, active products, own/PL
 function computeRptBrand(metricKey,from,to,F){
@@ -4056,31 +4009,10 @@ function computeRptFF(metricKey,from,to,F){
 }
 
 // (6) Monthly receiving & slaughter: per month — birds, live kg, DOA%, slaughtered, avg bird weight
-function computeRptRx(from,to){
-  const rx=DATA.rx; if(!rx||!rx.daily||!rx.daily.length)return null;
-  const inR=d=>(!from||d>=from)&&(!to||d<=to);
-  const mmap={};
-  rx.daily.forEach(e=>{if(!inR(e.d))return;const k=e.d.slice(0,7);
-    if(!mmap[k])mmap[k]={m:k,qty:0,doa:0,sl:0,_wS:0,_wQ:0,days:0};
-    const g=mmap[k]; g.qty+=e.v||0;g.doa+=e.doa||0;g.sl+=e.sl||0;g.days++;
-    if(e.awt&&e.v){g._wS+=e.awt*e.v;g._wQ+=e.v;}});
-  const months=Object.values(mmap).sort((a,b)=>a.m.localeCompare(b.m)).map(g=>({m:g.m,days:g.days,
-    qty:Math.round(g.qty),doa:Math.round(g.doa),doaPct:g.qty?+(g.doa/g.qty*100).toFixed(2):null,
-    sl:Math.round(g.sl),awt:g._wQ?+(g._wS/g._wQ).toFixed(3):null,liveKg:Math.round(g._wS)}));
-  if(!months.length)return null;
-  const tot=months.reduce((a,m)=>({qty:a.qty+m.qty,doa:a.doa+m.doa,sl:a.sl+m.sl,liveKg:a.liveKg+m.liveKg,days:a.days+m.days}),{qty:0,doa:0,sl:0,liveKg:0,days:0});
-  tot.doaPct=tot.qty?+(tot.doa/tot.qty*100).toFixed(2):null;
-  return {months,tot,from:months[0].m,to:months[months.length-1].m};
-}
+
 
 // (7) Critical products: low days-of-supply + dead stock (product-level export)
-function computeRptCritical(from,to,F,lowDays,deadDays){
-  const inv=computeInventory(from,to,F||{},deadDays||14);
-  if(!inv||!inv.rows)return null;
-  const low=inv.rows.filter(r=>r.curStock>0&&r.avgDailySales>0&&r.dos<(lowDays||7)).sort((a,b)=>a.dos-b.dos);
-  const dead=inv.rows.filter(r=>r.isDead).sort((a,b)=>b.curStockKg-a.curStockKg);
-  return {low,dead,nDays:inv.nDays,from:inv.from,to:inv.to};
-}
+
 
 // ============== REPORTS TAB ==============
 const RPT_STATE={metric:'dS',from:null,to:null,cat:[],fam:[],own:[],ff:[],brand:[],pack:[],prod:[]};
@@ -4110,12 +4042,8 @@ function renderReports(){
     ['dP',AR?'الإنتاج (فئة/عائلة)':'Production (cat/family)'],
     ['dO',AR?'الطلب (فئة/عائلة)':'Orders (cat/family)'],
     ['fulfil',AR?'الوفاء بالطلب':'Order fulfilment'],
-    ['stockmove',AR?'حركة المخزون':'Stock movement'],
-    ['wow',AR?'أسبوعي مقارن':'Week-over-week'],
     ['brand',AR?'أداء البراند':'Brand performance'],
-    ['ffrep',AR?'فريش مقابل مجمد':'Fresh vs Frozen'],
-    ['rxrep',AR?'الاستلام والذبح الشهري':'Monthly receiving'],
-    ['critical',AR?'المنتجات الحرجة':'Critical products']
+    ['ffrep',AR?'فريش مقابل مجمد':'Fresh vs Frozen']
   ].map(([v,l])=>`<option value="${v}" ${v===S.metric?'selected':''}>${l}</option>`).join('');
   const fr=$id('From'), to=$id('To');
   if(SKU_DATES&&SKU_DATES.length){const lo=SKU_DATES[0],hi=SKU_DATES[SKU_DATES.length-1];if(fr){fr.min=lo;fr.max=hi;}if(to){to.min=lo;to.max=hi;}}
@@ -4146,9 +4074,10 @@ function renderReports(){
 
   const eb=$id('ExportBtn'); if(eb&&!eb.dataset.init){eb.dataset.init='1';eb.onclick=()=>{exportReportExcel();};}
 
+  if(['stockmove','wow','rxrep','critical'].includes(S.metric))S.metric='dS';
   const FLT={cat:S.cat,fam:S.fam,own:S.own,ff:S.ff,brand:S.brand,pack:S.pack,prod:S.prod};
   // dispatch: extended report types render via renderRptExt and return
-  if(['fulfil','stockmove','wow','brand','ffrep','rxrep','critical'].includes(S.metric)){
+  if(['fulfil','brand','ffrep'].includes(S.metric)){
     try{ renderRptExt(S.metric,FLT); }catch(e){ console.error('renderRptExt',e); }
     return;
   }
@@ -4167,16 +4096,18 @@ function renderReports(){
   ].map(([k,v,d])=>`<div class="card"><div class="k">${k}</div><div class="v num">${v}</div><div class="d">${d}</div></div>`).join(''));
 
   $id('TblT')&&($id('TblT').textContent=(AR?'تقرير ':'')+metricWord+(AR?' — مجمّع حسب الفئة والعائلة':' — grouped by category & family')+' ('+D.from+' → '+D.to+')');
-  const H=[AR?'الفئة / العائلة':'Category / Family',AR?'الأصناف':'Items',metricWord+' ('+boxU+')',metricWord+' ('+kgU+')',AR?'معدل/يوم ('+boxU+')':'Avg/day ('+boxU+')',AR?'معدل/يوم ('+kgU+')':'Avg/day ('+kgU+')',AR?'رصيد الإقفال ('+boxU+')':'Closing ('+boxU+')',AR?'رصيد الإقفال ('+kgU+')':'Closing ('+kgU+')'];
+  const H=[AR?'الفئة / العائلة':'Category / Family',AR?'الأصناف':'Items',metricWord+' ('+boxU+')',AR?'% صندوق':'% boxes',metricWord+' ('+kgU+')',AR?'% وزن':'% weight',AR?'معدل/يوم ('+boxU+')':'Avg/day ('+boxU+')',AR?'معدل/يوم ('+kgU+')':'Avg/day ('+kgU+')',AR?'رصيد الإقفال ('+boxU+')':'Closing ('+boxU+')',AR?'رصيد الإقفال ('+kgU+')':'Closing ('+kgU+')'];
   const tbl=$id('Tbl'); if(!tbl)return;
+  const pB=v=>D.tot.boxes?((v/D.tot.boxes*100).toFixed(2)+'%'):'—';
+  const pK=v=>D.tot.kg?((v/D.tot.kg*100).toFixed(2)+'%'):'—';
   let html=`<thead><tr>${H.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>`;
   D.cats.forEach(g=>{
-    html+=`<tr style="background:var(--panel2);font-weight:800"><td style="text-align:start">📁 ${(t().cats&&t().cats[g.cat])||g.cat}</td><td class="num">${g.n}</td><td class="num">${F(g.boxes)}</td><td class="num">${F(g.kg)}</td><td class="num">${F(Math.round(g.avgBoxes))}</td><td class="num">${F(g.avgKg)}</td><td class="num">${F(g.stockBoxes)}</td><td class="num">${F(g.stockKg)}</td></tr>`;
+    html+=`<tr style="background:var(--panel2);font-weight:800"><td style="text-align:start">📁 ${(t().cats&&t().cats[g.cat])||g.cat}</td><td class="num">${g.n}</td><td class="num">${F(g.boxes)}</td><td class="num" style="color:var(--gold2)">${pB(g.boxes)}</td><td class="num">${F(g.kg)}</td><td class="num" style="color:var(--gold2)">${pK(g.kg)}</td><td class="num">${F(Math.round(g.avgBoxes))}</td><td class="num">${F(g.avgKg)}</td><td class="num">${F(g.stockBoxes)}</td><td class="num">${F(g.stockKg)}</td></tr>`;
     g.fams.forEach(f=>{
-      html+=`<tr><td style="text-align:start;padding-inline-start:28px">└ ${f.fam}</td><td class="num">${f.n}</td><td class="num">${F(f.boxes)}</td><td class="num">${F(f.kg)}</td><td class="num">${F(Math.round(f.avgBoxes))}</td><td class="num">${F(f.avgKg)}</td><td class="num">${F(f.stockBoxes)}</td><td class="num">${F(f.stockKg)}</td></tr>`;
+      html+=`<tr><td style="text-align:start;padding-inline-start:28px">└ ${f.fam}</td><td class="num">${f.n}</td><td class="num">${F(f.boxes)}</td><td class="num" style="color:var(--gold2)">${pB(f.boxes)}</td><td class="num">${F(f.kg)}</td><td class="num" style="color:var(--gold2)">${pK(f.kg)}</td><td class="num">${F(Math.round(f.avgBoxes))}</td><td class="num">${F(f.avgKg)}</td><td class="num">${F(f.stockBoxes)}</td><td class="num">${F(f.stockKg)}</td></tr>`;
     });
   });
-  html+=`<tr style="border-top:2px solid var(--gold);font-weight:800"><td style="text-align:start">${AR?'الإجمالي':'TOTAL'}</td><td class="num">${F(D.tot.n)}</td><td class="num">${F(D.tot.boxes)}</td><td class="num">${F(D.tot.kg)}</td><td class="num">${F(Math.round(D.tot.boxes/D.nDays))}</td><td class="num">${F(Math.round(D.tot.kg/D.nDays))}</td><td class="num">${F(D.tot.stockBoxes)}</td><td class="num">${F(D.tot.stockKg)}</td></tr></tbody>`;
+  html+=`<tr style="border-top:2px solid var(--gold);font-weight:800"><td style="text-align:start">${AR?'الإجمالي':'TOTAL'}</td><td class="num">${F(D.tot.n)}</td><td class="num">${F(D.tot.boxes)}</td><td class="num">100%</td><td class="num">${F(D.tot.kg)}</td><td class="num">100%</td><td class="num">${F(Math.round(D.tot.boxes/D.nDays))}</td><td class="num">${F(Math.round(D.tot.kg/D.nDays))}</td><td class="num">${F(D.tot.stockBoxes)}</td><td class="num">${F(D.tot.stockKg)}</td></tr></tbody>`;
   tbl.innerHTML=html;
   $id('Note')&&($id('Note').textContent=AR?'اختيار المنتجات يُستخدم للحساب فقط — التقرير يعرض المجاميع حسب الفئة والعائلة. رصيد الإقفال = آخر يوم ضمن مدة التقرير فيه أرصدة مخزون.':'Product selection feeds the calculation only — the report shows category/family totals. Closing stock = latest day within the report period that has balances.');
 }
@@ -4208,7 +4139,8 @@ function renderRptExt(kind, FLT){
 
   if(kind==='fulfil'){
     const D=computeRptFulfil(S.from,S.to,FLT); if(!D||!D.cats.length)return noData();
-    setCards([[AR?'الطلب':'Orders',F(D.tot.o)+' '+boxU,''],[AR?'الإنتاج':'Production',F(D.tot.p)+' '+boxU,''],[AR?'المبيعات':'Sales',F(D.tot.s)+' '+boxU,''],[AR?'تغطية الإنتاج':'Prod coverage',(D.tot.covP==null?'—':D.tot.covP+'%'),AR?'إنتاج ÷ طلب':'prod ÷ orders'],[AR?'الوفاء':'Fulfilment',(D.tot.covS==null?'—':D.tot.covS+'%'),AR?'مبيعات ÷ طلب':'sales ÷ orders'],[AR?'النقص':'Shortfall',F(D.tot.short)+' '+boxU,'']]);
+    const sub=$id('Sub'); if(sub)sub.textContent=(AR?'تقرير الوفاء بالطلب · ':'Order fulfilment · ')+D.from+' → '+D.to+' ('+D.nDays+(AR?' يوم':' days')+')';
+    setCards([[AR?'الفترة':'Period',D.nDays+(AR?' يوم':' days'),D.from+' → '+D.to],[AR?'الطلب':'Orders',F(D.tot.o)+' '+boxU,''],[AR?'الإنتاج':'Production',F(D.tot.p)+' '+boxU,''],[AR?'المبيعات':'Sales',F(D.tot.s)+' '+boxU,''],[AR?'تغطية الإنتاج':'Prod coverage',(D.tot.covP==null?'—':D.tot.covP+'%'),AR?'إنتاج ÷ طلب':'prod ÷ orders'],[AR?'الوفاء':'Fulfilment',(D.tot.covS==null?'—':D.tot.covS+'%'),AR?'مبيعات ÷ طلب':'sales ÷ orders'],[AR?'النقص':'Shortfall',F(D.tot.short)+' '+boxU,'']]);
     const H=[AR?'الفئة / العائلة':'Category / Family',AR?'الأصناف':'Items',AR?'طلب':'Orders',AR?'إنتاج':'Prod',AR?'مبيعات':'Sales',AR?'تغطية %':'Cover %',AR?'وفاء %':'Fulfil %',AR?'نقص':'Short'];
     const rows=[];
     D.cats.forEach(g=>{rows.push({_style:'background:var(--panel2);font-weight:800',cells:['📁 '+((t().cats&&t().cats[g.cat])||g.cat),g.n,F(g.o),F(g.p),F(g.s),pcPill(g.covP),pcPill(g.covS),F(g.short)]});
@@ -4217,25 +4149,8 @@ function renderRptExt(kind, FLT){
       [AR?'الإجمالي':'TOTAL',F(D.tot.n),F(D.tot.o),F(D.tot.p),F(D.tot.s),(D.tot.covP==null?'—':D.tot.covP+'%'),(D.tot.covS==null?'—':D.tot.covS+'%'),F(D.tot.short)]);
     $id('Note')&&($id('Note').textContent=AR?'التغطية = الإنتاج ÷ الطلب. الوفاء = المبيعات ÷ الطلب. النقص = الطلب − الأعلى من (الإنتاج، المبيعات).':'Coverage = prod ÷ orders. Fulfilment = sales ÷ orders. Shortfall = orders − max(prod, sales).');
   }
-  else if(kind==='stockmove'){
-    const D=computeRptStockMove(S.from,S.to,FLT); if(!D||!D.cats.length)return noData();
-    setCards([[AR?'رصيد الافتتاح':'Opening',F(D.tot.open)+' '+boxU,D.from],[AR?'الإنتاج':'Production',F(D.tot.p)+' '+boxU,''],[AR?'المبيعات':'Sales',F(D.tot.s)+' '+boxU,''],[AR?'الرصيد المحسوب':'Calculated',F(D.tot.calc)+' '+boxU,AR?'افتتاح+إنتاج−مبيعات':'open+prod−sales'],[AR?'الإقفال الفعلي':'Actual closing',F(D.tot.close)+' '+boxU,D.closeAsof||''],[AR?'الفرق':'Variance',F(D.tot.variance)+' '+boxU,AR?'فعلي − محسوب':'actual − calc']]);
-    const H=[AR?'الفئة':'Category',AR?'الأصناف':'Items',AR?'افتتاح':'Opening',AR?'إنتاج':'Prod',AR?'مبيعات':'Sales',AR?'محسوب':'Calc',AR?'إقفال فعلي':'Actual',AR?'فرق':'Variance',AR?'إقفال (كغم)':'Closing (kg)'];
-    const rows=D.cats.map(g=>({cells:[(t().cats&&t().cats[g.cat])||g.cat,g.n,F(g.open),F(g.p),F(g.s),F(g.calc),F(g.close),F(g.variance),F(g.closeKg)]}));
-    buildTbl((AR?'تقرير حركة المخزون':'Stock Movement')+' ('+D.from+' → '+D.to+')',H,rows,
-      [AR?'الإجمالي':'TOTAL',F(D.tot.n),F(D.tot.open),F(D.tot.p),F(D.tot.s),F(D.tot.calc),F(D.tot.close),F(D.tot.variance),F(D.tot.closeKg)]);
-    $id('Note')&&($id('Note').textContent=AR?'الفرق السالب = مخزون فعلي أقل من المحسوب (فاقد/تسويات/تحويلات). الإقفال الفعلي بتاريخ '+(D.closeAsof||'—')+'.':'Negative variance = actual below calculated (loss/adjustments/transfers). Actual closing as of '+(D.closeAsof||'—')+'.');
-  }
-  else if(kind==='wow'){
-    const D=computeRptWoW(S.from,S.to,FLT); if(!D||!D.weeks.length)return noData();
-    const lastW=D.weeks[D.weeks.length-1];
-    setCards([[AR?'الأسابيع':'Weeks',D.weeks.length,''],[AR?'مبيعات آخر أسبوع':'Last week sales',F(lastW.s)+' '+boxU,''],[AR?'تغيّر المبيعات':'Sales change',chg(lastW.sChg),AR?'عن الأسبوع السابق':'vs prior week'],[AR?'إجمالي المبيعات':'Total sales',F(D.tot.s)+' '+boxU,'']]);
-    const H=[AR?'الأسبوع (من السبت)':'Week (from Sat)',AR?'مبيعات':'Sales',AR?'تغير %':'Chg %',AR?'إنتاج':'Prod',AR?'تغير %':'Chg %',AR?'طلب':'Orders',AR?'تغير %':'Chg %'];
-    const rows=D.weeks.map(w=>({cells:[w.frm,F(w.s),chg(w.sChg),F(w.p),chg(w.pChg),F(w.o),chg(w.oChg)]}));
-    buildTbl((AR?'التقرير الأسبوعي المقارن':'Week-over-Week')+' ('+D.from+' → '+D.to+')',H,rows,
-      [AR?'الإجمالي':'TOTAL',F(D.tot.s),'',F(D.tot.p),'',F(D.tot.o),'']);
-    $id('Note')&&($id('Note').textContent=AR?'أسبوع الشركة يبدأ السبت. التغير % = (الأسبوع الحالي − السابق) ÷ السابق.':'Company week starts Saturday. Change % = (current − prior) ÷ prior.');
-  }
+  
+  
   else if(kind==='brand'){
     const D=computeRptBrand('dS',S.from,S.to,FLT); if(!D||!D.brands.length)return noData();
     setCards([[AR?'البراندات':'Brands',D.brands.length,''],[AR?'إجمالي المبيعات':'Total sales',F(D.tot.boxes)+' '+boxU,F(D.tot.kg)+' '+kgU],[AR?'البراند الأول':'Top brand',D.brands[0].brand,D.brands[0].pct+'%'],[AR?'الأصناف النشطة':'Active products',F(D.tot.n),'']]);
@@ -4258,27 +4173,8 @@ function renderRptExt(kind, FLT){
       [AR?'الإجمالي':'TOTAL',F(D.tot.n),F(D.tot.boxes),F(D.tot.kg),'100%','']);
     $id('Note')&&($id('Note').textContent=AR?'التجميع حسب النوع ثم الفئة.':'Grouped by type then category.');
   }
-  else if(kind==='rxrep'){
-    const D=computeRptRx(S.from,S.to); if(!D||!D.months.length)return noData();
-    setCards([[AR?'الطيور المستلمة':'Birds received',F(D.tot.qty),D.tot.days+(AR?' يوم':' days')],[AR?'الوزن الحي':'Live weight',F(D.tot.liveKg)+' '+kgU,''],[AR?'النافق DOA':'DOA',F(D.tot.doa)+' ('+(D.tot.doaPct==null?'—':D.tot.doaPct+'%')+')',''],[AR?'المذبوح':'Slaughtered',F(D.tot.sl),'']]);
-    const H=[AR?'الشهر':'Month',AR?'أيام':'Days',AR?'مستلم':'Received',AR?'وزن حي (كغم)':'Live kg',AR?'معدل وزن الطائر':'Avg bird wt',AR?'نافق':'DOA',AR?'DOA %':'DOA %',AR?'مذبوح':'Slaughtered'];
-    const rows=D.months.map(m=>({cells:[m.m,m.days,F(m.qty),F(m.liveKg),(m.awt==null?'—':m.awt),F(m.doa),(m.doaPct==null?'—':m.doaPct+'%'),F(m.sl)]}));
-    buildTbl((AR?'تقرير الاستلام والذبح الشهري':'Monthly Receiving & Slaughter'),H,rows,
-      [AR?'الإجمالي':'TOTAL',D.tot.days,F(D.tot.qty),F(D.tot.liveKg),'',F(D.tot.doa),(D.tot.doaPct==null?'—':D.tot.doaPct+'%'),F(D.tot.sl)]);
-    $id('Note')&&($id('Note').textContent=AR?'الوزن الحي = الكمية × معدل وزن الطائر (إذا متوفر بملف الاستلام). فلاتر المنتجات لا تنطبق على هذا التقرير.':'Live weight = qty × avg bird weight (when available). Product filters do not apply to this report.');
-  }
-  else if(kind==='critical'){
-    const D=computeRptCritical(S.from,S.to,FLT,7,14); if(!D||(!D.low.length&&!D.dead.length))return noData();
-    setCards([[AR?'قرب النفاد':'Near depletion',D.low.length,AR?'تغطية أقل من 7 أيام':'< 7 days supply'],[AR?'راكدة':'Dead stock',D.dead.length,AR?'بدون بيع 14+ يوم':'no sale 14+ days'],[AR?'كمية راكدة':'Idle kg',F(D.dead.reduce((a,r)=>a+r.curStockKg,0))+' '+kgU,'']]);
-    const H=[AR?'الحالة / المنتج':'Status / Product',AR?'الكود':'Code',AR?'الفئة':'Category',AR?'البراند':'Brand',AR?'مخزون (ص)':'Stock (bx)',AR?'مخزون (كغم)':'Stock (kg)',AR?'معدل بيع/يوم':'Avg sales/d',AR?'أيام تغطية':'Days supply'];
-    const rows=[];
-    if(D.low.length){rows.push({_style:'background:var(--panel2);font-weight:800',cells:[(AR?'⏳ قرب النفاد':'⏳ Near depletion'),'','','','','','','']});
-      D.low.slice(0,150).forEach(r=>rows.push({_indent:1,cells:[prodName(r),r.code,(t().cats&&t().cats[r.cat])||r.cat,r.brand,F(r.curStock),F(r.curStockKg),r.avgDailySales,r.dos]}));}
-    if(D.dead.length){rows.push({_style:'background:var(--panel2);font-weight:800',cells:[(AR?'📦 راكدة':'📦 Dead stock'),'','','','','','','']});
-      D.dead.slice(0,150).forEach(r=>rows.push({_indent:1,cells:[prodName(r),r.code,(t().cats&&t().cats[r.cat])||r.cat,r.brand,F(r.curStock),F(r.curStockKg),r.avgDailySales,(AR?'آخر بيع قبل ':'last sale ')+r.daysSinceSale+(AR?' يوم':'d')]}));}
-    buildTbl((AR?'تقرير المنتجات الحرجة':'Critical Products')+' ('+D.from+' → '+D.to+')',H,rows,null);
-    $id('Note')&&($id('Note').textContent=AR?'هذا التقرير الوحيد الذي يعرض منتجات فردية (لأنه قائمة تنفيذية للمتابعة).':'The only report showing individual products (an actionable follow-up list).');
-  }
+  
+  
 }
 
 // export the current report as an Excel file (HTML-table .xls — opens directly in Excel)
@@ -4304,15 +4200,17 @@ function exportReportExcel(){
   const metricWord={dS:(AR?'المبيعات':'Sales'),dP:(AR?'الإنتاج':'Production'),dO:(AR?'الطلب':'Orders')}[S.metric];
   const boxU=AR?'صندوق':'boxes', kgU=AR?'كغم':'kg';
   let rows='';
-  rows+=`<tr><th colspan="8" style="background:#1a2332;color:#c9a14a;font-size:14px">${AR?'شركة سما كربلاء — تقرير ':'Sama Karbala Co. — '}${metricWord} (${D.from} → ${D.to})</th></tr>`;
-  rows+=`<tr><th colspan="8">${AR?'رصيد الإقفال بتاريخ: ':'Closing stock as of: '}${D.stockAsof||'—'} | ${AR?'عدد الأيام: ':'Days: '}${D.nDays}</th></tr>`;
-  const H=[AR?'الفئة / العائلة':'Category / Family',AR?'الأصناف':'Items',metricWord+' ('+boxU+')',metricWord+' ('+kgU+')',AR?'معدل/يوم ('+boxU+')':'Avg/day ('+boxU+')',AR?'معدل/يوم ('+kgU+')':'Avg/day ('+kgU+')',AR?'رصيد ('+boxU+')':'Closing ('+boxU+')',AR?'رصيد ('+kgU+')':'Closing ('+kgU+')'];
+  rows+=`<tr><th colspan="10" style="background:#1a2332;color:#c9a14a;font-size:14px">${AR?'شركة سما كربلاء — تقرير ':'Sama Karbala Co. — '}${metricWord} (${D.from} → ${D.to})</th></tr>`;
+  rows+=`<tr><th colspan="10">${AR?'رصيد الإقفال بتاريخ: ':'Closing stock as of: '}${D.stockAsof||'—'} | ${AR?'عدد الأيام: ':'Days: '}${D.nDays}</th></tr>`;
+  const pB=v=>D.tot.boxes?((v/D.tot.boxes*100).toFixed(2)+'%'):'—';
+  const pK=v=>D.tot.kg?((v/D.tot.kg*100).toFixed(2)+'%'):'—';
+  const H=[AR?'الفئة / العائلة':'Category / Family',AR?'الأصناف':'Items',metricWord+' ('+boxU+')',AR?'% صندوق':'% boxes',metricWord+' ('+kgU+')',AR?'% وزن':'% weight',AR?'معدل/يوم ('+boxU+')':'Avg/day ('+boxU+')',AR?'معدل/يوم ('+kgU+')':'Avg/day ('+kgU+')',AR?'رصيد ('+boxU+')':'Closing ('+boxU+')',AR?'رصيد ('+kgU+')':'Closing ('+kgU+')'];
   rows+='<tr>'+H.map(h=>`<th style="background:#2a3648;color:#fff">${h}</th>`).join('')+'</tr>';
   D.cats.forEach(g=>{
-    rows+=`<tr style="background:#f0e8d8;font-weight:bold"><td>${(t().cats&&t().cats[g.cat])||g.cat}</td><td>${g.n}</td><td>${g.boxes}</td><td>${g.kg}</td><td>${Math.round(g.avgBoxes)}</td><td>${g.avgKg}</td><td>${g.stockBoxes}</td><td>${g.stockKg}</td></tr>`;
-    g.fams.forEach(f=>{rows+=`<tr><td>&nbsp;&nbsp;└ ${f.fam}</td><td>${f.n}</td><td>${f.boxes}</td><td>${f.kg}</td><td>${Math.round(f.avgBoxes)}</td><td>${f.avgKg}</td><td>${f.stockBoxes}</td><td>${f.stockKg}</td></tr>`;});
+    rows+=`<tr style="background:#f0e8d8;font-weight:bold"><td>${(t().cats&&t().cats[g.cat])||g.cat}</td><td>${g.n}</td><td>${g.boxes}</td><td>${pB(g.boxes)}</td><td>${g.kg}</td><td>${pK(g.kg)}</td><td>${Math.round(g.avgBoxes)}</td><td>${g.avgKg}</td><td>${g.stockBoxes}</td><td>${g.stockKg}</td></tr>`;
+    g.fams.forEach(f=>{rows+=`<tr><td>&nbsp;&nbsp;└ ${f.fam}</td><td>${f.n}</td><td>${f.boxes}</td><td>${pB(f.boxes)}</td><td>${f.kg}</td><td>${pK(f.kg)}</td><td>${Math.round(f.avgBoxes)}</td><td>${f.avgKg}</td><td>${f.stockBoxes}</td><td>${f.stockKg}</td></tr>`;});
   });
-  rows+=`<tr style="background:#c9a14a;font-weight:bold"><td>${AR?'الإجمالي':'TOTAL'}</td><td>${D.tot.n}</td><td>${D.tot.boxes}</td><td>${D.tot.kg}</td><td>${Math.round(D.tot.boxes/D.nDays)}</td><td>${Math.round(D.tot.kg/D.nDays)}</td><td>${D.tot.stockBoxes}</td><td>${D.tot.stockKg}</td></tr>`;
+  rows+=`<tr style="background:#c9a14a;font-weight:bold"><td>${AR?'الإجمالي':'TOTAL'}</td><td>${D.tot.n}</td><td>${D.tot.boxes}</td><td>100%</td><td>${D.tot.kg}</td><td>100%</td><td>${Math.round(D.tot.boxes/D.nDays)}</td><td>${Math.round(D.tot.kg/D.nDays)}</td><td>${D.tot.stockBoxes}</td><td>${D.tot.stockKg}</td></tr>`;
   const dir=AR?'rtl':'ltr';
   const doc=`<html dir="${dir}" xmlns:x="urn:schemas-microsoft-com:office:excel"><head><meta charset="UTF-8"><style>table{border-collapse:collapse}td,th{border:1px solid #999;padding:5px 9px;text-align:center;mso-number-format:"0"}td:first-child,th:first-child{text-align:${AR?'right':'left'}}</style></head><body><table>${rows}</table></body></html>`;
   const blob=new Blob(['\ufeff'+doc],{type:'application/vnd.ms-excel'});
