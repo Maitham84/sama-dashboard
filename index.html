@@ -735,8 +735,9 @@ const LINE_CAP={'Line 1 (B01)':15000,'Line 2 (B03)':15000,'Breeder Line':6000};
 // Standard daily work hours (used for utilisation until a Work hours column is provided in the sheet)
 const LINE_STD_HOURS={'Line 1 (B01)':20,'Line 2 (B03)':20,'Breeder Line':16};
 let DATA = EMBED;
-try{const s=localStorage.getItem('sk_dash_v4'); if(s){const j=JSON.parse(s); if(j&&j.kpi&&j.dt&&j.dt.length) DATA=j;}}catch(e){}
+try{const s=localStorage.getItem('sk_dash_v5'); if(s){const j=JSON.parse(s); if(j&&j.kpi&&j.dt&&j.dt.length) DATA=j;}}catch(e){}
 try{localStorage.removeItem('sk_dash_v3')}catch(e){}
+try{localStorage.removeItem('sk_dash_v4')}catch(e){}
 
 /* ===================== i18n ===================== */
 const I18N = {
@@ -2849,10 +2850,15 @@ function renderStk(){
   if(ad){
     if(STK_ASOF) ad.value=STK_ASOF;
     else if(SKU_DATES.length){
-      // default to yesterday (today − 1), snapped to the latest available stock date on/before it
-      const ystr=(()=>{const d=new Date();d.setDate(d.getDate()-1);return d.toISOString().slice(0,10);})();
-      let pick=SKU_DATES[SKU_DATES.length-1];
-      for(let i=SKU_DATES.length-1;i>=0;i--){ if(SKU_DATES[i]<=ystr){ pick=SKU_DATES[i]; break; } }
+      // default = the LATEST day that actually has stock balances (Close/Open Stock data),
+      // and STORE it in STK_ASOF so the computation uses the same date the box shows.
+      let pick=null;
+      for(let i=SKU_DATES.length-1;i>=0;i--){
+        const anyBal=(DATA.sku||[]).some(p=>(p.dC&&p.dC[i]>0)||(p.dK&&p.dK[i]>0));
+        if(anyBal){ pick=SKU_DATES[i]; break; }
+      }
+      if(!pick)pick=SKU_DATES[SKU_DATES.length-1];
+      STK_ASOF=pick;           // keep state and display in sync
       ad.value=pick;
     } else ad.value='';
   }
@@ -3246,7 +3252,7 @@ function renderCmp(){
 function recomputeFri(){
   if(RAWMATS){
     try{ DATA=computeFromMats({S:RAWMATS.S,O:RAWMATS.O,P:RAWMATS.P,K:RAWMATS.K,C:RAWMATS.C},RAWMATS.RX);
-      try{localStorage.setItem('sk_dash_v4',JSON.stringify(DATA))}catch(e){}
+      try{localStorage.setItem('sk_dash_v5',JSON.stringify(DATA))}catch(e){}
       renderAll(); return;
     }catch(e){console.error('recompute failed',e);}
   }
@@ -4375,12 +4381,18 @@ function computeFromMats(M, rxMat){
   for(const k of ['S','O','P','K']){
     const m=M[k]; if(!m)throw 'Missing sheet: '+k;
     if(!dts){dts=[];const hdr=m[0];for(let c=INFO;c<hdr.length;c++){const d=xDate(hdr[c]);if(d)dts.push({c,d})}}}
+  // per-sheet date→column map (robust to sheets having different column layouts / extra dates)
+  const colMap={};
+  for(const k of ['S','O','P','K','C']){ const m=M[k]; if(!m)continue; const map={}; const hdr=m[0];
+    for(let c=INFO;c<hdr.length;c++){const d=xDate(hdr[c]); if(d)map[iso(d)]=c;} colMap[k]=map; }
+  // resolve the column index for sheet k at the date of axis-position j
+  const colAt=(k,j)=>{ const m=colMap[k]; if(!m)return dts[j].c; const c=m[iso(dts[j].d)]; return c==null?-1:c; };
   const ms=M.S,n=ms.length-1,rowsInfo=[];
   for(let r=1;r<=n;r++)rowsInfo.push({code:ms[r][0],nm:String(ms[r][3]||''),nmAr:String(ms[r][1]||''),cat:String(ms[r][6]||'').trim(),
     fam:String(ms[r][7]||'').trim(),sub:String(ms[r][8]||'').trim(),typ:String(ms[r][9]||'').trim(),pcs:NUM(ms[r][4]),wt:NUM(ms[r][5]),
     packing:String(ms[r][10]||'').trim(),own:String(ms[r][11]||'').trim(),brand:String(ms[r][13]||'').trim(),
     status:String(ms[r][14]||'').trim()});
-  const val=(k,r,j)=>NUM(M[k][r][dts[j].c]), nd=dts.length;
+  const val=(k,r,j)=>{const c=colAt(k,j); if(c<0||!M[k]||!M[k][r])return 0; return NUM(M[k][r][c]);}, nd=dts.length;
   // Friday exclusion: build a usable-day mask. Friday => getUTCDay()===5
   const friSkip=(typeof EXCL_FRI!=='undefined')&&EXCL_FRI;
   const useDay=j=>!(friSkip&&dts[j].d.getUTCDay()===5);
@@ -4449,7 +4461,7 @@ function computeFromMats(M, rxMat){
     const o=inc?val('O',r,j):0;ott+=o;if(o>omx)omx=o;
     const p=inc?val('P',r,j):0;ptt+=p;if(p>pmx)pmx=p;
     dailyS.push(Math.round(s));dailyO.push(Math.round(o));dailyP.push(Math.round(p));dailyK.push(Math.round(val('K',r,j)));
-    dailyC.push(hasC?Math.round(NUM(M.C[r][dts[j].c])):Math.round(val('K',r,j)));}
+    const cC=colAt('C',j); dailyC.push((hasC&&cC>=0)?Math.round(NUM(M.C[r][cC])):Math.round(val('K',r,j)));}
    for(const j of lcmJ){if(!useDay(j))continue;lcm+=val('S',r,j);}
    skuArr.push({c:I.code,n:String(I.nm).replace(/^Carton |^Box /,''),nAr:String(I.nmAr||'').replace(/^ك\/ |^ص\/ /,''),cat:I.cat,
     st:Math.round(stt),smx:Math.round(smx),smxd:smxj>=0&&smx>0?iso(dts[smxj].d):null,
@@ -4552,7 +4564,7 @@ function computeAll(dbWB,rxWB){
 
 $('#openImport').onclick=()=>{$('#fileBox').style.display='flex'};
 $('#closeImport').onclick=()=>{$('#fileBox').style.display='none'};
-$('#resetData').onclick=()=>{try{localStorage.removeItem('sk_dash_v4')}catch(e){};DATA=EMBED;renderAll();
+$('#resetData').onclick=()=>{try{localStorage.removeItem('sk_dash_v5')}catch(e){};DATA=EMBED;renderAll();
  $('#impMsg').innerHTML='<div class="okmsg">'+t().impResetOk+'</div>'};
 function readWB(file){return new Promise((res,rej)=>{const r=new FileReader();
  r.onload=e=>{try{res(XLSX.read(new Uint8Array(e.target.result),{type:'array',cellDates:false}))}catch(x){rej(x)}};
@@ -4583,7 +4595,7 @@ $('#doImport').onclick=async()=>{
     const DB=getSheet(dWB,['DATABASE','Database']);
     try{if(DB)nd.demand=computeDemand(toM(DB));}catch(e){console.error('demand import',e);}}
   DATA=nd;
-  try{localStorage.setItem('sk_dash_v4',JSON.stringify(DATA))}catch(e){}
+  try{localStorage.setItem('sk_dash_v5',JSON.stringify(DATA))}catch(e){}
   renderAll();
   $('#impMsg').innerHTML='<div class="okmsg">'+t().impOk(DATA.kpi.asof)+'</div>';
  }catch(err){console.error(err);
@@ -5416,7 +5428,7 @@ async function loadFromSheets(){
     try{ if(PD) nd.demand=computeDemand(PD); }catch(e){console.warn('computeDemand failed',e);}
     try{ if(PG||PH){ nd.proc=computeProc(PG,PH,PW); console.log('[proc] parsed days:',nd.proc.days,'| lines:',nd.proc.lineNames); } else console.warn('[proc] no data returned from processing sheet'); }catch(e){console.error('[proc] computeProc failed:',e);}
     DATA=nd;
-    try{localStorage.setItem('sk_dash_v4',JSON.stringify(DATA))}catch(e){}
+    try{localStorage.setItem('sk_dash_v5',JSON.stringify(DATA))}catch(e){}
     renderAll();
     setLive(t().liveOk(DATA.kpi.asof)+'  <a href="#" id="liveRef" style="color:var(--gold2)">'+t().liveRefresh+'</a>');
     const lr=document.getElementById('liveRef');if(lr)lr.onclick=e=>{e.preventDefault();loadFromSheets()};
