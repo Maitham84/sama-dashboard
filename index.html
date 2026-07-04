@@ -4202,17 +4202,18 @@ function exportReportExcel(){
   let rows='';
   rows+=`<tr><th colspan="10" style="background:#1a2332;color:#c9a14a;font-size:14px">${AR?'شركة سما كربلاء — تقرير ':'Sama Karbala Co. — '}${metricWord} (${D.from} → ${D.to})</th></tr>`;
   rows+=`<tr><th colspan="10">${AR?'رصيد الإقفال بتاريخ: ':'Closing stock as of: '}${D.stockAsof||'—'} | ${AR?'عدد الأيام: ':'Days: '}${D.nDays}</th></tr>`;
-  const pB=v=>D.tot.boxes?((v/D.tot.boxes*100).toFixed(2)+'%'):'—';
-  const pK=v=>D.tot.kg?((v/D.tot.kg*100).toFixed(2)+'%'):'—';
+  // percentage cells: emit as NUMERIC fraction with explicit Excel percent format (renders as 58.06%)
+  const pcell=(num,den,bold)=>{const st=(bold?'background:#f0e8d8;font-weight:bold;':'')+'mso-number-format:0.00%';
+    return den? `<td style="${st}">${(num/den).toFixed(4)}</td>` : `<td style="${st}">—</td>`;};
   const H=[AR?'الفئة / العائلة':'Category / Family',AR?'الأصناف':'Items',metricWord+' ('+boxU+')',AR?'% صندوق':'% boxes',metricWord+' ('+kgU+')',AR?'% وزن':'% weight',AR?'معدل/يوم ('+boxU+')':'Avg/day ('+boxU+')',AR?'معدل/يوم ('+kgU+')':'Avg/day ('+kgU+')',AR?'رصيد ('+boxU+')':'Closing ('+boxU+')',AR?'رصيد ('+kgU+')':'Closing ('+kgU+')'];
   rows+='<tr>'+H.map(h=>`<th style="background:#2a3648;color:#fff">${h}</th>`).join('')+'</tr>';
   D.cats.forEach(g=>{
-    rows+=`<tr style="background:#f0e8d8;font-weight:bold"><td>${(t().cats&&t().cats[g.cat])||g.cat}</td><td>${g.n}</td><td>${g.boxes}</td><td>${pB(g.boxes)}</td><td>${g.kg}</td><td>${pK(g.kg)}</td><td>${Math.round(g.avgBoxes)}</td><td>${g.avgKg}</td><td>${g.stockBoxes}</td><td>${g.stockKg}</td></tr>`;
-    g.fams.forEach(f=>{rows+=`<tr><td>&nbsp;&nbsp;└ ${f.fam}</td><td>${f.n}</td><td>${f.boxes}</td><td>${pB(f.boxes)}</td><td>${f.kg}</td><td>${pK(f.kg)}</td><td>${Math.round(f.avgBoxes)}</td><td>${f.avgKg}</td><td>${f.stockBoxes}</td><td>${f.stockKg}</td></tr>`;});
+    rows+=`<tr style="background:#f0e8d8;font-weight:bold"><td>${(t().cats&&t().cats[g.cat])||g.cat}</td><td>${g.n}</td><td>${g.boxes}</td>${pcell(g.boxes,D.tot.boxes,true)}<td>${g.kg}</td>${pcell(g.kg,D.tot.kg,true)}<td>${Math.round(g.avgBoxes)}</td><td>${g.avgKg}</td><td>${g.stockBoxes}</td><td>${g.stockKg}</td></tr>`;
+    g.fams.forEach(f=>{rows+=`<tr><td>&nbsp;&nbsp;└ ${f.fam}</td><td>${f.n}</td><td>${f.boxes}</td>${pcell(f.boxes,D.tot.boxes)}<td>${f.kg}</td>${pcell(f.kg,D.tot.kg)}<td>${Math.round(f.avgBoxes)}</td><td>${f.avgKg}</td><td>${f.stockBoxes}</td><td>${f.stockKg}</td></tr>`;});
   });
-  rows+=`<tr style="background:#c9a14a;font-weight:bold"><td>${AR?'الإجمالي':'TOTAL'}</td><td>${D.tot.n}</td><td>${D.tot.boxes}</td><td>100%</td><td>${D.tot.kg}</td><td>100%</td><td>${Math.round(D.tot.boxes/D.nDays)}</td><td>${Math.round(D.tot.kg/D.nDays)}</td><td>${D.tot.stockBoxes}</td><td>${D.tot.stockKg}</td></tr>`;
+  rows+=`<tr style="background:#c9a14a;font-weight:bold"><td>${AR?'الإجمالي':'TOTAL'}</td><td>${D.tot.n}</td><td>${D.tot.boxes}</td><td style="mso-number-format:0.00%">1</td><td>${D.tot.kg}</td><td style="mso-number-format:0.00%">1</td><td>${Math.round(D.tot.boxes/D.nDays)}</td><td>${Math.round(D.tot.kg/D.nDays)}</td><td>${D.tot.stockBoxes}</td><td>${D.tot.stockKg}</td></tr>`;
   const dir=AR?'rtl':'ltr';
-  const doc=`<html dir="${dir}" xmlns:x="urn:schemas-microsoft-com:office:excel"><head><meta charset="UTF-8"><style>table{border-collapse:collapse}td,th{border:1px solid #999;padding:5px 9px;text-align:center;mso-number-format:"0"}td:first-child,th:first-child{text-align:${AR?'right':'left'}}</style></head><body><table>${rows}</table></body></html>`;
+  const doc=`<html dir="${dir}" xmlns:x="urn:schemas-microsoft-com:office:excel"><head><meta charset="UTF-8"><style>table{border-collapse:collapse}td,th{border:1px solid #999;padding:5px 9px;text-align:center}td.pct{mso-number-format:"0.00%"}td:first-child,th:first-child{text-align:${AR?'right':'left'}}</style></head><body><table>${rows}</table></body></html>`;
   const blob=new Blob(['\ufeff'+doc],{type:'application/vnd.ms-excel'});
   const a=document.createElement('a');
   a.href=URL.createObjectURL(blob);
