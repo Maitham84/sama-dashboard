@@ -2321,6 +2321,7 @@ function renderABC(){
     ['dP',AR?'الإنتاج (فئة/عائلة)':'Production (cat/family)'],
     ['dO',AR?'الطلب (فئة/عائلة)':'Orders (cat/family)'],
     ['fulfil',AR?'الوفاء بالطلب':'Order fulfilment'],
+    ['stability',AR?'ثباتية الطلب (XYZ)':'Demand stability (XYZ)'],
     ['brand',AR?'أداء البراند':'Brand performance'],
     ['ffrep',AR?'فريش مقابل مجمد':'Fresh vs Frozen']
   ].map(([v,l])=>`<option value="${v}" ${v===S.metric?'selected':''}>${l}</option>`).join('');
@@ -2454,6 +2455,7 @@ function renderTrends(){
     ['dP',AR?'الإنتاج (فئة/عائلة)':'Production (cat/family)'],
     ['dO',AR?'الطلب (فئة/عائلة)':'Orders (cat/family)'],
     ['fulfil',AR?'الوفاء بالطلب':'Order fulfilment'],
+    ['stability',AR?'ثباتية الطلب (XYZ)':'Demand stability (XYZ)'],
     ['brand',AR?'أداء البراند':'Brand performance'],
     ['ffrep',AR?'فريش مقابل مجمد':'Fresh vs Frozen']
   ].map(([v,l])=>`<option value="${v}" ${v===S.metric?'selected':''}>${l}</option>`).join('');
@@ -4042,6 +4044,7 @@ function renderReports(){
     ['dP',AR?'الإنتاج (فئة/عائلة)':'Production (cat/family)'],
     ['dO',AR?'الطلب (فئة/عائلة)':'Orders (cat/family)'],
     ['fulfil',AR?'الوفاء بالطلب':'Order fulfilment'],
+    ['stability',AR?'ثباتية الطلب (XYZ)':'Demand stability (XYZ)'],
     ['brand',AR?'أداء البراند':'Brand performance'],
     ['ffrep',AR?'فريش مقابل مجمد':'Fresh vs Frozen']
   ].map(([v,l])=>`<option value="${v}" ${v===S.metric?'selected':''}>${l}</option>`).join('');
@@ -4077,7 +4080,7 @@ function renderReports(){
   if(['stockmove','wow','rxrep','critical'].includes(S.metric))S.metric='dS';
   const FLT={cat:S.cat,fam:S.fam,own:S.own,ff:S.ff,brand:S.brand,pack:S.pack,prod:S.prod};
   // dispatch: extended report types render via renderRptExt and return
-  if(['fulfil','brand','ffrep'].includes(S.metric)){
+  if(['fulfil','brand','ffrep','stability'].includes(S.metric)){
     try{ renderRptExt(S.metric,FLT); }catch(e){ console.error('renderRptExt',e); }
     return;
   }
@@ -4110,6 +4113,46 @@ function renderReports(){
   html+=`<tr style="border-top:2px solid var(--gold);font-weight:800"><td style="text-align:start">${AR?'الإجمالي':'TOTAL'}</td><td class="num">${F(D.tot.n)}</td><td class="num">${F(D.tot.boxes)}</td><td class="num">100%</td><td class="num">${F(D.tot.kg)}</td><td class="num">100%</td><td class="num">${F(Math.round(D.tot.boxes/D.nDays))}</td><td class="num">${F(Math.round(D.tot.kg/D.nDays))}</td><td class="num">${F(D.tot.stockBoxes)}</td><td class="num">${F(D.tot.stockKg)}</td></tr></tbody>`;
   tbl.innerHTML=html;
   $id('Note')&&($id('Note').textContent=AR?'اختيار المنتجات يُستخدم للحساب فقط — التقرير يعرض المجاميع حسب الفئة والعائلة. رصيد الإقفال = آخر يوم ضمن مدة التقرير فيه أرصدة مخزون.':'Product selection feeds the calculation only — the report shows category/family totals. Closing stock = latest day within the report period that has balances.');
+}
+
+
+// ============== DEMAND STABILITY (XYZ) REPORT ENGINE ==============
+// Per-product coefficient of variation (CV = stddev/mean) for orders/sales/production
+// over working days in range. X: CV≤25% stable, Y: 25-50%, Z: >50% volatile.
+function computeRptStability(from,to,F){
+  if(!SKU_DATES.length)return null;
+  const idxs=_rptIdxs(from,to); if(!idxs.length)return null;
+  const sku=_rptFilterSku(F||{});
+  // working days = days with any company-wide activity (excludes Fridays-off/holidays)
+  const act=[];
+  idxs.forEach(i=>{let on=false;
+    for(const p of (DATA.sku||[])){ if(((p.dS&&p.dS[i])||0)>0||((p.dO&&p.dO[i])||0)>0||((p.dP&&p.dP[i])||0)>0){on=true;break;} }
+    if(on)act.push(i);});
+  if(act.length<5)return null;
+  const stats=arr=>{const n=arr.length;const mean=arr.reduce((a,b)=>a+b,0)/n;
+    const nz=arr.filter(v=>v>0).length;
+    if(mean<=0)return {mean:0,cv:null,nz};
+    const va=arr.reduce((a,b)=>a+(b-mean)*(b-mean),0)/n;
+    return {mean,cv:Math.sqrt(va)/mean*100,nz};};
+  const rows=[];
+  sku.forEach(p=>{
+    const o=stats(act.map(i=>(p.dO&&p.dO[i])||0));
+    const s=stats(act.map(i=>(p.dS&&p.dS[i])||0));
+    const pr=stats(act.map(i=>(p.dP&&p.dP[i])||0));
+    if(o.mean<=0&&s.mean<=0)return;   // no meaningful demand
+    const base=o.mean>0?o:s;          // classify primarily on ORDERS; fallback to sales
+    const cv=base.cv;
+    const cls=cv==null?'—':(cv<=25?'X':cv<=50?'Y':'Z');
+    rows.push({code:p.c,n:p.n,nAr:p.nAr,cat:p.cat,brand:String(p.brand||'—'),
+      reg:Math.round(base.nz/act.length*100),
+      oAvg:+o.mean.toFixed(1),oCv:o.cv==null?null:+o.cv.toFixed(1),
+      sAvg:+s.mean.toFixed(1),sCv:s.cv==null?null:+s.cv.toFixed(1),
+      pAvg:+pr.mean.toFixed(1),pCv:pr.cv==null?null:+pr.cv.toFixed(1),
+      cls});
+  });
+  rows.sort((a,b)=>{const av=a.oCv==null?1e9:a.oCv,bv=b.oCv==null?1e9:b.oCv;return av-bv;});
+  const counts={X:0,Y:0,Z:0};rows.forEach(r=>{if(counts[r.cls]!=null)counts[r.cls]++;});
+  return {rows,counts,nDays:act.length,from:SKU_DATES[idxs[0]],to:SKU_DATES[idxs[idxs.length-1]]};
 }
 
 // ============== EXTENDED REPORT RENDERER ==============
@@ -4160,6 +4203,27 @@ function renderRptExt(kind, FLT){
     buildTbl((AR?'تقرير أداء البراند (مبيعات)':'Brand Performance (sales)')+' ('+D.from+' → '+D.to+')',H,rows,
       ['',AR?'الإجمالي':'TOTAL','',F(D.tot.n),F(D.tot.boxes),F(D.tot.kg),'100%','']);
     $id('Note')&&($id('Note').textContent=AR?'الحصة % محسوبة بالصناديق على المجموع المفلتر.':'Share % by boxes over the filtered total.');
+  }
+  else if(kind==='stability'){
+    const D=computeRptStability(S.from,S.to,FLT); if(!D||!D.rows.length)return noData();
+    const sub=$id('Sub'); if(sub)sub.textContent=(AR?'ثباتية الطلب اليومي (XYZ) · ':'Daily demand stability (XYZ) · ')+D.from+' → '+D.to+' ('+D.nDays+(AR?' يوم عمل':' working days')+')';
+    setCards([
+      [(AR?'X — مستقر':'X — Stable'),D.counts.X,(AR?'تذبذب ≤ 25%':'CV ≤ 25%')],
+      [(AR?'Y — متوسط':'Y — Medium'),D.counts.Y,(AR?'تذبذب 25–50%':'CV 25–50%')],
+      [(AR?'Z — متذبذب':'Z — Volatile'),D.counts.Z,(AR?'تذبذب > 50%':'CV > 50%')],
+      [(AR?'منتجات محلَّلة':'Products analysed'),D.rows.length,D.nDays+(AR?' يوم عمل':' working days')]
+    ]);
+    const cvCell=v=>v==null?'—':`<span class="pill ${v<=25?'g':v<=50?'y':'r'}">${v}%</span>`;
+    const clsCell=c=>c==='X'?`<span class="pill g">X</span>`:c==='Y'?`<span class="pill y">Y</span>`:c==='Z'?`<span class="pill r">Z</span>`:'—';
+    const H=['#',AR?'المنتج':'Product',AR?'الكود':'Code',AR?'الفئة':'Category',AR?'انتظام %':'Regularity %',
+      AR?'طلب/يوم':'Orders/d',AR?'تذبذب الطلب':'Orders CV',AR?'مبيعات/يوم':'Sales/d',AR?'تذبذب المبيعات':'Sales CV',
+      AR?'إنتاج/يوم':'Prod/d',AR?'تذبذب الإنتاج':'Prod CV',AR?'الفئة XYZ':'XYZ'];
+    const rows=D.rows.slice(0,300).map((p,i)=>({cells:[i+1,prodName(p),p.code,(t().cats&&t().cats[p.cat])||p.cat,p.reg+'%',
+      F(p.oAvg),cvCell(p.oCv),F(p.sAvg),cvCell(p.sCv),F(p.pAvg),cvCell(p.pCv),clsCell(p.cls)]}));
+    buildTbl((AR?'تقرير ثباتية الطلب اليومي (XYZ)':'Demand Stability (XYZ)')+' ('+D.from+' → '+D.to+')',H,rows,null);
+    $id('Note')&&($id('Note').textContent=AR
+      ?'التذبذب (CV) = الانحراف المعياري ÷ المتوسط اليومي × 100، محسوب على أيام العمل فقط (أيام فيها نشاط بالشركة). الانتظام = نسبة الأيام التي فيها طلب فعلي. التصنيف على تذبذب الطلب: X مستقر (≤25%) — الأولوية للتركيز، دقة تنبؤ عالية ومخزون أمان أقل | Y متوسط (25–50%) | Z متذبذب (>50%) يحتاج مخزون أمان أعلى. الترتيب من الأثبت للأكثر تذبذباً. يُعرض أول 300 منتج.'
+      :'CV = stddev ÷ daily mean × 100 over working days only. Regularity = % of days with actual orders. Classified on orders CV: X stable (≤25%), Y medium (25–50%), Z volatile (>50%). Sorted most-stable first. First 300 shown.');
   }
   else if(kind==='ffrep'){
     const D=computeRptFF('dS',S.from,S.to,FLT); if(!D||!D.types.length)return noData();
