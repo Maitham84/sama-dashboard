@@ -89,6 +89,17 @@ body{overflow-x:hidden}
 }
 .panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:15px;box-shadow:var(--shadow)}
 .panel h3{font-size:13.5px;margin-bottom:11px;font-weight:700}
+/* ===== Power BI visuals (exec) ===== */
+.card .spark{margin-top:8px;width:100%;height:36px;display:block}
+.dchip{display:inline-block;font-size:11px;font-weight:800;padding:1px 8px;border-radius:999px;margin-inline-start:7px;vertical-align:2px;letter-spacing:.2px}
+.dchip.up{background:rgba(56,161,105,.14);color:var(--good)}
+.dchip.dn{background:rgba(214,69,69,.13);color:var(--bad)}
+.grid3pb{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:12px 0}
+@media(max-width:1000px){.grid3pb{grid-template-columns:minmax(0,1fr)}}
+.gaugebox{display:flex;justify-content:center;align-items:center;min-height:150px}
+.gaugebox svg{width:100%;max-width:250px;height:auto}
+.funbox{padding:4px 2px}
+.funbox svg{width:100%;height:auto;display:block}
 .ch{position:relative;height:280px}
 .tbl{width:100%;border-collapse:collapse;font-size:12.5px}
 .tbl th{background:var(--panel2);color:var(--mut);font-weight:700;padding:8px 9px;text-align:center;position:sticky;top:0;z-index:2}
@@ -218,7 +229,6 @@ body.locked .brand, body.locked nav, body.locked main, body.locked section{visib
     <button class="btn ghost" id="friBtn"></button>
     <button class="btn ghost" id="themeBtn"></button>
     <button class="btn" id="openImport"></button>
-    <button class="btn ghost" id="exportBtn"></button>
     <div class="asof"><span id="hAsof"></span><b id="asof"></b></div>
   </div>
 </div></div>
@@ -233,6 +243,11 @@ body.locked .brand, body.locked nav, body.locked main, body.locked section{visib
   <div class="panel" style="margin:4px 0 10px"><h3 id="maTitle"></h3><div id="maFilter"></div><div class="ch" style="height:300px"><canvas id="cMA"></canvas></div></div>
   <div class="secthead"><h2 id="lcmTitle"></h2><small id="lcmSub"></small></div>
   <div class="cards" id="kpiM"></div>
+  <div class="grid3pb">
+    <div class="panel"><h3 id="gCovT"></h3><div class="gaugebox" id="gCov"></div><div class="note" id="gCovN"></div></div>
+    <div class="panel"><h3 id="gFulT"></h3><div class="gaugebox" id="gFul"></div><div class="note" id="gFulN"></div></div>
+    <div class="panel"><h3 id="funT"></h3><div class="funbox" id="funnel"></div><div class="note" id="funN"></div></div>
+  </div>
   <div class="secthead"><h2 id="lcwTitle"></h2><small id="lcwSub"></small></div>
   <div class="cards" id="kpiW"></div>
   <div class="grid2">
@@ -709,6 +724,39 @@ body.locked .brand, body.locked nav, body.locked main, body.locked section{visib
   <div class="tscroll" style="max-height:480px"><table class="tbl" id="tCmpUnc"></table></div>
   <div class="note" id="cmpNote"></div>
 </div></section>
+<section id="vs"><div class="wrap">
+  <div class="secthead"><h2 id="vsTitle"></h2><small id="vsSub"></small></div>
+  <div class="panel" style="margin-bottom:12px">
+    <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end">
+      <div><div class="note" id="vsALbl" style="margin-bottom:4px;font-weight:700"></div>
+        <span id="vsAFromL" class="note"></span> <input type="date" id="vsAFrom" class="btn ghost">
+        <span id="vsAToL" class="note"></span> <input type="date" id="vsATo" class="btn ghost"></div>
+      <div><div class="note" id="vsBLbl" style="margin-bottom:4px;font-weight:700"></div>
+        <span id="vsBFromL" class="note"></span> <input type="date" id="vsBFrom" class="btn ghost">
+        <span id="vsBToL" class="note"></span> <input type="date" id="vsBTo" class="btn ghost"></div>
+      <div style="display:flex;gap:8px">
+        <button class="btn ghost" id="vsPreM"></button>
+        <button class="btn ghost" id="vsPreW"></button>
+      </div>
+    </div>
+    <div class="search" id="vsFilters" style="flex-wrap:wrap;gap:10px;margin-top:12px;border-top:1px solid var(--bd);padding-top:12px">
+      <span class="fgrp"><span class="perlbl" id="vsCatL"></span><span id="vsCat"></span></span>
+      <span class="fgrp"><span class="perlbl" id="vsFamL"></span><span id="vsFam"></span></span>
+      <span class="fgrp"><span class="perlbl" id="vsFFL"></span><span id="vsFF"></span></span>
+      <span class="fgrp"><span class="perlbl" id="vsOwnL"></span><span id="vsOwn"></span></span>
+      <span class="fgrp"><span class="perlbl" id="vsBrandL"></span><span id="vsBrand"></span></span>
+      <span class="fgrp"><span class="perlbl" id="vsPackL"></span><span id="vsPack"></span></span>
+      <span class="fgrp"><span class="perlbl" id="vsProdL"></span><span id="vsProd"></span></span>
+    </div>
+  </div>
+  <div class="cards" id="vsKpi"></div>
+  <div class="grid2">
+    <div class="panel"><h3 id="vsBarT"></h3><div class="ch"><canvas id="cVsBar"></canvas></div></div>
+    <div class="panel"><h3 id="vsLineT"></h3><div id="vsMetricWrap" style="margin-bottom:8px"></div><div class="ch" style="height:252px"><canvas id="cVsLine"></canvas></div></div>
+  </div>
+  <div class="note" id="vsNote" style="margin-top:8px"></div>
+</div></section>
+
 <section id="week"><div class="wrap">
   <div class="secthead"><h2 id="wkTitle"></h2><small id="wkSub"></small></div>
   <div class="panel" style="margin-bottom:14px"><h3 id="wkChT"></h3><div id="wkFilter"></div><div class="ch" style="height:330px"><canvas id="cWeekBig"></canvas></div></div>
@@ -773,11 +821,25 @@ ar:{dir:'rtl', title:'شركة سما كربلاء — مجزر الدواجن',
  asof:'آخر تحديث للبيانات', themeD:'🌙 داكن', themeL:'☀️ فاتح', importBtn:'⟳ تحديث من إكسل',
  months:['كانون الثاني','شباط','آذار','نيسان','أيار','حزيران','تموز','آب','أيلول','تشرين الأول','تشرين الثاني','كانون الأول'],
  days:['السبت','الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة'],
- tabs:{exec:'النظرة التنفيذية',rx:'الاستلام الحي',wb:'الدجاج الكامل',stk:'المخزون',invan:'تحليل المخزون',trends:'الاتجاهات والموسمية',abc:'ABC وأداء البراند',reports:'التقارير',prod:'الإنتاج',sales:'المبيعات',orders:'الطلب',plant:'كفاءة المجزر',quality:'جودة الذبح',demand:'التنبؤ والدقة',alerts:'التنبيهات',top:'أفضل الأصناف',offals:'تحليل الأحشاء',wip:'تحت التشغيل WIP',wdist:'متابعة الوزن والتصافي',cmp:'الطلب·الإنتاج·المبيعات',week:'أسبوعي',month:'شهري',sku:'المنتجات'},
+ tabs:{exec:'النظرة التنفيذية',rx:'الاستلام الحي',wb:'الدجاج الكامل',stk:'المخزون',invan:'تحليل المخزون',trends:'الاتجاهات والموسمية',abc:'ABC وأداء البراند',reports:'التقارير',prod:'الإنتاج',sales:'المبيعات',orders:'الطلب',plant:'كفاءة المجزر',quality:'جودة الذبح',demand:'التنبؤ والدقة',alerts:'التنبيهات',top:'أفضل الأصناف',offals:'تحليل الأحشاء',wip:'تحت التشغيل WIP',wdist:'متابعة الوزن والتصافي',cmp:'الطلب·الإنتاج·المبيعات',vs:'مقارنة فترتين',week:'أسبوعي',month:'شهري',sku:'المنتجات'},
  chain:{rx:'📥 استلام حي',prod:'🏭 إنتاج',sales:'🛒 مبيعات',ord:'📦 طلبات',stk:'🏬 مخزون افتتاحي'}, rxFromLbl:'من', rxToLbl:'إلى', rxClear:'كل الفترة',
  birds:'طير', box:'صندوق', boxes:'صندوق', days_u:'يوم',
  chainNote:d=>'سلسلة آخر يوم تشغيلي '+d+' — أرقام المنتجات بالصناديق، المخزون يعتمد الرصيد الافتتاحي.',
  lcmTitle:m=>'شهر '+m, lcmSub:'آخر شهر مكتمل مقارنةً بالشهر السابق — الوحدة: صندوق',
+ pbCovT:'عداد التغطية — إنتاج ÷ طلب', pbFulT:'عداد الوفاء — مبيعات ÷ طلب',
+ pbFunT:'قمع السلسلة — طلب ← إنتاج ← مبيعات',
+ pbCovN:(m,p,o)=>'شهر '+m+' — إنتاج '+p+' ÷ طلب '+o+' صندوق',
+ pbFulN:(m,s,o)=>'شهر '+m+' — مبيعات '+s+' ÷ طلب '+o+' صندوق',
+ pbFunN:m=>'شهر '+m+' — النسبة محسوبة من إجمالي الطلب',
+ pbNoData:'لا توجد بيانات كافية',
+ vsTitle:'مقارنة فترتين — جنباً إلى جنب', vsSub:'اختر فترتين (أ) و(ب) لمقارنة المبيعات والطلب والإنتاج — الوحدة: صندوق',
+ vsA:'الفترة أ', vsB:'الفترة ب', vsFrom:'من', vsTo:'إلى',
+ vsPreM:'شهر مقابل شهر', vsPreW:'أسبوع مقابل أسبوع', vsPre7:'٧ أيام مقابل ٧ أيام',
+ vsBarT:'إجماليات الفترتين — مبيعات · طلب · إنتاج',
+ vsLineT:'المسار اليومي المتراكب (محاذاة برقم اليوم داخل الفترة)',
+ vsDay:'اليوم', vsOpDays:'يوم تشغيلي', vsAvgD:'متوسط اليوم التشغيلي',
+ vsNote:'ملاحظة: المجاميع تشمل كل أيام الفترة كما في السلاسل اليومية، ونسبة الوفاء = مبيعات ÷ طلب.',
+ vsNoData:'لا توجد بيانات في إحدى الفترتين — عدّل التواريخ.',
  trTitle:'مؤشر الاتجاه — قصير الأجل مقابل طويل الأجل', 
  trSub:'متوسط اليوم التشغيلي: آخر 7 أيام (قصير) مقابل آخر 28 و90 يوماً (طويل) — الوحدة: صندوق، الاستلام بالطير',
  trRising:'⬆ اتجاه صاعد', trFalling:'⬇ اتجاه هابط', trStable:'◼ مستقر',
@@ -931,11 +993,25 @@ en:{dir:'ltr', title:'Sama Karbala Co. — Poultry Processing Plant', sub:'Execu
  asof:'Data as of', themeD:'🌙 Dark', themeL:'☀️ Light', importBtn:'⟳ Update from Excel',
  months:['January','February','March','April','May','June','July','August','September','October','November','December'],
  days:['Saturday','Sunday','Monday','Tuesday','Wednesday','Thursday','Friday'],
- tabs:{exec:'Executive Overview',rx:'Live Bird Intake',wb:'Whole Bird',stk:'Inventory',invan:'Inventory Analysis',trends:'Trends & Seasonality',abc:'ABC & Brand',reports:'Reports',prod:'Production',sales:'Sales',orders:'Orders',plant:'Plant Efficiency',quality:'Carcass Quality',demand:'Forecast & Accuracy',alerts:'Alerts',top:'Top Products',offals:'Offals Analysis',wip:'WIP Analysis',wdist:'Weight & Yield',cmp:'Order·Prod·Sales',week:'Weekly',month:'Monthly',sku:'Products'},
+ tabs:{exec:'Executive Overview',rx:'Live Bird Intake',wb:'Whole Bird',stk:'Inventory',invan:'Inventory Analysis',trends:'Trends & Seasonality',abc:'ABC & Brand',reports:'Reports',prod:'Production',sales:'Sales',orders:'Orders',plant:'Plant Efficiency',quality:'Carcass Quality',demand:'Forecast & Accuracy',alerts:'Alerts',top:'Top Products',offals:'Offals Analysis',wip:'WIP Analysis',wdist:'Weight & Yield',cmp:'Order·Prod·Sales',vs:'Period Compare',week:'Weekly',month:'Monthly',sku:'Products'},
  chain:{rx:'📥 Live intake',prod:'🏭 Production',sales:'🛒 Sales',ord:'📦 Orders',stk:'🏬 Opening stock'}, rxFromLbl:'From', rxToLbl:'To', rxClear:'Full period',
  birds:'birds', box:'boxes', boxes:'boxes', days_u:'days',
  chainNote:d=>'Latest operating-day chain ('+d+') — product figures in boxes; inventory based on opening balance.',
  lcmTitle:m=>m, lcmSub:'Last complete month vs previous month — unit: boxes',
+ pbCovT:'Coverage gauge — Production ÷ Orders', pbFulT:'Fulfilment gauge — Sales ÷ Orders',
+ pbFunT:'Chain funnel — Orders → Production → Sales',
+ pbCovN:(m,p,o)=>m+' — production '+p+' ÷ orders '+o+' boxes',
+ pbFulN:(m,s,o)=>m+' — sales '+s+' ÷ orders '+o+' boxes',
+ pbFunN:m=>m+' — shares computed from total orders',
+ pbNoData:'Not enough data',
+ vsTitle:'Period Compare — side by side', vsSub:'Pick periods (A) and (B) to compare sales, orders and production — unit: boxes',
+ vsA:'Period A', vsB:'Period B', vsFrom:'From', vsTo:'To',
+ vsPreM:'Month vs Month', vsPreW:'Week vs Week', vsPre7:'7d vs 7d',
+ vsBarT:'Period totals — Sales · Orders · Production',
+ vsLineT:'Daily overlay (aligned by day number within period)',
+ vsDay:'Day', vsOpDays:'operating days', vsAvgD:'Avg / operating day',
+ vsNote:'Note: totals include all days of the range as in the daily series; fulfilment = sales ÷ orders.',
+ vsNoData:'No data in one of the periods — adjust the dates.',
  trTitle:'Trend Monitor — Short vs Long Term',
  trSub:'Average per operating day: last 7 days (short) vs last 28 & 90 days (long) — unit: boxes; intake in birds',
  trRising:'⬆ Trending up', trFalling:'⬇ Trending down', trStable:'◼ Stable',
@@ -1120,12 +1196,78 @@ const Fk=n=>n==null?'—':(Math.abs(n)>=1e6?(n/1e6).toFixed(2)+'M':Math.abs(n)>=
 const Pc=(x,d=1)=>x==null?'—':(x*100).toFixed(d)+'%';
 const $=s=>document.querySelector(s);
 const charts={};
-function mk(id,cfg){if(charts[id])charts[id].destroy();charts[id]=new Chart(document.getElementById(id),cfg)}
+function mk(id,cfg){if(charts[id])charts[id].destroy();charts[id]=new Chart(document.getElementById(id),pbify(cfg))}
+/* ===== Power BI global restyle — applied to EVERY chart via mk() ===== */
+function pbAlpha(col,a){
+  if(typeof col!=='string')return col;
+  const m=col.match(/^#([0-9a-f]{6})$/i);
+  if(!m)return col;
+  const n=parseInt(m[1],16);
+  return 'rgba('+((n>>16)&255)+','+((n>>8)&255)+','+(n&255)+','+a+')';
+}
+function pbify(cfg){
+  if(!cfg||!cfg.data)return cfg;
+  const type=cfg.type;
+  (cfg.data.datasets||[]).forEach(ds=>{
+    const dt=ds.type||type;
+    if(dt==='line'){
+      if(ds.borderWidth==null)ds.borderWidth=2.2;
+      if(ds.tension==null)ds.tension=.35;
+      if(ds.pointRadius==null)ds.pointRadius=2.2;
+      if(ds.pointHoverRadius==null)ds.pointHoverRadius=5;
+      if(ds.fill==null){
+        ds.fill=true;
+        const line=ds.borderColor;
+        ds.backgroundColor=ctx=>{
+          const ch=ctx.chart,ar=ch.chartArea;
+          if(!ar)return pbAlpha(line,.06);
+          const g=ch.ctx.createLinearGradient(0,ar.top,0,ar.bottom);
+          g.addColorStop(0,pbAlpha(line,.22));g.addColorStop(1,pbAlpha(line,0));
+          return g;
+        };
+      }
+    }else if(dt==='bar'){
+      if(ds.borderRadius==null)ds.borderRadius=6;
+      if(ds.borderSkipped==null)ds.borderSkipped=false;
+      if(ds.maxBarThickness==null)ds.maxBarThickness=44;
+      if(ds.borderWidth==null)ds.borderWidth=0;
+    }
+  });
+  if(type==='doughnut'||type==='pie'){
+    cfg.options=cfg.options||{};
+    if(type==='doughnut'&&cfg.options.cutout==null)cfg.options.cutout='62%';
+    (cfg.data.datasets||[]).forEach(ds=>{
+      if(ds.borderWidth==null)ds.borderWidth=2;
+      if(ds.hoverOffset==null)ds.hoverOffset=6;
+      if(ds.spacing==null)ds.spacing=2;
+    });
+  }else{
+    cfg.options=cfg.options||{};
+    const sc=cfg.options.scales=cfg.options.scales||{};
+    const horiz=(cfg.options.indexAxis==='y');
+    const catAx=horiz?'y':'x', valAx=horiz?'x':'y';
+    const soft=pbAlpha(css('--line'),.55)||css('--line');
+    sc[catAx]=sc[catAx]||{}; sc[catAx].grid=Object.assign({display:false},sc[catAx].grid||{});
+    sc[catAx].border=Object.assign({display:false},sc[catAx].border||{});
+    sc[valAx]=sc[valAx]||{}; sc[valAx].grid=Object.assign({color:soft},sc[valAx].grid||{});
+    sc[valAx].border=Object.assign({display:false},sc[valAx].border||{});
+  }
+  return cfg;
+}
 function css(v){return getComputedStyle(document.documentElement).getPropertyValue(v).trim()}
 let GOLD,SKY,GREEN,VIO,RED,MUT;
 function loadColors(){GOLD=css('--gold');SKY=css('--sky');GREEN=css('--good');VIO=css('--vio');RED=css('--bad');MUT=css('--mut');
  Chart.defaults.color=MUT;Chart.defaults.borderColor=css('--line');
- Chart.defaults.font.family="'IBM Plex Sans Arabic','Segoe UI',sans-serif";}
+ Chart.defaults.font.family="'IBM Plex Sans Arabic','Segoe UI',sans-serif";
+ /* Power BI polish: rounded themed tooltips + circular legend markers (per-chart settings still win) */
+ try{
+   const L=Chart.defaults.plugins.legend.labels;
+   L.usePointStyle=true; L.pointStyle='circle'; if(L.boxHeight==null)L.boxHeight=7;
+   const TT=Chart.defaults.plugins.tooltip;
+   TT.backgroundColor=css('--panel'); TT.titleColor=css('--ink'); TT.bodyColor=css('--ink');
+   TT.borderColor=css('--line'); TT.borderWidth=1; TT.cornerRadius=10; TT.padding=10; TT.boxPadding=4;
+   TT.usePointStyle=true;
+ }catch(e){}}
 Chart.register(ChartDataLabels);
 Chart.defaults.set('plugins.datalabels',{display:false});
 const DL=()=>({display:true,color:css('--ink'),font:{size:10,weight:'700'},formatter:v=>v==null?'':Fk(v)});
@@ -1138,6 +1280,73 @@ function growHtml(cur,prev,curL,prevL){
   return `${arrow}<br>${curL}: <b class="num">${F(cur)}</b><br>${prevL}: <b class="num">${F(prev)}</b>`;
 }
 
+/* ===== Power BI visuals: helpers ===== */
+function sparkSVG(arr,color){
+  const a=(arr||[]).filter(v=>v!=null&&isFinite(v));
+  if(a.length<2)return '';
+  const W=120,H=36,P=3.5;
+  const mn=Math.min.apply(null,a),mx=Math.max.apply(null,a),rg=(mx-mn)||1;
+  const X=i=>P+i*(W-2*P)/(a.length-1), Y=v=>H-P-(v-mn)*(H-2*P)/rg;
+  const pts=a.map((v,i)=>X(i).toFixed(1)+','+Y(v).toFixed(1)).join(' ');
+  const lx=X(a.length-1).toFixed(1), ly=Y(a[a.length-1]).toFixed(1);
+  return '<svg class="spark" viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none" aria-hidden="true">'
+   +'<polygon points="'+P+','+(H-P)+' '+pts+' '+(W-P)+','+(H-P)+'" fill="'+color+'" opacity="0.12"/>'
+   +'<polyline points="'+pts+'" fill="none" stroke="'+color+'" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>'
+   +'<circle cx="'+lx+'" cy="'+ly+'" r="2.6" fill="'+color+'"/></svg>';
+}
+function dchip(cur,prev,d){
+  if(cur==null||prev==null||!isFinite(prev)||prev===0)return '';
+  const g=cur/prev-1;
+  return g>=0?'<span class="dchip up">▲ '+Pc(g,d==null?1:d)+'</span>'
+             :'<span class="dchip dn">▼ '+Pc(Math.abs(g),d==null?1:d)+'</span>';
+}
+function pbiCard(k,v,chip,detail,sparkArr,color){
+  return '<div class="card"><div class="k">'+k+'</div><div class="v num">'+v+(chip||'')+'</div>'
+   +(sparkArr?sparkSVG(sparkArr,color||GOLD):'')
+   +'<div class="d">'+(detail||'')+'</div></div>';
+}
+function pbColor(r){return r==null?MUT:(r>=0.95?GREEN:(r>=0.85?GOLD:RED))}
+function gaugeSVG(val){
+  const MAXR=1.2, has=(val!=null&&isFinite(val));
+  const v=has?Math.max(0,Math.min(val,MAXR)):0;
+  const W=250,H=148,cx=125,cy=128,r=98,sw=17;
+  const pt=a=>{const t=Math.PI*(1-a/MAXR);return [cx+r*Math.cos(t),cy-r*Math.sin(t)]};
+  const arc=(a0,a1,col,w,cap)=>{if(a1-a0<=0.0001)return '';
+    const p0=pt(a0),p1=pt(a1),large=((a1-a0)/MAXR)>0.5?1:0;
+    return '<path d="M '+p0[0].toFixed(1)+' '+p0[1].toFixed(1)+' A '+r+' '+r+' 0 '+large+' 1 '+p1[0].toFixed(1)+' '+p1[1].toFixed(1)
+     +'" fill="none" stroke="'+col+'" stroke-width="'+w+'"'+(cap?' stroke-linecap="round"':'')+'/>'};
+  const col=pbColor(has?val:null);
+  let ticks='';
+  [0,0.5,1.0].forEach(a=>{const p=pt(a),po=[cx+(r+sw*0.75)*Math.cos(Math.PI*(1-a/MAXR)),cy-(r+sw*0.75)*Math.sin(Math.PI*(1-a/MAXR))];
+    ticks+='<text x="'+po[0].toFixed(1)+'" y="'+(po[1]+4).toFixed(1)+'" text-anchor="middle" font-size="9.5" fill="'+MUT+'">'+Math.round(a*100)+'%</text>';});
+  const mark=pt(1.0);
+  return '<svg viewBox="0 0 '+W+' '+H+'" role="img">'
+   +arc(0,MAXR,css('--line'),sw,true)
+   +arc(0,v,col,sw,true)
+   +'<circle cx="'+mark[0].toFixed(1)+'" cy="'+mark[1].toFixed(1)+'" r="2.6" fill="'+MUT+'"/>'
+   +ticks
+   +'<text x="'+cx+'" y="'+(cy-14)+'" text-anchor="middle" font-size="30" font-weight="800" fill="'+(has?col:MUT)+'" font-family="Tajawal,sans-serif" class="num">'+(has?Pc(val,1):'—')+'</text>'
+   +'</svg>';
+}
+function funnelSVG(items){
+  const W=340,rowH=46,gap=16,PADX=6;
+  const n=items.length,H=n*rowH+(n-1)*gap;
+  const mx=Math.max.apply(null,items.map(i=>i.v||0))||1;
+  const base=items[0]&&items[0].v>0?items[0].v:null;
+  const wOf=v=>Math.max(28,(v||0)/mx*(W-2*PADX));
+  let s='<svg viewBox="0 0 '+W+' '+H+'" role="img">';
+  items.forEach((it,i)=>{
+    const y=i*(rowH+gap), w=wOf(it.v), x=(W-w)/2;
+    if(i>0){const wp=wOf(items[i-1].v),xp=(W-wp)/2,yp=y-gap;
+      s+='<polygon points="'+xp.toFixed(1)+','+yp+' '+(xp+wp).toFixed(1)+','+yp+' '+(x+w).toFixed(1)+','+y+' '+x.toFixed(1)+','+y+'" fill="'+it.color+'" opacity="0.16"/>';}
+    s+='<rect x="'+x.toFixed(1)+'" y="'+y+'" width="'+w.toFixed(1)+'" height="'+rowH+'" rx="7" fill="'+it.color+'" opacity="0.88"/>';
+    const share=(base&&i>0)?'  ·  '+Pc(it.v/base,1):'';
+    s+='<text x="'+(W/2)+'" y="'+(y+rowH/2-3)+'" text-anchor="middle" font-size="11.5" font-weight="700" fill="#fff">'+it.label+'</text>';
+    s+='<text x="'+(W/2)+'" y="'+(y+rowH/2+13)+'" text-anchor="middle" font-size="12.5" font-weight="800" fill="#fff" class="num">'+F(it.v)+share+'</text>';
+  });
+  return s+'</svg>';
+}
+
 function setChrome(){
   const T=t();
   document.documentElement.lang=LANG; document.documentElement.dir=T.dir;
@@ -1145,7 +1354,7 @@ function setChrome(){
   $('#hAsof').textContent=T.asof; $('#asof').textContent=DATA.kpi.asof;
   $('#langBtn').textContent=LANG==='ar'?'English':'العربية';
   $('#themeBtn').textContent=document.documentElement.dataset.theme==='dark'?T.themeL:T.themeD;
-  $('#openImport').textContent=T.importBtn;$('#exportBtn').textContent=T.exportBtn;
+  $('#openImport').textContent=T.importBtn;
   if($('#friBtn'))$('#friBtn').textContent=EXCL_FRI?T.friOn:T.friOff;
   if($('#logoutBtn'))$('#logoutBtn').textContent=(LANG==='ar'?'🔓 خروج':'🔓 Logout');
   if($('#loginTitle'))$('#loginTitle').textContent=(LANG==='ar'?'تسجيل الدخول':'Sign in');
@@ -1156,7 +1365,7 @@ function setChrome(){
   if($('#loginBtn'))$('#loginBtn').textContent=(LANG==='ar'?'دخول':'Sign in');
   if($('#friBtn'))$('#friBtn').classList.toggle('on',EXCL_FRI);
   const gcol=document.documentElement.dataset.theme==='light'?'#3D4F63':'#A9BACB';
-  ['langBtn','themeBtn','exportBtn'].forEach(id=>{const b=document.getElementById(id);if(b)b.style.color=gcol;});
+  ['langBtn','themeBtn'].forEach(id=>{const b=document.getElementById(id);if(b)b.style.color=gcol;});
   $('#navBar').innerHTML=Object.entries(T.tabs).map(([k,v],i)=>`<button data-t="${k}" class="${document.querySelector('section.on')&&document.querySelector('section.on').id===k?'on':(i===0&&!document.querySelector('section.on')?'on':'')}">${v}</button>`).join('');
   document.querySelectorAll('nav button').forEach(b=>{
     if(document.querySelector('section.on')&&document.querySelector('section.on').id===b.dataset.t)b.classList.add('on');
@@ -1226,20 +1435,36 @@ function renderExec(){
   const mName=fmtM(lm.label), pName=fmtM(lmp.label);
   $('#lcmTitle').textContent=T.lcmTitle(mName); $('#lcmSub').textContent=T.lcmSub;
   $('#lcwTitle').textContent=T.lcwTitle(lw.label,lw.frm,lw.to); $('#lcwSub').textContent=T.lcwSub;
+  const spM=tail(DATA.monthly,12), spW=tail(DATA.weekly,12);
+  const dtl=(cur,prev,cl,pl)=>(prev==null?'':cl+': <b class="num">'+F(cur)+'</b> · '+pl+': <b class="num">'+F(prev)+'</b>');
   $('#kpiM').innerHTML=[
-   [T.sales+' — '+mName+' '+T.mUnit,F(lm.sales),growHtml(lm.sales,lmp.sales,T.thisM+' ('+mName+')',T.lastM+' ('+pName+')')],
-   [T.orders+' — '+mName+' '+T.mUnit,F(lm.orders),growHtml(lm.orders,lmp.orders,T.thisM,T.lastM)],
-   [T.prod+' — '+mName+' '+T.mUnit,F(lm.prod),growHtml(lm.prod,lmp.prod,T.thisM,T.lastM)],
-   [T.ful+' — '+mName,Pc(lm.ful),T.lastM+': '+Pc(lmp.ful)+' — '+T.target],
-   [T.avgday+' — '+mName+' '+T.mUnit,F(lm.avg),lm.days+' '+T.opDays],
-   [T.cover,DATA.kpi.cover+' '+T.days_u,T.coverD(F(DATA.kpi.stock),F(DATA.kpi.avg28))]
-  ].map(([k,v,d])=>`<div class="card"><div class="k">${k}</div><div class="v num">${v}</div><div class="d">${d}</div></div>`).join('');
+   pbiCard(T.sales+' — '+mName+' '+T.mUnit,F(lm.sales),dchip(lm.sales,lmp.sales),dtl(lm.sales,lmp.sales,T.thisM+' ('+mName+')',T.lastM+' ('+pName+')'),spM.map(m=>m.sales),GOLD),
+   pbiCard(T.orders+' — '+mName+' '+T.mUnit,F(lm.orders),dchip(lm.orders,lmp.orders),dtl(lm.orders,lmp.orders,T.thisM,T.lastM),spM.map(m=>m.orders),SKY),
+   pbiCard(T.prod+' — '+mName+' '+T.mUnit,F(lm.prod),dchip(lm.prod,lmp.prod),dtl(lm.prod,lmp.prod,T.thisM,T.lastM),spM.map(m=>m.prod),GREEN),
+   pbiCard(T.ful+' — '+mName,Pc(lm.ful),dchip(lm.ful,lmp.ful),T.lastM+': '+Pc(lmp.ful)+' — '+T.target,spM.map(m=>m.ful==null?null:m.ful*100),pbColor(lm.ful)),
+   pbiCard(T.avgday+' — '+mName+' '+T.mUnit,F(lm.avg),dchip(lm.avg,lmp.avg),lm.days+' '+T.opDays,spM.map(m=>m.avg),VIO),
+   pbiCard(T.cover,DATA.kpi.cover+' '+T.days_u,'',T.coverD(F(DATA.kpi.stock),F(DATA.kpi.avg28)),null,MUT)
+  ].join('');
   $('#kpiW').innerHTML=[
-   [T.sales+' — '+lw.label+' '+T.mUnit,F(lw.sales),growHtml(lw.sales,lwp.sales,T.thisW+' ('+lw.label+')',T.lastW+' ('+lwp.label+')')],
-   [T.orders+' — '+lw.label+' '+T.mUnit,F(lw.orders),growHtml(lw.orders,lwp.orders,T.thisW,T.lastW)],
-   [T.prod+' — '+lw.label+' '+T.mUnit,F(lw.prod),growHtml(lw.prod,lwp.prod,T.thisW,T.lastW)],
-   [T.ful+' — '+lw.label,Pc(lw.ful),T.lastW+': '+Pc(lwp.ful)]
-  ].map(([k,v,d])=>`<div class="card"><div class="k">${k}</div><div class="v num">${v}</div><div class="d">${d}</div></div>`).join('');
+   pbiCard(T.sales+' — '+lw.label+' '+T.mUnit,F(lw.sales),dchip(lw.sales,lwp.sales),dtl(lw.sales,lwp.sales,T.thisW+' ('+lw.label+')',T.lastW+' ('+lwp.label+')'),spW.map(w=>w.sales),GOLD),
+   pbiCard(T.orders+' — '+lw.label+' '+T.mUnit,F(lw.orders),dchip(lw.orders,lwp.orders),dtl(lw.orders,lwp.orders,T.thisW,T.lastW),spW.map(w=>w.orders),SKY),
+   pbiCard(T.prod+' — '+lw.label+' '+T.mUnit,F(lw.prod),dchip(lw.prod,lwp.prod),dtl(lw.prod,lwp.prod,T.thisW,T.lastW),spW.map(w=>w.prod),GREEN),
+   pbiCard(T.ful+' — '+lw.label,Pc(lw.ful),dchip(lw.ful,lwp.ful),T.lastW+': '+Pc(lwp.ful),spW.map(w=>w.ful==null?null:w.ful*100),pbColor(lw.ful))
+  ].join('');
+  /* ===== Power BI row: gauges + funnel (last complete month) ===== */
+  const covR=(lm.orders>0)?(lm.prod/lm.orders):null, fulR=lm.ful;
+  $('#gCovT').textContent=T.pbCovT; $('#gFulT').textContent=T.pbFulT; $('#funT').textContent=T.pbFunT;
+  $('#gCov').innerHTML=gaugeSVG(covR);
+  $('#gCovN').textContent=covR==null?T.pbNoData:T.pbCovN(mName,F(lm.prod),F(lm.orders));
+  $('#gFul').innerHTML=gaugeSVG(fulR);
+  $('#gFulN').textContent=fulR==null?T.pbNoData:T.pbFulN(mName,F(lm.sales),F(lm.orders));
+  if(lm.orders>0||lm.prod>0||lm.sales>0){
+    $('#funnel').innerHTML=funnelSVG([
+      {label:T.sOrders,v:lm.orders,color:SKY},
+      {label:T.sProd,v:lm.prod,color:GREEN},
+      {label:T.sSales,v:lm.sales,color:GOLD}]);
+    $('#funN').textContent=T.pbFunN(mName);
+  }else{$('#funnel').innerHTML='';$('#funN').textContent=T.pbNoData;}
 
   const mm=tail(DATA.monthly,PERIOD.mo), mlb=mm.map(m=>fmtM(m.label));
   const wk=tail(DATA.weekly,PERIOD.we);
@@ -1766,6 +1991,48 @@ function computeCmpFiltered(from, to, Flt){
   const weekly=Object.keys(wmap).sort().map(k=>({frm:k,o:Math.round(wmap[k].o),p:Math.round(wmap[k].p),s:Math.round(wmap[k].s)}));
   const tot=daily.reduce((a,r)=>({o:a.o+r.o,p:a.p+r.p,s:a.s+r.s}),{o:0,p:0,s:0});
   return {daily, weekly, tot, nProducts:sku.length};
+}
+
+
+// ============== OPENING / CLOSING BALANCE HELPER ==============
+// For a set of products over [from,to]: opening balance = Open Stock at the FIRST in-range day,
+// closing balance = Close Stock at the LAST in-range day that has balances. Returns boxes + kg.
+function computeOpenClose(sku, from, to){
+  if(!SKU_DATES.length) return {openBox:0,openKg:0,closeBox:0,closeKg:0,openDate:null,closeDate:null};
+  const idxs=[]; SKU_DATES.forEach((d,i)=>{ if((!from||d>=from)&&(!to||d<=to)) idxs.push(i); });
+  if(!idxs.length) return {openBox:0,openKg:0,closeBox:0,closeKg:0,openDate:null,closeDate:null};
+  // opening: first in-range day that has any open-stock balances (dK), else fall back to first day
+  let openIdx=-1;
+  for(let k=0;k<idxs.length;k++){ const i=idxs[k];
+    if(sku.some(p=>(p.dK&&p.dK[i]>0)||(p.dC&&p.dC[i]>0))){ openIdx=i; break; } }
+  if(openIdx<0) openIdx=idxs[0];
+  // closing: last in-range day that has any close-stock balances (dC), else last day
+  let closeIdx=-1;
+  for(let k=idxs.length-1;k>=0;k--){ const i=idxs[k];
+    if(sku.some(p=>(p.dC&&p.dC[i]>0)||(p.dK&&p.dK[i]>0))){ closeIdx=i; break; } }
+  if(closeIdx<0) closeIdx=idxs[idxs.length-1];
+  let openBox=0,openKg=0,closeBox=0,closeKg=0;
+  sku.forEach(p=>{ const bk=prodBoxKg(p)||0;
+    const ob=(p.dK&&p.dK[openIdx]!=null&&p.dK[openIdx]>0)?p.dK[openIdx]:((p.dC&&p.dC[openIdx])||0);
+    const cb=(p.dC&&p.dC[closeIdx]!=null&&p.dC[closeIdx]>0)?p.dC[closeIdx]:((p.dK&&p.dK[closeIdx])||0);
+    openBox+=ob; openKg+=ob*bk; closeBox+=cb; closeKg+=cb*bk; });
+  return {openBox:Math.round(openBox),openKg:Math.round(openKg),closeBox:Math.round(closeBox),closeKg:Math.round(closeKg),
+    openDate:SKU_DATES[openIdx],closeDate:SKU_DATES[closeIdx]};
+}
+// per-product opening/closing at range boundaries (for detail-table rows)
+function prodOpenClose(p, from, to){
+  if(!SKU_DATES.length) return {open:0,close:0};
+  const idxs=[]; SKU_DATES.forEach((d,i)=>{ if((!from||d>=from)&&(!to||d<=to)) idxs.push(i); });
+  if(!idxs.length) return {open:0,close:0};
+  let openIdx=-1;
+  for(let k=0;k<idxs.length;k++){ const i=idxs[k]; if((p.dK&&p.dK[i]>0)||(p.dC&&p.dC[i]>0)){openIdx=i;break;} }
+  if(openIdx<0)openIdx=idxs[0];
+  let closeIdx=-1;
+  for(let k=idxs.length-1;k>=0;k--){ const i=idxs[k]; if((p.dC&&p.dC[i]>0)||(p.dK&&p.dK[i]>0)){closeIdx=i;break;} }
+  if(closeIdx<0)closeIdx=idxs[idxs.length-1];
+  const ob=(p.dK&&p.dK[openIdx]!=null&&p.dK[openIdx]>0)?p.dK[openIdx]:((p.dC&&p.dC[openIdx])||0);
+  const cb=(p.dC&&p.dC[closeIdx]!=null&&p.dC[closeIdx]>0)?p.dC[closeIdx]:((p.dK&&p.dK[closeIdx])||0);
+  return {open:Math.round(ob),close:Math.round(cb)};
 }
 
 function computeFlow(metricKey, from, to, F, gran){
@@ -3274,32 +3541,37 @@ function renderCmp(){
   mk('cCmpGap',{type:'bar',data:{labels:lbl,datasets:[
    {data:view.map(e=>e.p-e.o),backgroundColor:view.map(e=>e.p>=e.o?GREEN:RED)}]},
    options:{maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{font:{size:9},maxRotation:90,maxTicksLimit:isW?26:14}}}}});
-  // uncovered analysis controls
-  const mSel=$('#cmpUncMetric');
-  if(!mSel.dataset.init){mSel.dataset.init='1';}
-  const metrics=[['covP',T.cmpMcovP],['covS',T.cmpMcovS],['shortRate',T.cmpMrate],['shortQty',T.cmpMqty]];
-  const curM=mSel.value||'covP';
-  mSel.innerHTML=metrics.map(([v,l])=>`<option value="${v}" ${v===curM?'selected':''}>${l}</option>`).join('');
-  // build the set of product codes passing the MAIN tab filters (CMP_F), then filter the coverage table by it
-  const _passCodes=new Set((DATA.sku||[]).filter(p=>
+  // uncovered analysis — bound to the tab's own filters AND date range (CMPFROM/CMPTO)
+  const mSel=$('#cmpUncMetric'); if(mSel){mSel.style.display='none';}  // per-row metric dropdown removed; table now respects tab filters + dates
+  // products passing the MAIN tab filters (CMP_F)
+  const _passSku=(DATA.sku||[]).filter(p=>
       msPass(p.cat,CMP_F.cat) && msPass(p.fam||'—',CMP_F.fam)
       && (CMP_F.ff==='all'||detectType(p)===CMP_F.ff)
       && (CMP_F.own==='all'||classifyOwn(p)===CMP_F.own)
       && (CMP_F.pack==='all'||packType(p.n)===CMP_F.pack)
       && (!CMP_F.wt.length||CMP_F.wt.includes(String(p.wt||'')))
       && (!CMP_F.brand.length||CMP_F.brand.includes(String(p.brand||'—')))
-      && (!CMP_F.prod.length||CMP_F.prod.includes(String(p.c)))
-    ).map(p=>String(p.c)));
-  let rows=C.prod_cov.filter(p=>_passCodes.has(String(p.c)));
-  // only meaningful: ord>0; sort ascending for coverage metrics, descending for shortRate/shortQty
-  if(curM==='covP'||curM==='covS')rows=rows.filter(p=>p[curM]!=null).sort((a,b)=>a[curM]-b[curM]);
-  else rows=rows.sort((a,b)=>(b[curM]||0)-(a[curM]||0));
-  $('#tCmpUnc').innerHTML=`<tr><th>#</th><th>${T.skuTh[1]}</th><th style="text-align:start">${T.skuTh[2]}</th><th>${T.thCat}</th><th>${T.thOrd}</th><th>${T.thProd}</th><th>${T.thSale}</th><th>${T.thCovP}</th><th>${T.thCovS}</th><th>${T.thShortRate}</th><th>${T.thShortQty}</th></tr>`+
+      && (!CMP_F.prod.length||CMP_F.prod.includes(String(p.c))));
+  // compute per-product coverage LIVE over the selected date range (CMPFROM..CMPTO), working days only
+  const _uIdx=[]; SKU_DATES.forEach((d,i)=>{ if((!CMPFROM||d>=CMPFROM)&&(!CMPTO||d<=CMPTO)) _uIdx.push(i); });
+  let rows=_passSku.map(p=>{
+    let to=0,tp=0,ts=0; _uIdx.forEach(i=>{to+=(p.dO&&p.dO[i])||0;tp+=(p.dP&&p.dP[i])||0;ts+=(p.dS&&p.dS[i])||0;});
+    if(to<=0)return null;
+    const oc=prodOpenClose(p,CMPFROM,CMPTO);
+    const fulfilled=Math.max(tp,ts); const sq=Math.max(0,to-fulfilled);
+    return {c:p.c,n:p.n,nAr:p.nAr,cat:p.cat,ord:Math.round(to),prod:Math.round(tp),sales:Math.round(ts),
+      covP:to>0?tp/to:null,covS:to>0?ts/to:null,shortQty:Math.round(sq),open:oc.open,close:oc.close};
+  }).filter(Boolean);
+  // default sort: biggest shortfall first (most urgent uncovered orders)
+  rows.sort((a,b)=>(b.shortQty||0)-(a.shortQty||0));
+  const _ocD=(CMPFROM||SKU_DATES[0])+' → '+(CMPTO||SKU_DATES[SKU_DATES.length-1]);
+  $('#tCmpUnc').innerHTML=`<tr><th>#</th><th>${T.skuTh[1]}</th><th style="text-align:start">${T.skuTh[2]}</th><th>${T.thCat}</th><th>${LANG==='ar'?'رصيد افتتاح':'Opening'}</th><th>${T.thOrd}</th><th>${T.thProd}</th><th>${T.thSale}</th><th>${T.thCovP}</th><th>${T.thCovS}</th><th>${LANG==='ar'?'النقص':'Short'}</th><th>${LANG==='ar'?'رصيد إقفال':'Closing'}</th></tr>`+
    rows.slice(0,60).map((p,i)=>`<tr><td>${i+1}</td><td>${p.c}</td><td style="text-align:start">${prodName(p)}</td><td>${T.cats[p.cat]||p.cat}</td>
+   <td class="num">${F(p.open)}</td>
    <td class="num">${F(p.ord)}</td><td class="num">${F(p.prod)}</td><td class="num">${F(p.sales)}</td>
    <td>${p.covP==null?'—':`<span class="pill ${p.covP>=0.95?'g':(p.covP>=0.7?'y':'r')}">${Pc(p.covP,0)}</span>`}</td>
    <td>${p.covS==null?'—':`<span class="pill ${p.covS>=0.95?'g':(p.covS>=0.7?'y':'r')}">${Pc(p.covS,0)}</span>`}</td>
-   <td>${p.shortRate==null?'—':Pc(p.shortRate,0)}</td><td class="num">${F(p.shortQty)}</td></tr>`).join('');
+   <td class="num">${F(p.shortQty)}</td><td class="num">${F(p.close)}</td></tr>`).join('');
   // wire granularity buttons (delegation covers perBtn; gran handled here)
   document.querySelectorAll('.granBtn').forEach(b=>b.onclick=()=>{CMPGRAN=b.dataset.g;renderCmp();});
   wirePeriod();
@@ -3621,7 +3893,6 @@ function applyPerms(rec){
   // hide action controls without permission
   const setEl=(el,ok)=>{if(el)el.style.display=ok?'':'none';};
   setEl(document.getElementById('openImport'),isAdmin||rec.perms['can_import']);
-  setEl(document.getElementById('exportBtn'),isAdmin||rec.perms['can_export']);
   // data-export (xlsx) permission: admin always; else the column value; default true if column absent
   CAN_EXPORT = isAdmin ? true : (rec.perms['can_export_data']!==undefined ? !!rec.perms['can_export_data'] : true);
   // hide all xlsx buttons if not permitted
@@ -3948,18 +4219,21 @@ function computeRptFulfil(from,to,F){
     let o=0,pr=0,s=0; idxs.forEach(i=>{o+=(p.dO&&p.dO[i])||0;pr+=(p.dP&&p.dP[i])||0;s+=(p.dS&&p.dS[i])||0;});
     if(o<=0&&pr<=0&&s<=0)return;
     const cK=p.cat||'—',fK=p.fam||'—';
-    if(!groups[cK])groups[cK]={cat:cK,fams:{},o:0,p:0,s:0,oKg:0,pKg:0,sKg:0,n:0};
-    const g=groups[cK]; if(!g.fams[fK])g.fams[fK]={fam:fK,o:0,p:0,s:0,oKg:0,pKg:0,sKg:0,n:0};
+    if(!groups[cK])groups[cK]={cat:cK,fams:{},o:0,p:0,s:0,oKg:0,pKg:0,sKg:0,n:0,_sku:[]};
+    const g=groups[cK]; if(!g.fams[fK])g.fams[fK]={fam:fK,o:0,p:0,s:0,oKg:0,pKg:0,sKg:0,n:0,_sku:[]};
     const f=g.fams[fK];
-    g.o+=o;g.p+=pr;g.s+=s;g.oKg+=o*bk;g.pKg+=pr*bk;g.sKg+=s*bk;g.n++;
-    f.o+=o;f.p+=pr;f.s+=s;f.oKg+=o*bk;f.pKg+=pr*bk;f.sKg+=s*bk;f.n++;});
-  const roll=e=>({...e,o:Math.round(e.o),p:Math.round(e.p),s:Math.round(e.s),
+    g.o+=o;g.p+=pr;g.s+=s;g.oKg+=o*bk;g.pKg+=pr*bk;g.sKg+=s*bk;g.n++;g._sku.push(p);
+    f.o+=o;f.p+=pr;f.s+=s;f.oKg+=o*bk;f.pKg+=pr*bk;f.sKg+=s*bk;f.n++;f._sku.push(p);});
+  const roll=e=>{const oc=computeOpenClose(e._sku||[],from,to);
+    return {...e,o:Math.round(e.o),p:Math.round(e.p),s:Math.round(e.s),
     covP:e.o>0?+(e.p/e.o*100).toFixed(1):null, covS:e.o>0?+(e.s/e.o*100).toFixed(1):null,
-    short:Math.round(Math.max(0,e.o-Math.max(e.p,e.s)))});
+    short:Math.round(Math.max(0,e.o-Math.max(e.p,e.s))),
+    open:oc.openBox, close:oc.closeBox};};
   const cats=Object.values(groups).map(g=>({...roll(g),fams:Object.values(g.fams).map(roll).sort((a,b)=>b.o-a.o)})).sort((a,b)=>b.o-a.o);
   const T=cats.reduce((a,g)=>({o:a.o+g.o,p:a.p+g.p,s:a.s+g.s,n:a.n+g.n}),{o:0,p:0,s:0,n:0});
-  const tot=roll({...T,oKg:0,pKg:0,sKg:0});
-  return {cats,tot,nDays:idxs.length,from:SKU_DATES[idxs[0]],to:SKU_DATES[idxs[idxs.length-1]]};
+  const totOC=computeOpenClose(sku,from,to);
+  const tot={...roll({...T,oKg:0,pKg:0,sKg:0,_sku:[]}),open:totOC.openBox,close:totOC.closeBox};
+  return {cats,tot,nDays:idxs.length,from:SKU_DATES[idxs[0]],to:SKU_DATES[idxs[idxs.length-1]],openDate:totOC.openDate,closeDate:totOC.closeDate};
 }
 
 // (2) Stock Movement: per cat — opening, production, sales, computed closing vs actual closing, variance
@@ -4184,13 +4458,13 @@ function renderRptExt(kind, FLT){
     const D=computeRptFulfil(S.from,S.to,FLT); if(!D||!D.cats.length)return noData();
     const sub=$id('Sub'); if(sub)sub.textContent=(AR?'تقرير الوفاء بالطلب · ':'Order fulfilment · ')+D.from+' → '+D.to+' ('+D.nDays+(AR?' يوم':' days')+')';
     setCards([[AR?'الفترة':'Period',D.nDays+(AR?' يوم':' days'),D.from+' → '+D.to],[AR?'الطلب':'Orders',F(D.tot.o)+' '+boxU,''],[AR?'الإنتاج':'Production',F(D.tot.p)+' '+boxU,''],[AR?'المبيعات':'Sales',F(D.tot.s)+' '+boxU,''],[AR?'تغطية الإنتاج':'Prod coverage',(D.tot.covP==null?'—':D.tot.covP+'%'),AR?'إنتاج ÷ طلب':'prod ÷ orders'],[AR?'الوفاء':'Fulfilment',(D.tot.covS==null?'—':D.tot.covS+'%'),AR?'مبيعات ÷ طلب':'sales ÷ orders'],[AR?'النقص':'Shortfall',F(D.tot.short)+' '+boxU,'']]);
-    const H=[AR?'الفئة / العائلة':'Category / Family',AR?'الأصناف':'Items',AR?'طلب':'Orders',AR?'إنتاج':'Prod',AR?'مبيعات':'Sales',AR?'تغطية %':'Cover %',AR?'وفاء %':'Fulfil %',AR?'نقص':'Short'];
+    const H=[AR?'الفئة / العائلة':'Category / Family',AR?'الأصناف':'Items',AR?'رصيد افتتاح':'Opening',AR?'طلب':'Orders',AR?'إنتاج':'Prod',AR?'مبيعات':'Sales',AR?'تغطية %':'Cover %',AR?'وفاء %':'Fulfil %',AR?'نقص':'Short',AR?'رصيد إقفال':'Closing'];
     const rows=[];
-    D.cats.forEach(g=>{rows.push({_style:'background:var(--panel2);font-weight:800',cells:['📁 '+((t().cats&&t().cats[g.cat])||g.cat),g.n,F(g.o),F(g.p),F(g.s),pcPill(g.covP),pcPill(g.covS),F(g.short)]});
-      g.fams.forEach(f=>rows.push({_indent:1,cells:['└ '+f.fam,f.n,F(f.o),F(f.p),F(f.s),pcPill(f.covP),pcPill(f.covS),F(f.short)]}));});
+    D.cats.forEach(g=>{rows.push({_style:'background:var(--panel2);font-weight:800',cells:['📁 '+((t().cats&&t().cats[g.cat])||g.cat),g.n,F(g.open),F(g.o),F(g.p),F(g.s),pcPill(g.covP),pcPill(g.covS),F(g.short),F(g.close)]});
+      g.fams.forEach(f=>rows.push({_indent:1,cells:['└ '+f.fam,f.n,F(f.open),F(f.o),F(f.p),F(f.s),pcPill(f.covP),pcPill(f.covS),F(f.short),F(f.close)]}));});
     buildTbl((AR?'تقرير الوفاء بالطلب':'Order Fulfilment')+' ('+D.from+' → '+D.to+')',H,rows,
-      [AR?'الإجمالي':'TOTAL',F(D.tot.n),F(D.tot.o),F(D.tot.p),F(D.tot.s),(D.tot.covP==null?'—':D.tot.covP+'%'),(D.tot.covS==null?'—':D.tot.covS+'%'),F(D.tot.short)]);
-    $id('Note')&&($id('Note').textContent=AR?'التغطية = الإنتاج ÷ الطلب. الوفاء = المبيعات ÷ الطلب. النقص = الطلب − الأعلى من (الإنتاج، المبيعات).':'Coverage = prod ÷ orders. Fulfilment = sales ÷ orders. Shortfall = orders − max(prod, sales).');
+      [AR?'الإجمالي':'TOTAL',F(D.tot.n),F(D.tot.open),F(D.tot.o),F(D.tot.p),F(D.tot.s),(D.tot.covP==null?'—':D.tot.covP+'%'),(D.tot.covS==null?'—':D.tot.covS+'%'),F(D.tot.short),F(D.tot.close)]);
+    $id('Note')&&($id('Note').textContent=AR?('التغطية = الإنتاج ÷ الطلب. الوفاء = المبيعات ÷ الطلب. النقص = الطلب − الأعلى من (الإنتاج، المبيعات). رصيد الافتتاح بتاريخ '+(D.openDate||'—')+' ورصيد الإقفال بتاريخ '+(D.closeDate||'—')+'.'):'Coverage = prod ÷ orders. Fulfilment = sales ÷ orders. Shortfall = orders − max(prod, sales). Opening as of '+(D.openDate||'—')+', closing as of '+(D.closeDate||'—')+'.');
   }
   
   
@@ -4648,20 +4922,128 @@ let WBFROM=null, WBTO=null, WBOWN='all', WBFAM=[];  // Whole Bird date range + b
 let CUTFROM=null, CUTTO=null, CUTFAM=[];
 
 
-function renderAll(){_NAR_MAP=null;loadColors();setChrome();renderTrend();renderExec();renderRx();renderWb();renderStk();try{renderInvan();}catch(e){console.error('renderInvan',e);}try{renderTrends();}catch(e){console.error('renderTrends',e);}try{renderABC();}catch(e){console.error('renderABC',e);}try{renderReports();}catch(e){console.error('renderReports',e);}try{renderProd();}catch(e){console.error('renderProd',e);}try{renderSales();}catch(e){console.error('renderSales',e);}try{renderOrders();}catch(e){console.error('renderOrders',e);}renderPlant();renderQuality();renderDemand();renderAlerts();renderTop();try{renderOffals();}catch(e){console.error('renderOffals',e);}try{renderWip();}catch(e){console.error('renderWip',e);}renderCmp();try{injectExportButtons();}catch(e){console.warn('export buttons',e);};renderWeekMonth();renderSku();try{renderWdist();}catch(e){console.error('renderWdist',e);}}
+/* ===================== Period Compare tab (vs) ===================== */
+let VS={af:null,at:null,bf:null,bt:null,metric:'s',_auto:true,_lbl:null,cat:[],fam:[],ff:[],own:[],brand:[],pack:[],prod:[]};
+function _vsMonthRange(lbl){const p=String(lbl||'').split('/');const m=+p[0],y=+p[1];
+  if(!m||!y)return null;const f=new Date(Date.UTC(y,m-1,1)),t=new Date(Date.UTC(y,m,0));return[iso(f),iso(t)]}
+function _vsShift(dstr,n){const d=new Date(dstr+'T00:00:00Z');d.setUTCDate(d.getUTCDate()+n);return iso(d)}
+function _vsFilteredSku(){
+  let sku=(DATA.sku||[]).slice();
+  sku=sku.filter(p=>msPass(p.cat, VS.cat));
+  sku=sku.filter(p=>msPass(p.fam||'—', VS.fam));
+  if(VS.ff&&VS.ff.length) sku=sku.filter(p=>VS.ff.includes(detectType(p)));
+  if(VS.own&&VS.own.length) sku=sku.filter(p=>VS.own.includes(classifyOwn(p)));
+  if(VS.pack&&VS.pack.length) sku=sku.filter(p=>VS.pack.includes(packType(p.n)));
+  if(VS.brand&&VS.brand.length) sku=sku.filter(p=>VS.brand.includes(String(p.brand||'—')));
+  if(VS.prod&&VS.prod.length) sku=sku.filter(p=>VS.prod.includes(String(p.c)));
+  return sku;
+}
+// aggregate filtered products over [f,t] using per-product daily arrays (dS/dO/dP), boxes
+function _vsSum(f,t){
+  const idxs=[]; SKU_DATES.forEach((d,i)=>{ if(d>=f&&d<=t) idxs.push(i); });
+  const sku=_vsFilteredSku();
+  const ds=[],dO=[],dP=[],dates=[];
+  let s=0,o=0,p=0,op=0;
+  idxs.forEach(i=>{let sv=0,ov=0,pv=0;
+    sku.forEach(pp=>{sv+=(pp.dS&&pp.dS[i])||0;ov+=(pp.dO&&pp.dO[i])||0;pv+=(pp.dP&&pp.dP[i])||0;});
+    s+=sv;o+=ov;p+=pv; if(sv>0)op++;
+    ds.push(Math.round(sv));dO.push(Math.round(ov));dP.push(Math.round(pv));dates.push(SKU_DATES[i]);});
+  return {s:Math.round(s),o:Math.round(o),p:Math.round(p),op,ds,dO,dP,dates,n:idxs.length,
+    ful:o>0?s/o:null, avg:op?Math.round(s/op):0};
+}
+function renderVs(){
+  const T=t();
+  $('#vsTitle').textContent=T.vsTitle; $('#vsSub').textContent=T.vsSub;
+  $('#vsALbl').textContent=T.vsA; $('#vsBLbl').textContent=T.vsB;
+  $('#vsAFromL').textContent=T.vsFrom; $('#vsAToL').textContent=T.vsTo;
+  $('#vsBFromL').textContent=T.vsFrom; $('#vsBToL').textContent=T.vsTo;
+  $('#vsPreM').textContent=T.vsPreM; $('#vsPreW').textContent=T.vsPreW;
+  $('#vsBarT').textContent=T.vsBarT; $('#vsLineT').textContent=T.vsLineT;
+  $('#vsNote').textContent=T.vsNote;
+  if(!DATA||!DATA.dt||!DATA.dt.length){$('#vsKpi').innerHTML='';return;}
+  const lo=DATA.dt[0].d, hi=DATA.dt[DATA.dt.length-1].d;
+  /* defaults: last complete month vs previous month (auto-refresh until user edits) */
+  const _lcmLbl=DATA.kpi.lcm&&DATA.kpi.lcm.label;
+  if(!VS.af||(VS._auto&&VS._lbl!==_lcmLbl)){
+    VS._lbl=_lcmLbl;
+    const a=_vsMonthRange(DATA.kpi.lcm&&DATA.kpi.lcm.label), b=_vsMonthRange(DATA.kpi.lcm_prev&&DATA.kpi.lcm_prev.label);
+    if(a){VS.af=a[0];VS.at=a[1];} if(b){VS.bf=b[0];VS.bt=b[1];}
+    if(!VS.af){VS.at=hi;VS.af=_vsShift(hi,-6);VS.bt=_vsShift(VS.af,-1);VS.bf=_vsShift(VS.bt,-6);}
+  }
+  const ids=['vsAFrom','vsATo','vsBFrom','vsBTo'], keys=['af','at','bf','bt'];
+  ids.forEach((id,i)=>{const el=$('#'+id);if(!el)return;el.min=lo;el.max=hi;el.value=VS[keys[i]]||'';
+    if(!el.dataset.init){el.dataset.init='1';
+      el.onchange=e=>{VS[keys[i]]=e.target.value||null;VS._auto=false;renderVs();};
+      el.onclick=()=>{if(el.showPicker){try{el.showPicker();}catch(e){}}};}});
+  const pre=(id,fn)=>{const b=$('#'+id);if(b&&!b.dataset.init){b.dataset.init='1';b.onclick=()=>{fn();VS._auto=false;renderVs();};}};
+  pre('vsPreM',()=>{const a=_vsMonthRange(DATA.kpi.lcm.label),b=_vsMonthRange(DATA.kpi.lcm_prev.label);
+    if(a){VS.af=a[0];VS.at=a[1];} if(b){VS.bf=b[0];VS.bt=b[1];}});
+  pre('vsPreW',()=>{const w=DATA.kpi.lcw,wp=DATA.kpi.lcw_prev;
+    if(w){VS.af=w.frm;VS.at=w.to;} if(wp&&wp.frm){VS.bf=wp.frm;VS.bt=wp.to;}});
+  // ---- standard multi-select filters ----
+  const AR=LANG==='ar';
+  $('#vsCatL')&&($('#vsCatL').textContent=AR?'الفئة':'Category');
+  $('#vsFamL')&&($('#vsFamL').textContent=AR?'العائلة':'Family');
+  $('#vsFFL')&&($('#vsFFL').textContent=AR?'فريش/مجمد':'Fresh/Frozen');
+  $('#vsOwnL')&&($('#vsOwnL').textContent=AR?'العلامة':'Own/PL');
+  $('#vsBrandL')&&($('#vsBrandL').textContent=AR?'البراند':'Brand');
+  $('#vsPackL')&&($('#vsPackL').textContent=AR?'التعبئة':'Packaging');
+  $('#vsProdL')&&($('#vsProdL').textContent=AR?'المنتج':'Product');
+  const allP=(DATA.sku||[]);
+  const cats=[...new Set(allP.map(p=>p.cat))].filter(Boolean).sort();
+  msDropdown('vsCat', cats.map(c=>[c,(T.cats&&T.cats[c])||c]), VS.cat, sel=>{VS.cat=sel;VS.fam=[];renderVs();}, AR?'كل الفئات':'All categories');
+  const fams=[...new Set(allP.filter(p=>msPass(p.cat,VS.cat)).map(p=>p.fam||'—'))].filter(x=>x&&x!=='—').sort();
+  VS.fam=VS.fam.filter(v=>fams.includes(v));
+  msDropdown('vsFam', fams.map(f=>[f,f]), VS.fam, sel=>{VS.fam=sel;renderVs();}, AR?'كل العائلات':'All families');
+  msDropdown('vsFF', [['Fresh',AR?'فريش':'Fresh'],['Frozen',AR?'مجمد':'Frozen']], VS.ff, sel=>{VS.ff=sel;renderVs();}, AR?'الكل':'All', false);
+  msDropdown('vsOwn', [['own',AR?'علامتنا':'Own brand'],['pl',AR?'علامة خاصة':'Private Label']], VS.own, sel=>{VS.own=sel;renderVs();}, AR?'الكل':'All', false);
+  const brands=[...new Set(allP.map(p=>String(p.brand||'—')))].filter(x=>x&&x!=='—').sort();
+  VS.brand=VS.brand.filter(v=>brands.includes(v));
+  msDropdown('vsBrand', brands.map(b=>[b,b]), VS.brand, sel=>{VS.brand=sel;renderVs();}, AR?'كل البراندات':'All brands');
+  const packs=[...new Set(allP.map(p=>packType(p.n)))].filter(Boolean).sort();
+  VS.pack=VS.pack.filter(v=>packs.includes(v));
+  msDropdown('vsPack', packs.map(p=>[p,p]), VS.pack, sel=>{VS.pack=sel;renderVs();}, AR?'كل التعبئات':'All packaging');
+  const prodScope=allP.filter(p=>msPass(p.cat,VS.cat)&&(!(VS.brand&&VS.brand.length)||VS.brand.includes(String(p.brand||'—'))));
+  const prods=prodScope.map(p=>[String(p.c),(p.c)+' — '+String(prodName(p)).slice(0,45)]).sort((a,b)=>a[1].localeCompare(b[1]));
+  VS.prod=(VS.prod||[]).filter(v=>prods.some(x=>x[0]===String(v)));
+  msDropdown('vsProd', prods, VS.prod, sel=>{VS.prod=sel;renderVs();}, AR?'كل المنتجات':'All products', true);
+  if(!(VS.af&&VS.at&&VS.bf&&VS.bt))return;
+  const A=_vsSum(VS.af,VS.at), B=_vsSum(VS.bf,VS.bt);
+  if(!A.n||!B.n){$('#vsKpi').innerHTML='<div class="card" style="grid-column:1/-1"><div class="k">'+T.vsNoData+'</div></div>';
+    mk('cVsBar',{type:'bar',data:{labels:[],datasets:[]},options:{}});
+    mk('cVsLine',{type:'line',data:{labels:[],datasets:[]},options:{}});return;}
+  const aL=T.vsA+' '+VS.af+' → '+VS.at, bL=T.vsB+' '+VS.bf+' → '+VS.bt;
+  const dtl=(a,b)=>T.vsA+': <b class="num">'+F(a)+'</b> · '+T.vsB+': <b class="num">'+F(b)+'</b>';
+  $('#vsKpi').innerHTML=[
+   pbiCard(T.sales+' '+T.mUnit,F(A.s),dchip(A.s,B.s),dtl(A.s,B.s),A.ds,GOLD),
+   pbiCard(T.orders+' '+T.mUnit,F(A.o),dchip(A.o,B.o),dtl(A.o,B.o),A.dO,SKY),
+   pbiCard(T.prod+' '+T.mUnit,F(A.p),dchip(A.p,B.p),dtl(A.p,B.p),A.dP,GREEN),
+   pbiCard(T.ful,Pc(A.ful),dchip(A.ful,B.ful),T.vsB+': '+Pc(B.ful),null,pbColor(A.ful)),
+   pbiCard(T.vsAvgD+' '+T.mUnit,F(A.avg),dchip(A.avg,B.avg),A.op+' '+T.vsOpDays+' · '+T.vsB+': '+F(B.avg),null,VIO)
+  ].join('');
+  mk('cVsBar',{type:'bar',data:{labels:[T.sSales,T.sOrders,T.sProd],datasets:[
+    {label:aL,data:[A.s,A.o,A.p],backgroundColor:GOLD,datalabels:{...DL(),anchor:'end',align:'start',color:'#1a1206'}},
+    {label:bL,data:[B.s,B.o,B.p],backgroundColor:SKY,datalabels:{...DL(),anchor:'end',align:'start',color:'#fff'}}]},
+   options:{maintainAspectRatio:false,plugins:{legend:{labels:{boxWidth:12}}}}});
+  /* metric switch for overlay */
+  const mets=[['s',T.sSales],['o',T.sOrders],['p',T.sProd]];
+  $('#vsMetricWrap').innerHTML=mets.map(([k,l])=>'<button class="btn ghost'+(VS.metric===k?' on':'')+'" data-vm="'+k+'" style="font-size:11px;padding:3px 10px'+(VS.metric===k?';color:var(--gold2);font-weight:800':'')+'">'+l+'</button>').join(' ');
+  document.querySelectorAll('#vsMetricWrap button').forEach(b=>{b.onclick=()=>{VS.metric=b.dataset.vm;renderVs();};});
+  const pick=(r,m)=>m==='s'?r.ds:(m==='o'?r.dO:r.dP);
+  const sA=pick(A,VS.metric), sB=pick(B,VS.metric);
+  const n=Math.max(sA.length,sB.length);
+  const lbls=Array.from({length:n},(_,i)=>String(i+1));
+  mk('cVsLine',{type:'line',data:{labels:lbls,datasets:[
+    {label:aL,data:sA,borderColor:GOLD,pointRadius:2},
+    {label:bL,data:sB,borderColor:SKY,borderDash:[6,4],pointRadius:2,fill:false}]},
+   options:{maintainAspectRatio:false,plugins:{legend:{labels:{boxWidth:12}},
+    tooltip:{callbacks:{afterTitle:i=>{const j=i[0].dataIndex;
+      return (A.dates[j]?T.vsA+': '+A.dates[j]:'')+(B.dates[j]?'\n'+T.vsB+': '+B.dates[j]:'')}}}},
+    scales:{x:{title:{display:true,text:T.vsDay}}}}});
+}
 
-$('#exportBtn').onclick=()=>{
-  try{
-    let html='<!DOCTYPE html>\n'+document.documentElement.outerHTML;
-    const a=html.indexOf('/*DS*/'), b=html.indexOf('/*DE*/');
-    if(a>=0&&b>a){html=html.slice(0,a+6)+JSON.stringify(DATA)+html.slice(b);}
-    const blob=new Blob([html],{type:'text/html'});
-    const u=URL.createObjectURL(blob);
-    const el=document.createElement('a');el.href=u;el.download='Sama_Karbala_Dashboard.html';el.click();
-    URL.revokeObjectURL(u);
-    $('#impMsg')&&($('#impMsg').innerHTML='<div class="okmsg">'+t().exportOk+'</div>');
-  }catch(e){console.error(e)}
-};
+function renderAll(){_NAR_MAP=null;loadColors();setChrome();renderTrend();renderExec();renderRx();renderWb();renderStk();try{renderInvan();}catch(e){console.error('renderInvan',e);}try{renderTrends();}catch(e){console.error('renderTrends',e);}try{renderABC();}catch(e){console.error('renderABC',e);}try{renderReports();}catch(e){console.error('renderReports',e);}try{renderProd();}catch(e){console.error('renderProd',e);}try{renderSales();}catch(e){console.error('renderSales',e);}try{renderOrders();}catch(e){console.error('renderOrders',e);}renderPlant();renderQuality();renderDemand();renderAlerts();renderTop();try{renderOffals();}catch(e){console.error('renderOffals',e);}try{renderWip();}catch(e){console.error('renderWip',e);}renderCmp();try{renderVs();}catch(e){console.error('renderVs',e);}try{injectExportButtons();}catch(e){console.warn('export buttons',e);};renderWeekMonth();renderSku();try{renderWdist();}catch(e){console.error('renderWdist',e);}}
+
 $('#langBtn')&&($('#langBtn').onclick=()=>{LANG=LANG==='ar'?'en':'ar';try{localStorage.setItem('sk_lang',LANG)}catch(e){};renderAll();});
 $('#friBtn')&&($('#friBtn').onclick=()=>{
   EXCL_FRI=!EXCL_FRI; try{localStorage.setItem('sk_excl_fri',EXCL_FRI?'1':'0')}catch(e){}
