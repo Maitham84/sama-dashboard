@@ -1483,11 +1483,20 @@ function renderExec(){
    options:{maintainAspectRatio:false,plugins:{legend:{labels:{boxWidth:12}},
     tooltip:{callbacks:{afterTitle:i=>{const w=wk[i[0].dataIndex];return w.frm+' → '+w.to}}}}}});
   $('#mixTitle').textContent=T.chMix(fmtM(lm.label));
-  mk('cMix',{type:'doughnut',data:{labels:DATA.catmix.map(c=>T.cats[c.cat]||c.cat),
-   datasets:[{data:DATA.catmix.map(c=>c.v),backgroundColor:[GOLD,SKY,GREEN,VIO,'#C46A4A','#6B7E94'],borderColor:css('--bg')}]},
-   options:{maintainAspectRatio:false,plugins:{legend:{position:'left',labels:{font:{size:11}}},
-    datalabels:{display:true,color:'#fff',font:{size:10,weight:'700'},
-     formatter:(v,c)=>{const s=DATA.catmix[c.dataIndex].share;return s>0.02?(s*100).toFixed(1)+'%':''}}}}});
+  {
+    const mixRows=DATA.catmix.filter(c=>c.v>0).sort((a,b)=>b.v-a.v);
+    const mixTot=mixRows.reduce((a,c)=>a+c.v,0)||1;
+    const MIXPAL=[GOLD,SKY,GREEN,VIO,'#C46A4A','#6B7E94','#b06fc4','#5aa0c9','#c9a15a'];
+    mk('cMix',{type:'bar',data:{labels:mixRows.map(c=>T.cats[c.cat]||c.cat),
+     datasets:[{data:mixRows.map(c=>c.v),backgroundColor:mixRows.map((c,i)=>MIXPAL[i%MIXPAL.length]),borderRadius:4,
+      datalabels:{display:true,anchor:'end',align:'end',clamp:true,offset:4,color:css('--ink'),font:{size:10,weight:'700'},
+       formatter:(v)=>((v/mixTot*100).toFixed(1)+'%')}}]},
+     options:{indexAxis:'y',maintainAspectRatio:false,layout:{padding:{right:46}},
+      plugins:{legend:{display:false},
+       tooltip:{callbacks:{label:c=>{const r=mixRows[c.dataIndex];const pct=(c.parsed.x/mixTot*100).toFixed(1);
+        return (T.cats[r.cat]||r.cat)+': '+F(r.v)+' '+(LANG==='ar'?'صندوق':'box')+' · '+F(r.kg)+' '+(LANG==='ar'?'كغم':'kg')+' ('+pct+'%)';}}}},
+      scales:{x:{ticks:{callback:v=>Fk(v)},grid:{color:css('--line')}},y:{grid:{display:false},ticks:{font:{size:11}}}}}});
+  }
   const fulM=mm.filter(m=>m.ful!=null&&m.ful>0&&m.ful<=1.3);
   mk('cFul',{type:'bar',data:{labels:fulM.map(m=>fmtM(m.label)),
    datasets:[{data:fulM.map(m=>+(m.ful*100).toFixed(1)),
@@ -1495,10 +1504,23 @@ function renderExec(){
     datalabels:{display:true,color:css('--ink'),font:{size:10,weight:'700'},anchor:'end',align:'start',formatter:v=>v+'%'}}]},
    options:{maintainAspectRatio:false,scales:{y:{ticks:{callback:v=>v+'%'}}},plugins:{legend:{display:false}}}});
   $('#topTitle').textContent=T.chTop(fmtM(lm.label));
-  mk('cTop',{type:'bar',data:{labels:DATA.top10.map(x=>x.name),
-   datasets:[{data:DATA.top10.map(x=>x.v),backgroundColor:GOLD,
-    datalabels:{...DL(),anchor:'end',align:'start',color:'#1a1206'}}]},
-   options:{indexAxis:'y',maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{font:{size:9.5}}}}}});
+  {
+    const topLbls=DATA.top10.map(x=>LANG==='ar'?(x.nameAr||x.name):x.name);
+    // wrap a long product name onto up to two lines so it shows in full instead of being cut off
+    const wrapLbl=s=>{ s=String(s||''); const max=24;
+      if(s.length<=max)return s;
+      let cut=s.lastIndexOf(' ', max); if(cut<max*0.5)cut=max;
+      const l1=s.slice(0,cut).trim(); let l2=s.slice(cut).trim();
+      if(l2.length>max)l2=l2.slice(0,max-1)+'…';
+      return [l1,l2]; };
+    mk('cTop',{type:'bar',data:{labels:topLbls,
+     datasets:[{data:DATA.top10.map(x=>x.v),backgroundColor:GOLD,borderRadius:3,
+      datalabels:{...DL(),anchor:'end',align:'start',color:'#1a1206'}}]},
+     options:{indexAxis:'y',maintainAspectRatio:false,layout:{padding:{right:12}},
+      plugins:{legend:{display:false},tooltip:{callbacks:{title:i=>topLbls[i[0].dataIndex]}}},
+      scales:{x:{ticks:{callback:v=>Fk(v)}},
+       y:{ticks:{font:{size:9},autoSkip:false,callback:function(val){return wrapLbl(this.getLabelForValue(val));}}}}}});
+  }
   mk('cWd',{type:'bar',data:{labels:T.days,
    datasets:[{data:DATA.wd.map(d=>d.v),backgroundColor:DATA.wd.map((d,i)=>i===6?'#6B7E94':SKY),
     datalabels:{...DL(),anchor:'end',align:'start'}}]},
@@ -2655,14 +2677,22 @@ function renderABC(){
       y1:{position:AR?'left':'right',beginAtZero:true,max:100,grid:{display:false},ticks:{callback:v=>v+'%'}},
       x:{grid:{display:false},ticks:{font:{size:8}}}}}});
 
-  // chart 2: brand share doughnut (boxes)
+  // chart 2: brand share — modern horizontal bar (% + boxes + kg per brand)
   const topBrands=D.brands.slice(0,8);
   $id('Ch2T')&&($id('Ch2T').textContent=AR?'حصة البراند (صناديق)':'Brand share (boxes)');
-  mk('abcCh2',{type:'doughnut',data:{labels:topBrands.map(b=>b.brand),datasets:[{data:topBrands.map(b=>b.boxes),
-    backgroundColor:[GOLD,SKY,GREEN,VIO,RED,'#b88a3e','#6fa8c4','#b06fc4']}]},
-   options:{maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:9}}},
-     datalabels:{color:'#fff',font:{weight:'700',size:10},formatter:(v)=>D.totBoxes?Math.round(v/D.totBoxes*100)+'%':''},
-     tooltip:{callbacks:{label:c=>c.label+': '+F(c.parsed)+' '+boxU+' ('+(D.totBoxes?Math.round(c.parsed/D.totBoxes*100):0)+'%)'}}}}});
+  {
+    const bTot=D.totBoxes||topBrands.reduce((a,b)=>a+b.boxes,0)||1;
+    const BPAL=[GOLD,SKY,GREEN,VIO,RED,'#b88a3e','#6fa8c4','#b06fc4'];
+    mk('abcCh2',{type:'bar',data:{labels:topBrands.map(b=>b.brand),
+     datasets:[{data:topBrands.map(b=>b.boxes),backgroundColor:topBrands.map((b,i)=>BPAL[i%BPAL.length]),borderRadius:4,
+      datalabels:{display:true,anchor:'end',align:'end',clamp:true,offset:4,color:css('--ink'),font:{size:10,weight:'700'},
+       formatter:(v)=>((v/bTot*100).toFixed(1)+'%')}}]},
+     options:{indexAxis:'y',maintainAspectRatio:false,layout:{padding:{right:46}},
+      plugins:{legend:{display:false},
+       tooltip:{callbacks:{label:c=>{const b=topBrands[c.dataIndex];const pct=(c.parsed.x/bTot*100).toFixed(1);
+        return b.brand+': '+F(b.boxes)+' '+boxU+' · '+F(b.kg)+' '+(AR?'كغم':'kg')+' ('+pct+'%)';}}}},
+      scales:{x:{ticks:{callback:v=>Fk(v)},grid:{color:css('--line')}},y:{grid:{display:false},ticks:{font:{size:10}}}}}});
+  }
 
   renderABCTable(); renderABCBrandTable();
 }
@@ -3258,14 +3288,22 @@ function renderStk(){
       formatter:v=>D.totBal?(Math.round(v/D.totBal*1000)/10)+'% ('+Fk(v)+')':Fk(v)}}]},
    options:{maintainAspectRatio:false,plugins:{legend:{display:false},
      tooltip:{callbacks:{label:c=>{const v=c.parsed.y!=null?c.parsed.y:c.parsed;return F(v)+' '+(LANG==='ar'?'صندوق':'box')+' ('+(D.totBal?Math.round(v/D.totBal*100):0)+'%)';}}}}}});
-  // second chart: category percentage as a clear % bar (doughnut replaced per request)
+  // second chart: category balance as a modern horizontal bar (% + boxes + kg per category)
   $('#stkPackChT').textContent=(LANG==='ar'?'نسبة كل فئة من إجمالي الرصيد':'Each category % of total balance');
-  const catPct=D.cats.map(c=>({cat:c.cat,pct:D.totBal?c.bal/D.totBal*100:0,bal:c.bal}));
-  mk('cStkPack',{type:'doughnut',data:{labels:catPct.map(c=>T.cats[c.cat]||c.cat),datasets:[{data:catPct.map(c=>c.bal),
-    backgroundColor:[GOLD,SKY,GREEN,VIO,RED,'#b88a3e','#6fa8c4','#8a7']}]},
-   options:{maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:10}}},
-     datalabels:{color:'#fff',font:{weight:'700',size:10},formatter:v=>D.totBal?Math.round(v/D.totBal*100)+'%':''},
-     tooltip:{callbacks:{label:c=>{const v=c.parsed;return (T.cats[catPct[c.dataIndex].cat]||catPct[c.dataIndex].cat)+': '+F(v)+' ('+(D.totBal?Math.round(v/D.totBal*100):0)+'%)';}}}}}});
+  {
+    const catPct=D.cats.map(c=>({cat:c.cat,bal:c.bal,kg:c.kg||0})).filter(c=>c.bal>0).sort((a,b)=>b.bal-a.bal);
+    const stkTot=catPct.reduce((a,c)=>a+c.bal,0)||1;
+    const SPAL=[GOLD,SKY,GREEN,VIO,RED,'#b88a3e','#6fa8c4','#8a7a55','#b06fc4'];
+    mk('cStkPack',{type:'bar',data:{labels:catPct.map(c=>T.cats[c.cat]||c.cat),
+     datasets:[{data:catPct.map(c=>c.bal),backgroundColor:catPct.map((c,i)=>SPAL[i%SPAL.length]),borderRadius:4,
+      datalabels:{display:true,anchor:'end',align:'end',clamp:true,offset:4,color:css('--ink'),font:{size:10,weight:'700'},
+       formatter:(v)=>((v/stkTot*100).toFixed(1)+'%')}}]},
+     options:{indexAxis:'y',maintainAspectRatio:false,layout:{padding:{right:46}},
+      plugins:{legend:{display:false},
+       tooltip:{callbacks:{label:c=>{const r=catPct[c.dataIndex];const pct=(c.parsed.x/stkTot*100).toFixed(1);
+        return (T.cats[r.cat]||r.cat)+': '+F(r.bal)+' '+(LANG==='ar'?'صندوق':'box')+' · '+F(r.kg)+' '+(LANG==='ar'?'كغم':'kg')+' ('+pct+'%)';}}}},
+      scales:{x:{ticks:{callback:v=>Fk(v)},grid:{color:css('--line')}},y:{grid:{display:false},ticks:{font:{size:11}}}}}});
+  }
   // per-product stock chart (boxes per product, respects filters)
   $('#stkProdChT').textContent=(LANG==='ar'?'المخزون لكل منتج (صناديق/كراتين)':'Stock by product (boxes/cartons)');
   // sort products by closing balance desc, cap to a sensible number for readability
@@ -4895,11 +4933,24 @@ function renderWip(){
     label:mLbl+' — '+gLbl,data:A.series.map(x=>x.v),backgroundColor:GOLD,borderColor:GOLD,fill:false,tension:.3,
     datalabels:{display:f.gran!=='day',color:css('--ink'),font:{size:9,weight:'700'},anchor:'end',align:'end',formatter:v=>Fk(v)}}]},
     options:{maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom'}},scales:{y:{ticks:{callback:v=>Fk(v)}}}}});
-  // fresh vs frozen doughnut (by production)
-  mk('cWipFF',{type:'doughnut',data:{labels:[T.fppKff,T.fppKfz],datasets:[{
-    data:[sum(fresh,'pt'),sum(frozen,'pt')],backgroundColor:[GREEN,SKY]}]},
-    options:{maintainAspectRatio:false,plugins:{legend:{position:'bottom'},
-      datalabels:{color:'#fff',font:{weight:'700',size:12},formatter:(v,c)=>{const t=c.chart.data.datasets[0].data.reduce((a,b)=>a+b,0);return t?Pc(v/t,0):'';}}}}});
+  // fresh vs frozen — modern horizontal bar (by production: % + boxes + kg)
+  {
+    const sumKg=arr=>arr.reduce((a,p)=>a+((p.pt||0)*(prodBoxKg(p)||0)),0);
+    const ffRows=[
+      {lbl:T.fppKff,v:sum(fresh,'pt'),kg:sumKg(fresh),col:GREEN},
+      {lbl:T.fppKfz,v:sum(frozen,'pt'),kg:sumKg(frozen),col:SKY}
+    ].filter(r=>r.v>0);
+    const ffTot=ffRows.reduce((a,r)=>a+r.v,0)||1;
+    mk('cWipFF',{type:'bar',data:{labels:ffRows.map(r=>r.lbl),
+     datasets:[{data:ffRows.map(r=>r.v),backgroundColor:ffRows.map(r=>r.col),borderRadius:4,
+      datalabels:{display:true,anchor:'end',align:'end',clamp:true,offset:4,color:css('--ink'),font:{size:11,weight:'700'},
+       formatter:(v)=>((v/ffTot*100).toFixed(1)+'%')}}]},
+     options:{indexAxis:'y',maintainAspectRatio:false,layout:{padding:{right:46}},
+      plugins:{legend:{display:false},
+       tooltip:{callbacks:{label:c=>{const r=ffRows[c.dataIndex];const pct=(c.parsed.x/ffTot*100).toFixed(1);
+        return r.lbl+': '+F(r.v)+' '+(LANG==='ar'?'صندوق':'box')+' · '+F(Math.round(r.kg))+' '+(LANG==='ar'?'كغم':'kg')+' ('+pct+'%)';}}}},
+      scales:{x:{ticks:{callback:v=>Fk(v)},grid:{color:css('--line')}},y:{grid:{display:false},ticks:{font:{size:11}}}}}});
+  }
   // family bars (by production)
   const famAgg={}; full.forEach(p=>{const k=p.sub||'—';famAgg[k]=(famAgg[k]||0)+(p.pt||0);});
   const famArr=Object.entries(famAgg).map(([sub,v])=>({sub,v})).sort((a,b)=>b.v-a.v).slice(0,12);
@@ -5298,10 +5349,14 @@ function computeFromMats(M, rxMat){
   const lcmJ=[],pmJ=[];
   for(let j=0;j<=ai;j++){if(mkey(j)===lmLab)lcmJ.push(j);if(pmLab&&mkey(j)===pmLab)pmJ.push(j)}
   const rowSum=(k,r,js)=>{let s=0;for(const j of js){if(!useDay(j))continue;s+=val(k,r,j);}return s};
-  const CATS=['Whole Bird','Cutups','Offals','FPP','WIP','Rendering'];
-  D.catmix=CATS.map(c=>{let v=0,vp=0;
-   for(let r=1;r<=n;r++)if(rowsInfo[r-1].cat===c){v+=rowSum('S',r,lcmJ);vp+=rowSum('S',r,pmJ)}
-   return {cat:c,v:Math.round(v),vp:Math.round(vp)}});
+  // Category mix — built dynamically from the categories actually present in the data
+  // (known ones first, in a sensible order, then any new categories the user added).
+  const KNOWN_CATS=['Whole Bird','Cutups','Offals','FPP','WIP','Rendering'];
+  const seenCats=[]; for(let r=1;r<=n;r++){const c=rowsInfo[r-1].cat||'—'; if(c&&!seenCats.includes(c))seenCats.push(c);}
+  const CATS=[...KNOWN_CATS.filter(c=>seenCats.includes(c)), ...seenCats.filter(c=>!KNOWN_CATS.includes(c))];
+  D.catmix=CATS.map(c=>{let v=0,vp=0,kg=0;
+   for(let r=1;r<=n;r++){const I=rowsInfo[r-1]; if(I.cat===c){const s=rowSum('S',r,lcmJ); v+=s; vp+=rowSum('S',r,pmJ); const bk=prodBoxKg({wt:I.wt,pcs:I.pcs})||0; kg+=s*bk;}}
+   return {cat:c,v:Math.round(v),vp:Math.round(vp),kg:Math.round(kg)}});
   const ctot=D.catmix.reduce((a,c)=>a+c.v,0);
   D.catmix.forEach(c=>c.share=+(c.v/ctot).toFixed(4));
   D.wd=Array.from({length:7},(_,i)=>{let s=0,cd=0;
@@ -5329,7 +5384,7 @@ function computeFromMats(M, rxMat){
     sub:I.sub,typ:I.typ,own:I.own,brand:I.brand,pcs:I.pcs,wt:I.wt,dS:dailyS,dO:dailyO,dP:dailyP,dK:dailyK,dC:dailyC,fam:I.fam,packing:I.packing});}
   skuArr.sort((a,b)=>b.st-a.st);skuArr.forEach((x,i)=>x.rk=i+1);
   D.sku=skuArr;
-  D.top10=[...skuArr].sort((a,b)=>b._lcm-a._lcm).slice(0,10).map(x=>({name:x.n.slice(0,34),v:Math.round(x._lcm)}));
+  D.top10=[...skuArr].sort((a,b)=>b._lcm-a._lcm).slice(0,10).map(x=>({name:x.n,nameAr:x.nAr||x.n,v:Math.round(x._lcm)}));
   const wbRows=[],wbSubM={},tf=[];
   for(const tp of ['Fresh','Frozen']){
     const wmap={};let Ts=0,To=0,Tp=0,Tb=0,TbO=0,TbP=0;
