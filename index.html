@@ -857,9 +857,9 @@ ar:{dir:'rtl', title:'شركة سما كربلاء — مجزر الدواجن',
  dmNote:'الدقة = ١ − (مجموع |التنبؤ−الطلب| ÷ مجموع الطلب). الانحياز: موجب = توقعنا أكثر من الطلب، سالب = توقعنا أقل. المقارنة مع الطلب الفعلي (Act.Orders).',
  dmEmpty:'لا توجد بيانات تنبؤ بعد', dmEmptyD:'حوّل ملف خطة الطلب إلى Google Sheet أصلي، شاركه Viewer، وأرسل الرابط لربطه.',
  liveLoading:'⏳ جارٍ جلب أحدث البيانات من Google Sheets…',
- liveOk:d=>'🟢 متصل بـ Google Sheets — آخر يوم بيانات: '+d,
+ liveOk:d=>'🟢 Data updated as of — البيانات محدثة لغاية: '+d,
  liveErr:'🔴 تعذر الجلب من Google Sheets — تُعرض آخر نسخة محفوظة. تحقق من الإنترنت ومن أسماء التبويبات.',
- liveTab:n=>'تبويب مفقود أو غير مشارك: '+n, liveRefresh:'↻ Update تحديث الآن',
+ liveTab:n=>'تبويب مفقود أو غير مشارك: '+n, liveRefresh:'↻ Update Now تحديث الآن',
  lcwTitle:(w,f,t)=>'أسبوع '+w+' ('+f+' ← '+t+')', lcwSub:'آخر أسبوع مكتمل (سبت–جمعة) — الوحدة: صندوق',
  sales:'المبيعات', orders:'الطلبات', prod:'الإنتاج', ful:'نسبة تنفيذ الطلبات', avgday:'متوسط المبيعات/يوم',
  cover:'تغطية المخزون', coverD:(s,a)=>'مخزون '+s+' ÷ متوسط 28 يوم '+a, opDays:'يوم تشغيلي', target:'الهدف ≥ 95%',
@@ -915,7 +915,7 @@ ar:{dir:'rtl', title:'شركة سما كربلاء — مجزر الدواجن',
  impDo:'تحديث', impClose:'إغلاق', impReset:'استرجاع البيانات الأصلية',
  impOk:d=>'تم التحديث بنجاح ✓ — آخر يوم بيانات: '+d, impErr:'خطأ في القراءة: تأكد أن بنية الملف مطابقة للأصل — ',
  impPick:'اختر ملفاً واحداً على الأقل', impBusy:'جارٍ القراءة والحساب…', impResetOk:'تم استرجاع البيانات الأصلية ✓',
- foot:' قسم تخطيط الطلب — شركة سما كربلاء | التصافي المعتمد 74% | أسبوع العمل: سبت–جمعة'},
+ foot:' قسم تخطيط الطلب — شركة سما كربلاء |9647704004040+|maitham.alzubaidy@samakarbala.iq'},
 en:{dir:'ltr', title:'Sama Karbala Co. — Poultry Processing Plant', sub:'Executive Operations Report: Orders · Production · Sales · Inventory · Live Intake',
  asof:'Data as of', themeD:'🌙 Dark', themeL:'☀️ Light', importBtn:'⟳ Update from Excel',
  months:['January','February','March','April','May','June','July','August','September','October','November','December'],
@@ -1029,7 +1029,7 @@ en:{dir:'ltr', title:'Sama Karbala Co. — Poultry Processing Plant', sub:'Execu
  dmNote:'Accuracy = 1 − (Σ|forecast−orders| ÷ Σ orders). Bias: positive = over-forecast, negative = under-forecast. Compared against Act.Orders.',
  dmEmpty:'No forecast data yet', dmEmptyD:'Convert the Demand Plan to a native Google Sheet, share as Viewer, and send the link to connect it.',
  liveLoading:'⏳ Fetching latest data from Google Sheets…',
- liveOk:d=>'🟢 Connected to Google Sheets — latest data day: '+d,
+ liveOk:d=>'🟢 Connected to database — latest data day: '+d,
  liveErr:'🔴 Could not fetch from Google Sheets — showing last saved copy. Check internet & tab names.',
  liveTab:n=>'Missing or unshared tab: '+n, liveRefresh:'↻ Refresh now',
  lcwTitle:(w,f,t)=>'Week '+w+' ('+f+' → '+t+')', lcwSub:'Last complete week (Sat–Fri) — unit: boxes',
@@ -1087,7 +1087,7 @@ en:{dir:'ltr', title:'Sama Karbala Co. — Poultry Processing Plant', sub:'Execu
  impDo:'Update', impClose:'Close', impReset:'Restore original data',
  impOk:d=>'Updated successfully ✓ — latest data day: '+d, impErr:'Read error: check the workbook layout matches the original — ',
  impPick:'Choose at least one file', impBusy:'Reading & computing…', impResetOk:'Original data restored ✓',
- foot:'Prepared By the Demand Planning Dept. — Sama Karbala Co. | Dressing yield 74% | Working week: Sat–Fri'}
+ foot:'Prepared By the Demand Planning Dept. — Sama Karbala Co. | +9647704004040 | maitham.alzubaidy@samakarbala.iq'}
 };
 let LANG='ar';
 var CO_DOW_AR=['السبت','الأحد','الإثنين','الثلاثاء','الأربعاء','الخميس','الجمعة'];
