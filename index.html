@@ -632,6 +632,62 @@ body.locked .brand, body.locked nav, body.locked main, body.locked section{visib
   <div class="tscroll" style="max-height:480px"><table class="tbl" id="tCmpUnc"></table></div>
   <div class="note" id="cmpNote"></div>
 </div></section>
+<section id="geo"><div class="wrap">
+  <div class="secthead"><h2 id="geoTitle"></h2><small id="geoSub"></small></div>
+  <div class="note" id="geoStatus" style="margin-bottom:8px"></div>
+  <div class="panel" style="margin-bottom:12px">
+    <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center">
+      <span id="geoFromL" class="note"></span> <input type="date" id="geoFrom" class="btn ghost">
+      <span id="geoToL" class="note"></span> <input type="date" id="geoTo" class="btn ghost">
+      <span id="geoPresets" style="display:flex;flex-wrap:wrap;gap:6px"></span>
+      <span id="geoMetricWrap" style="display:flex;gap:6px;margin-inline-start:auto"></span>
+    </div>
+    <div class="search" id="geoFilters" style="flex-wrap:wrap;gap:10px;margin-top:12px;border-top:1px solid var(--bd);padding-top:12px">
+      <span class="fgrp"><span class="perlbl" id="geoGovL"></span><span id="geoGov"></span></span>
+      <span class="fgrp"><span class="perlbl" id="geoAgL"></span><span id="geoAg"></span></span>
+      <span class="fgrp"><span class="perlbl" id="geoCatL"></span><span id="geoCat"></span></span>
+      <span class="fgrp"><span class="perlbl" id="geoFamL"></span><span id="geoFam"></span></span>
+      <span class="fgrp"><span class="perlbl" id="geoFFL"></span><span id="geoFF"></span></span>
+      <span class="fgrp"><span class="perlbl" id="geoOwnL"></span><span id="geoOwn"></span></span>
+      <span class="fgrp"><span class="perlbl" id="geoBrandL"></span><span id="geoBrand"></span></span>
+      <span class="fgrp"><span class="perlbl" id="geoPackL"></span><span id="geoPack"></span></span>
+      <span class="fgrp"><span class="perlbl" id="geoWgtL"></span><span id="geoWgt"></span></span>
+      <span class="fgrp"><span class="perlbl" id="geoProdL"></span><span id="geoProd"></span></span>
+      <button class="btn ghost" id="geoReset"></button>
+    </div>
+  </div>
+  <div class="cards" id="geoKpi"></div>
+  <div class="grid2">
+    <div class="panel"><h3 id="geoShareT"></h3><div class="ch" style="height:300px"><canvas id="cGeoShare"></canvas></div></div>
+    <div class="panel"><h3 id="geoBarT"></h3><div class="ch" id="geoBarCh" style="height:300px;overflow-y:auto"><canvas id="cGeoBar"></canvas></div></div>
+  </div>
+  <div class="panel" style="margin-top:14px"><h3 id="geoTrendT"></h3><div class="ch" style="height:280px"><canvas id="cGeoTrend"></canvas></div></div>
+  <div class="grid2" style="margin-top:14px">
+    <div class="panel"><h3 id="geoFFT"></h3><div class="ch" style="height:320px"><canvas id="cGeoFF"></canvas></div></div>
+    <div class="panel"><h3 id="geoFFGovT"></h3><div class="ch" id="geoFFGovCh" style="height:320px"><canvas id="cGeoFFGov"></canvas></div></div>
+  </div>
+  <div class="grid2" style="margin-top:14px">
+    <div class="panel"><h3 id="geoAgentsT"></h3><div class="ch" style="height:320px"><canvas id="cGeoAgents"></canvas></div></div>
+    <div class="panel"><h3 id="geoAvgT"></h3><div class="ch" id="geoAvgCh" style="height:320px"><canvas id="cGeoAvg"></canvas></div></div>
+  </div>
+  <div class="panel" style="margin-top:14px">
+    <h3 id="tGeoGovT" style="margin-bottom:8px"></h3>
+    <div class="tscroll" style="max-height:560px"><table class="tbl" id="tGeoGov"></table></div>
+  </div>
+  <div class="grid2" style="margin-top:14px">
+    <div class="panel">
+      <div class="search" style="margin-bottom:10px"><h3 id="tGeoAgT" style="margin:0 12px 0 0"></h3>
+        <input type="text" id="geoAgSearch" placeholder="" style="flex:1;min-width:160px;padding:7px 12px;border:1px solid var(--bd);border-radius:8px;background:var(--panel);color:var(--ink)"></div>
+      <div class="tscroll" style="max-height:480px"><table class="tbl" id="tGeoAg"></table></div>
+    </div>
+    <div class="panel">
+      <h3 id="tGeoProdT" style="margin-bottom:8px"></h3>
+      <div class="tscroll" style="max-height:480px"><table class="tbl" id="tGeoProd"></table></div>
+    </div>
+  </div>
+  <div class="note" id="geoNote" style="margin-top:10px"></div>
+</div></section>
+
 <section id="vs"><div class="wrap">
   <div class="secthead"><h2 id="vsTitle"></h2><small id="vsSub"></small></div>
   <div class="panel" style="margin-bottom:12px">
@@ -712,6 +768,8 @@ const GS = {
     // Demand Plan DATABASE sheet
   tabs:{S:'Daily Sales',O:'Act. Orders',P:'Daily Prod',K:'Open Stock',C:'Close Stock'},
   procTabs:{G:'Daily_Grades',H:'Daily_Histogram',W:'Line_Hours'},
+  geo:'110sLXcv3Ug88KQiyBI0gK6oZWlcyfADQXxgWwOZvzqs',  // Sales-by-Governorate sheet
+  geoTabs:{M:'Master sheet',P:'Product Status'},
   rxMonths:['Jan-2026','Feb-2026','Mar-2026','Apr-2026','May-2026','Jun-2026','Jul-2026','Aug-2026','Sep-2026','Oct-2026','Nov-2026','Dec-2026']
 };
 // Plant line capacities (birds/hour) — used for utilisation if hours provided
@@ -729,7 +787,7 @@ ar:{dir:'rtl', title:'شركة سما كربلاء — مجزر الدواجن',
  asof:'آخر تحديث للبيانات', themeD:'🌙 داكن', themeL:'☀️ فاتح', importBtn:'⟳ تحديث من إكسل',
  months:['كانون الثاني','شباط','آذار','نيسان','أيار','حزيران','تموز','آب','أيلول','تشرين الأول','تشرين الثاني','كانون الأول'],
  days:['السبت','الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة'],
- tabs:{exec:'النظرة التنفيذية',rx:'الاستلام الحي',wb:'الدجاج الكامل',stk:'المخزون',invan:'تحليل المخزون',abc:'ABC وأداء البراند',reports:'التقارير',prod:'الإنتاج',sales:'المبيعات',orders:'الطلب',plant:'كفاءة المجزر',quality:'جودة الذبح',top:'أفضل الأصناف',offals:'تحليل الأحشاء',wdist:'متابعة الوزن والتصافي',cmp:'الطلب·الإنتاج·المبيعات',vs:'مقارنة فترتين',week:'أسبوعي',month:'شهري',sku:'المنتجات'},
+ tabs:{exec:'النظرة التنفيذية',rx:'الاستلام الحي',wb:'الدجاج الكامل',stk:'المخزون',invan:'تحليل المخزون',abc:'ABC وأداء البراند',reports:'التقارير',prod:'الإنتاج',sales:'المبيعات',geo:'المبيعات بالمحافظات',orders:'الطلب',plant:'كفاءة المجزر',quality:'جودة الذبح',top:'أفضل الأصناف',offals:'تحليل الأحشاء',wdist:'متابعة الوزن والتصافي',cmp:'الطلب·الإنتاج·المبيعات',vs:'مقارنة فترتين',week:'أسبوعي',month:'شهري',sku:'المنتجات'},
  chain:{rx:'📥 استلام حي',prod:'🏭 إنتاج',sales:'🛒 مبيعات',ord:'📦 طلبات',stk:'🏬 مخزون افتتاحي'}, rxFromLbl:'من', rxToLbl:'إلى', rxClear:'كل الفترة',
  birds:'طير', box:'صندوق', boxes:'صندوق', days_u:'يوم',
  chainNote:d=>'سلسلة آخر يوم تشغيلي '+d+' — أرقام المنتجات بالصناديق، المخزون يعتمد الرصيد الافتتاحي.',
@@ -896,12 +954,12 @@ ar:{dir:'rtl', title:'شركة سما كربلاء — مجزر الدواجن',
  impDo:'تحديث', impClose:'إغلاق', impReset:'استرجاع البيانات الأصلية',
  impOk:d=>'تم التحديث بنجاح ✓ — آخر يوم بيانات: '+d, impErr:'خطأ في القراءة: تأكد أن بنية الملف مطابقة للأصل — ',
  impPick:'اختر ملفاً واحداً على الأقل', impBusy:'جارٍ القراءة والحساب…', impResetOk:'تم استرجاع البيانات الأصلية ✓',
- foot:' قسم تخطيط الطلب — شركة سما كربلاء | التصافي المعتمد 74% | أسبوع العمل: سبت–جمعة'},
+ foot:' قسم التخطيط  — شركة سما كربلاء | 009647704004040 |   maitham.alzubaidy@samakarbala.iq'},
 en:{dir:'ltr', title:'Sama Karbala Co. — Poultry Processing Plant', sub:'Executive Operations Report: Orders · Production · Sales · Inventory · Live Intake',
  asof:'Data as of', themeD:'🌙 Dark', themeL:'☀️ Light', importBtn:'⟳ Update from Excel',
  months:['January','February','March','April','May','June','July','August','September','October','November','December'],
  days:['Saturday','Sunday','Monday','Tuesday','Wednesday','Thursday','Friday'],
- tabs:{exec:'Executive Overview',rx:'Live Bird Intake',wb:'Whole Bird',stk:'Inventory',invan:'Inventory Analysis',abc:'ABC & Brand',reports:'Reports',prod:'Production',sales:'Sales',orders:'Orders',plant:'Plant Efficiency',quality:'Carcass Quality',top:'Top Products',offals:'Offals Analysis',wdist:'Weight & Yield',cmp:'Order·Prod·Sales',vs:'Period Compare',week:'Weekly',month:'Monthly',sku:'Products'},
+ tabs:{exec:'Executive Overview',rx:'Live Bird Intake',wb:'Whole Bird',stk:'Inventory',invan:'Inventory Analysis',abc:'ABC & Brand',reports:'Reports',prod:'Production',sales:'Sales',geo:'Sales by Governorate',orders:'Orders',plant:'Plant Efficiency',quality:'Carcass Quality',top:'Top Products',offals:'Offals Analysis',wdist:'Weight & Yield',cmp:'Order·Prod·Sales',vs:'Period Compare',week:'Weekly',month:'Monthly',sku:'Products'},
  chain:{rx:'📥 Live intake',prod:'🏭 Production',sales:'🛒 Sales',ord:'📦 Orders',stk:'🏬 Opening stock'}, rxFromLbl:'From', rxToLbl:'To', rxClear:'Full period',
  birds:'birds', box:'boxes', boxes:'boxes', days_u:'days',
  chainNote:d=>'Latest operating-day chain ('+d+') — product figures in boxes; inventory based on opening balance.',
@@ -1068,7 +1126,7 @@ en:{dir:'ltr', title:'Sama Karbala Co. — Poultry Processing Plant', sub:'Execu
  impDo:'Update', impClose:'Close', impReset:'Restore original data',
  impOk:d=>'Updated successfully ✓ — latest data day: '+d, impErr:'Read error: check the workbook layout matches the original — ',
  impPick:'Choose at least one file', impBusy:'Reading & computing…', impResetOk:'Original data restored ✓',
- foot:'Prepared By the Demand Planning Dept. — Sama Karbala Co. | Dressing yield 74% | Working week: Sat–Fri'}
+ foot:'Prepared By the Planning Dept. — Sama Karbala Co. | +9647704004040 | maitham.alzubaidy@samakarbala'}
 };
 let LANG='ar';
 var CO_DOW_AR=['السبت','الأحد','الإثنين','الثلاثاء','الأربعاء','الخميس','الجمعة'];
@@ -3659,7 +3717,7 @@ $('#qLineSel')&&$('#qLineSel').addEventListener('change',e=>{QLINE=e.target.valu
 
 /* ===================== Login & Permissions ===================== */
 let CURRENT_USER=null, USER_PERMS=null;
-const PERM_TABS={tab_exec:'exec',tab_rx:'rx',tab_wb:'wb',tab_stk:'stk',tab_invan:'invan',tab_abc:'abc',tab_reports:'reports',tab_prod:'prod',tab_sales:'sales',tab_orders:'orders',tab_plant:'plant',tab_quality:'quality',tab_top:'top',tab_offals:'offals',tab_wdist:'wdist',tab_cmp:'cmp',tab_vs:'vs',tab_week:'week',tab_month:'month',tab_products:'sku'};
+const PERM_TABS={tab_exec:'exec',tab_rx:'rx',tab_wb:'wb',tab_stk:'stk',tab_invan:'invan',tab_abc:'abc',tab_reports:'reports',tab_prod:'prod',tab_sales:'sales',tab_orders:'orders',tab_plant:'plant',tab_quality:'quality',tab_top:'top',tab_offals:'offals',tab_wdist:'wdist',tab_cmp:'cmp',tab_vs:'vs',tab_geo:'geo',tab_week:'week',tab_month:'month',tab_products:'sku'};
 function parseUsers(mat){
   if(!mat||!mat.length)return [];
   // find header row containing 'username' and 'password'
@@ -4223,6 +4281,9 @@ function exportReportExcel(){
 
 // Registry of exportable tables: id -> friendly name (AR/EN chosen at runtime)
 const EXPORT_TABLES=[
+  {id:'tGeoGov', ar:'المبيعات بالمحافظات', en:'Sales by Governorate'},
+  {id:'tGeoAg', ar:'ترتيب الوكلاء', en:'Agent Ranking'},
+  {id:'tGeoProd', ar:'أفضل المنتجات بالمحافظات', en:'Top Products by Gov'},
   {id:'tDmCat', ar:'الدقة حسب الفئة', en:'Accuracy by Category'},
   {id:'tFresh', ar:'متابعة الفريش', en:'Fresh Watch'},
   {id:'tPlant', ar:'كفاءة الخطوط', en:'Line Efficiency'},
@@ -4568,7 +4629,435 @@ function renderVs(){
     scales:{x:{title:{display:true,text:T.vsDay}}}}});
 }
 
-function renderAll(){_NAR_MAP=null;loadColors();setChrome();renderTrend();renderExec();renderRx();renderWb();renderStk();try{renderInvan();}catch(e){console.error('renderInvan',e);}try{renderABC();}catch(e){console.error('renderABC',e);}try{renderReports();}catch(e){console.error('renderReports',e);}try{renderProd();}catch(e){console.error('renderProd',e);}try{renderSales();}catch(e){console.error('renderSales',e);}try{renderOrders();}catch(e){console.error('renderOrders',e);}renderPlant();renderQuality();renderTop();try{renderOffals();}catch(e){console.error('renderOffals',e);}renderCmp();try{renderVs();}catch(e){console.error('renderVs',e);}try{injectExportButtons();}catch(e){console.warn('export buttons',e);};renderWeekMonth();renderSku();try{renderWdist();}catch(e){console.error('renderWdist',e);}}
+/* ===================== GEO: Sales by Governorate (tab 21) ===================== */
+// Data strategy (Master sheet ~200k rows — never fetched raw):
+//  Q1 (once): daily aggregate  date×gov×agent  → trend, active days, any-period totals (no product dim)
+//  Q2 (per date-range): gov×agent×product sums for the selected range (no date dim) → exact product-filtered analysis
+//  Catalog (once): Product Status sheet → product attributes for filters + bilingual names
+const GEO_GOV_AR={'Baghdad':'بغداد','Basra':'البصرة','Nineveh':'نينوى','Erbil':'أربيل','Duhok':'دهوك','Kirkuk':'كركوك','Sulaymaniyah':'السليمانية','Al-Anbar':'الأنبار','Babil':'بابل','Karbala':'كربلاء','Najaf':'النجف','Al-Qadisiyyah':'القادسية','Al-Muthanna':'المثنى','Dhi Qar':'ذي قار','Maysan':'ميسان','Wasit':'واسط','Diyala':'ديالى','Saladin':'صلاح الدين','الشركة Etihad Agricultural City':'مبيعات المجمع (الاتحاد)'};
+const GEO_COLS=['#118DFF','#12239E','#E66C37','#6B007B','#E044A7','#744EC2','#D9B300','#D64550','#197278','#1AAB40','#15C6F4','#4092FF','#8A8A8A','#A66999','#3599B8','#DFBFBF','#4AC5BB','#5F6B6D'];
+let GEO_RAW=null;      // {D:[{d,gov,ag,t,c}], mind, maxd, agmap:{ar:en}}
+let GEO_CAT=null;      // product catalog {no:{nameAr,nameEn,pack,ff,brand,own,cat,fam,wgt}}
+let GEO_PROD=null;     // Q2 rows for current range [{gov,ag,no,t,c}]
+let GEO_HDR=null;      // header→column-letter map of Master sheet
+let GEO_LOADING=false, GEO_PLOADING=false, GEO_ERR=null, GEO_RANGE_KEY='';
+let GEO_DEB=null;
+const GEO={from:null,to:null,gov:[],ag:[],cat:[],fam:[],ff:[],own:[],brand:[],pack:[],wgt:[],prod:[],metric:'c'};
+
+// JSONP gviz with a custom tq query — returns {cols:[{id,label}],rows:[[...]]}
+function gvQuery(id,sheet,tq,hdrs){
+  return new Promise((resolve,reject)=>{
+    const h='__gv'+(__gvN++);
+    let done=false;
+    const timer=setTimeout(()=>{if(!done){done=true;cleanup();reject('geo (timeout)')}},45000);
+    function cleanup(){clearTimeout(timer);try{delete window[h]}catch(e){window[h]=undefined};if(s.parentNode)s.parentNode.removeChild(s)}
+    window[h]=resp=>{
+      if(done)return;done=true;
+      try{
+        if(!resp||resp.status==='error')throw (resp&&resp.errors&&resp.errors[0]&&resp.errors[0].detailed_message)||'gviz error';
+        const conv=c=>{if(!c||c.v==null)return '';
+          if(c.v instanceof Date)return new Date(Date.UTC(c.v.getFullYear(),c.v.getMonth(),c.v.getDate()));
+          return c.v;};
+        const ncols=(resp.table.cols||[]).length;
+        const rows=resp.table.rows.map(r=>{const cells=(r.c||[]).map(conv);while(cells.length<ncols)cells.push('');return cells;});
+        const cols=(resp.table.cols||[]).map(c=>({id:c&&c.id||'',label:c&&c.label!=null?String(c.label):''}));
+        cleanup();resolve({cols,rows});
+      }catch(err){cleanup();reject('geo — '+err)}
+    };
+    let u='https://docs.google.com/spreadsheets/d/'+id+'/gviz/tq?headers='+(hdrs==null?1:hdrs)+'&tqx=out:json;responseHandler:'+h+'&cb='+Date.now();
+    if(sheet)u+='&sheet='+encodeURIComponent(sheet);
+    if(tq)u+='&tq='+encodeURIComponent(tq);
+    const s=document.createElement('script');
+    s.src=u;
+    s.onerror=()=>{if(!done){done=true;cleanup();reject('geo (network)')}};
+    document.head.appendChild(s);
+  });
+}
+function geoNorm(s){return String(s||'').trim().toLowerCase()}
+// gviz date cell → UTC Date. Handles real Date objects AND raw string form "Date(2026,5,13)" (month 0-based) AND "yyyy-mm-dd"
+function geoDate(v){
+  if(v instanceof Date)return isNaN(+v)?null:v;
+  if(typeof v==='string'){
+    let m=v.match(/^Date\((\d+),(\d+),(\d+)/);
+    if(m)return new Date(Date.UTC(+m[1],+m[2],+m[3]));
+    m=v.trim().match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+    if(m)return new Date(Date.UTC(+m[1],+m[2]-1,+m[3]));
+  }
+  return null;
+}
+// resilient header→letter map (order-proof like colMap)
+async function geoHeaders(){
+  const r=await gvQuery(GS.geo,GS.geoTabs.M,'limit 1',1);
+  const map={};r.cols.forEach(c=>{map[geoNorm(c.label)]=c.id;});
+  const need={d:'التاريخ',gov:'governorates',ag:'الوكيل',agEn:'destributor name en',ton:'الكمية طن',cnt:'الكمية عدد',no:'product no'};
+  const out={};
+  for(const k in need){const L=map[need[k]];if(!L)throw (LANG==='ar'?'عمود مفقود بالشيت: ':'Missing column: ')+need[k];out[k]=L;}
+  return out;
+}
+async function geoLoadCore(){
+  GEO_HDR=await geoHeaders();
+  const H=GEO_HDR;
+  // Q1: daily gov×agent aggregate (full history)
+  const q1=`select ${H.d},${H.gov},${H.ag},${H.agEn},sum(${H.ton}),sum(${H.cnt}) where ${H.d} is not null group by ${H.d},${H.gov},${H.ag},${H.agEn} order by ${H.d}`;
+  const r1=await gvQuery(GS.geo,GS.geoTabs.M,q1,1);
+  console.log('[geo] q1 rows:',r1.rows.length,'| sample date cell:',JSON.stringify(r1.rows[0]&&r1.rows[0][0]));
+  const D=[];const agmap={};let mind=null,maxd=null;
+  r1.rows.forEach(r=>{
+    const dd=geoDate(r[0]); if(!dd)return;  // skip blank/invalid dates (stray rows in sheet)
+    const ds=iso(dd),gov=String(r[1]||'').trim(),ag=String(r[2]||'').trim();
+    if(!gov&&!ag)return;
+    const en=String(r[3]||'').trim();if(en)agmap[ag]=en;
+    D.push({d:ds,gov,ag,t:Number(r[4])||0,c:Number(r[5])||0});
+    if(!mind||ds<mind)mind=ds; if(!maxd||ds>maxd)maxd=ds;
+  });
+  if(!D.length||!mind||!maxd)throw (LANG==='ar'?'ماكو تواريخ صالحة بعمود التاريخ بالماستر شيت':'No valid dates found in the date column');
+  // catalog
+  const cm=await fetchTab(GS.geo,GS.geoTabs.P);
+  const ch={};(cm[0]||[]).forEach((h,i)=>{ch[geoNorm(h)]=i;});
+  const gi=(row,k)=>ch[k]!=null?row[ch[k]]:'';
+  const cat={};
+  for(let i=1;i<cm.length;i++){const row=cm[i];if(!row)continue;
+    const no=String(gi(row,'product no')||'').trim();if(!no)continue;
+    cat[no]={nameAr:String(gi(row,'product name')||'').trim(),nameEn:String(gi(row,'product name en')||'').trim(),
+      pack:String(gi(row,'packing')||'').trim(),ff:String(gi(row,'item type')||'').trim(),
+      brand:String(gi(row,'brand')||'').trim(),own:String(gi(row,'own category')||'').trim(),
+      cat:String(gi(row,'category')||'').trim(),fam:String(gi(row,'family')||'').trim(),
+      wgt:gi(row,'weight(g)')===''?null:Number(gi(row,'weight(g)'))};}
+  GEO_RAW={D,mind,maxd,agmap};GEO_CAT=cat;
+  if(!GEO.from||!GEO.to){ // default: last 30 days ending at latest data day
+    const end=new Date(maxd+'T00:00:00Z');const st=new Date(end);st.setUTCDate(st.getUTCDate()-29);
+    GEO.to=maxd;GEO.from=iso(st)<mind?mind:iso(st);
+  }
+}
+async function geoLoadRange(){
+  if(!GEO_HDR||!GEO.from||!GEO.to)return;
+  const key=GEO.from+'|'+GEO.to;
+  if(key===GEO_RANGE_KEY&&GEO_PROD)return;
+  GEO_PLOADING=true;GEO_ERR=null;geoStatus();
+  try{
+    const H=GEO_HDR;
+    const q2=`select ${H.gov},${H.ag},${H.no},sum(${H.ton}),sum(${H.cnt}) where ${H.d}>=date '${GEO.from}' and ${H.d}<=date '${GEO.to}' group by ${H.gov},${H.ag},${H.no}`;
+    const r2=await gvQuery(GS.geo,GS.geoTabs.M,q2,1);
+    GEO_PROD=r2.rows.map(r=>({gov:String(r[0]||'').trim(),ag:String(r[1]||'').trim(),no:String(r[2]||'').trim(),t:Number(r[3])||0,c:Number(r[4])||0}));
+    GEO_RANGE_KEY=key;
+  }catch(e){console.error('[geo] range fetch',e);GEO_ERR=''+e;GEO_PROD=GEO_PROD||[];}
+  GEO_PLOADING=false;
+  renderGeo();
+}
+async function geoEnsure(){
+  if(GEO_RAW||GEO_LOADING)return;
+  GEO_LOADING=true;GEO_ERR=null;renderGeo();
+  try{await geoLoadCore();GEO_LOADING=false;renderGeo();await geoLoadRange();}
+  catch(e){console.error('[geo] load',e);GEO_ERR=''+e;GEO_LOADING=false;renderGeo();}
+}
+// lazy-load when the tab is first opened (delegated — survives nav re-render)
+document.addEventListener('click',e=>{
+  const b=e.target&&e.target.closest&&e.target.closest('nav button[data-t="geo"]');
+  if(b)setTimeout(geoEnsure,0);
+});
+function geoGovName(g){if(LANG==='ar')return GEO_GOV_AR[g]||g;return g==='الشركة Etihad Agricultural City'?'Etihad Complex':g}
+function geoAgName(a){return LANG==='en'&&GEO_RAW&&GEO_RAW.agmap[a]?GEO_RAW.agmap[a]:a}
+function geoPName(no){const p=GEO_CAT&&GEO_CAT[no];if(!p)return '#'+no;return (LANG==='ar'?p.nameAr:p.nameEn)||p.nameAr||p.nameEn||('#'+no)}
+function geoWrap(s,n){n=n||24;const w=String(s).split(/\s+/),out=[];let cur='';
+  w.forEach(x=>{if((cur+' '+x).trim().length>n){if(cur)out.push(cur);cur=x;}else cur=(cur?cur+' ':'')+x;});
+  if(cur)out.push(cur);return out;}
+const geoTF=v=>v==null?'—':Number(v).toLocaleString('en-GB',{maximumFractionDigits:1});
+function geoProdPass(no){
+  const hasF=GEO.cat.length||GEO.fam.length||GEO.ff.length||GEO.own.length||GEO.brand.length||GEO.pack.length||GEO.wgt.length||GEO.prod.length;
+  if(!hasF)return true;
+  const p=GEO_CAT[no];if(!p)return false;
+  if(GEO.prod.length&&!GEO.prod.includes(no))return false;
+  if(GEO.cat.length&&!GEO.cat.includes(p.cat))return false;
+  if(GEO.fam.length&&!GEO.fam.includes(p.fam))return false;
+  if(GEO.ff.length&&!GEO.ff.includes(p.ff))return false;
+  if(GEO.own.length&&!GEO.own.includes(p.own))return false;
+  if(GEO.brand.length&&!GEO.brand.includes(p.brand))return false;
+  if(GEO.pack.length&&!GEO.pack.includes(p.pack))return false;
+  if(GEO.wgt.length&&!GEO.wgt.includes(String(p.wgt)))return false;
+  return true;
+}
+function geoHasProdFilter(){return !!(GEO.cat.length||GEO.fam.length||GEO.ff.length||GEO.own.length||GEO.brand.length||GEO.pack.length||GEO.wgt.length||GEO.prod.length)}
+function geoStatus(msg,cls){
+  const el=$('#geoStatus');if(!el)return;
+  const AR=LANG==='ar';
+  if(msg==null){
+    if(GEO_ERR)msg='⚠️ '+GEO_ERR;
+    else if(GEO_LOADING)msg=AR?'⏳ جاري تحميل بيانات المحافظات من Google Sheets…':'⏳ Loading governorate data…';
+    else if(GEO_PLOADING)msg=AR?'⏳ جاري جلب تفاصيل المنتجات للفترة المختارة…':'⏳ Fetching product detail for the selected period…';
+    else if(GEO_RAW)msg=(AR?'✅ بيانات حية حتى ':'✅ Live data through ')+GEO_RAW.maxd+(AR?' — تتحدث تلقائياً عند تغيير الفترة':' — auto-refreshes on period change');
+    else msg='';
+  }
+  el.innerHTML=msg;el.className='note '+(cls||'');
+}
+function geoPreset(p){
+  if(!GEO_RAW)return;
+  const mx=GEO_RAW.maxd,mn=GEO_RAW.mind;
+  const end=new Date(mx+'T00:00:00Z');
+  const day=n=>{const x=new Date(end);x.setUTCDate(x.getUTCDate()-n);const s=iso(x);return s<mn?mn:s};
+  if(p==='7'){GEO.from=day(6);GEO.to=mx;}
+  else if(p==='30'){GEO.from=day(29);GEO.to=mx;}
+  else if(p==='90'){GEO.from=day(89);GEO.to=mx;}
+  else if(p==='wk'){GEO.from=iso(satOf(end));GEO.to=mx;}
+  else if(p==='mo'){GEO.from=mx.slice(0,8)+'01';GEO.to=mx;}
+  else if(p==='pmo'){const y=+mx.slice(0,4),m=+mx.slice(5,7);const pm=m===1?12:m-1,py=m===1?y-1:y;
+    const last=new Date(Date.UTC(py,pm,0));GEO.from=py+'-'+String(pm).padStart(2,'0')+'-01';GEO.to=iso(last);}
+  else if(p==='ytd'){GEO.from=mx.slice(0,4)+'-01-01';if(GEO.from<mn)GEO.from=mn;GEO.to=mx;}
+  else if(p==='all'){GEO.from=mn;GEO.to=mx;}
+  renderGeo();
+  clearTimeout(GEO_DEB);GEO_DEB=setTimeout(geoLoadRange,350);
+}
+function geoDays(){ // active sales days in range (gov/agent-filtered), plus calendar days
+  if(!GEO_RAW)return{act:0,cal:0};
+  const s=new Set();
+  GEO_RAW.D.forEach(r=>{if(r.d<GEO.from||r.d>GEO.to)return;
+    if(GEO.gov.length&&!GEO.gov.includes(r.gov))return;
+    if(GEO.ag.length&&!GEO.ag.includes(r.ag))return;
+    s.add(r.d);});
+  const cal=Math.round((new Date(GEO.to+'T00:00:00Z')-new Date(GEO.from+'T00:00:00Z'))/86400000)+1;
+  return{act:s.size,cal:Math.max(cal,1)};
+}
+function renderGeo(){
+  const sec=document.getElementById('geo');if(!sec)return;
+  const AR=LANG==='ar',T=t();
+  $('#geoTitle').textContent=AR?'المبيعات بالمحافظات':'Sales by Governorate';
+  $('#geoSub').textContent=AR?'تحليل جغرافي كامل — المحافظات · الوكلاء · المنتجات (صادر مخزني صافي بعد التصحيحات)':'Full geographic analysis — governorates · agents · products (net warehouse issues)';
+  geoStatus();
+  const box=AR?'صندوق':'boxes',ton=AR?'طن':'t';
+  // ---- date controls ----
+  $('#geoFromL').textContent=AR?'من':'From';$('#geoToL').textContent=AR?'إلى':'To';
+  const fEl=$('#geoFrom'),tEl=$('#geoTo');
+  if(fEl){fEl.value=GEO.from||'';fEl.onchange=e=>{if(e.target.value){GEO.from=e.target.value;renderGeo();clearTimeout(GEO_DEB);GEO_DEB=setTimeout(geoLoadRange,400);}};}
+  if(tEl){tEl.value=GEO.to||'';tEl.onchange=e=>{if(e.target.value){GEO.to=e.target.value;renderGeo();clearTimeout(GEO_DEB);GEO_DEB=setTimeout(geoLoadRange,400);}};}
+  const P=[['7',AR?'آخر 7':'7d'],['wk',AR?'هذا الأسبوع':'This wk'],['30',AR?'آخر 30':'30d'],['mo',AR?'هذا الشهر':'MTD'],['pmo',AR?'الشهر السابق':'Prev mo'],['90',AR?'آخر 90':'90d'],['ytd',AR?'منذ بداية السنة':'YTD'],['all',AR?'كل الفترة':'All']];
+  const pw=$('#geoPresets');
+  if(pw){pw.innerHTML=P.map(p=>`<button class="btn ghost" data-gp="${p[0]}">${p[1]}</button>`).join('');
+    pw.onclick=e=>{const b=e.target.closest('button[data-gp]');if(b)geoPreset(b.dataset.gp);};}
+  // metric toggle
+  const mw=$('#geoMetricWrap');
+  if(mw){mw.innerHTML=`<button class="btn ghost${GEO.metric==='c'?' on':''}" data-gm="c" ${GEO.metric==='c'?'style="color:var(--gold2);font-weight:700"':''}>📦 ${AR?'صناديق':'Boxes'}</button>
+    <button class="btn ghost${GEO.metric==='t'?' on':''}" data-gm="t" ${GEO.metric==='t'?'style="color:var(--gold2);font-weight:700"':''}>⚖️ ${AR?'طن':'Tons'}</button>`;
+    mw.onclick=e=>{const b=e.target.closest('button[data-gm]');if(b){GEO.metric=b.dataset.gm;renderGeo();}};}
+  if(!GEO_RAW){ // not loaded yet
+    ['cGeoShare','cGeoBar','cGeoTrend','cGeoAgents','cGeoAvg','cGeoFF','cGeoFFGov'].forEach(id=>{const c=charts[id];if(c){c.destroy();delete charts[id];}});
+    $('#tGeoGov').innerHTML='';$('#tGeoAg').innerHTML='';$('#tGeoProd').innerHTML='';$('#geoKpi').innerHTML='';
+    if(!GEO_LOADING&&!GEO_ERR&&sec.classList.contains('on'))geoEnsure();
+    return;
+  }
+  // ---- filters ----
+  const cats=[...new Set(Object.values(GEO_CAT).map(p=>p.cat).filter(Boolean))].sort();
+  const famPool=GEO.cat.length?Object.values(GEO_CAT).filter(p=>GEO.cat.includes(p.cat)):Object.values(GEO_CAT);
+  const fams=[...new Set(famPool.map(p=>p.fam).filter(Boolean))].sort();
+  const brands=[...new Set(Object.values(GEO_CAT).map(p=>p.brand).filter(Boolean))].sort();
+  const packs=[...new Set(Object.values(GEO_CAT).map(p=>p.pack).filter(Boolean))].sort();
+  const wgts=[...new Set(Object.values(GEO_CAT).map(p=>p.wgt).filter(v=>v!=null&&!isNaN(v)))].sort((a,b)=>a-b);
+  const govs=[...new Set(GEO_RAW.D.map(r=>r.gov).filter(Boolean))].sort();
+  const agPool=GEO.gov.length?GEO_RAW.D.filter(r=>GEO.gov.includes(r.gov)):GEO_RAW.D;
+  const ags=[...new Set(agPool.map(r=>r.ag).filter(Boolean))].sort((a,b)=>geoAgName(a).localeCompare(geoAgName(b),AR?'ar':'en'));
+  const prodOpts=Object.keys(GEO_CAT).map(no=>[no,geoPName(no)]).sort((a,b)=>a[1].localeCompare(b[1],AR?'ar':'en'));
+  const L=(id,txt)=>{const e=$(id);if(e)e.textContent=txt;};
+  L('#geoGovL',AR?'المحافظة':'Governorate');L('#geoAgL',AR?'الوكيل':'Agent');L('#geoCatL',AR?'الفئة':'Category');
+  L('#geoFamL',AR?'العائلة':'Family');L('#geoFFL',AR?'النوع':'Type');L('#geoOwnL',AR?'العلامة':'Ownership');
+  L('#geoBrandL',AR?'البراند':'Brand');L('#geoPackL',AR?'التعبئة':'Packing');L('#geoWgtL',AR?'الوزن':'Weight');L('#geoProdL',AR?'المنتجات':'Products');
+  const rr=()=>{renderGeo();};
+  msDropdown('geoGov',govs.map(g=>[g,geoGovName(g)]),GEO.gov,s=>{GEO.gov=s;GEO.ag=GEO.ag.filter(a=>ags.includes(a));rr();},AR?'كل المحافظات':'All governorates',true);
+  msDropdown('geoAg',ags.map(a=>[a,geoAgName(a)]),GEO.ag,s=>{GEO.ag=s;rr();},AR?'كل الوكلاء':'All agents',true);
+  msDropdown('geoCat',cats.map(c=>[c,(T.cats&&T.cats[c])||c]),GEO.cat,s=>{GEO.cat=s;GEO.fam=[];rr();},AR?'كل الفئات':'All categories');
+  msDropdown('geoFam',fams.map(f=>[f,f]),GEO.fam,s=>{GEO.fam=s;rr();},AR?'كل العائلات':'All families');
+  msDropdown('geoFF',[['Fresh',AR?'فريش':'Fresh'],['Frozen',AR?'مجمد':'Frozen']],GEO.ff,s=>{GEO.ff=s;rr();},AR?'الكل':'All',false);
+  msDropdown('geoOwn',[['Own Brand',AR?'علامتنا':'Own brand'],['Private Label',AR?'علامة خاصة':'Private label']],GEO.own,s=>{GEO.own=s;rr();},AR?'الكل':'All',false);
+  msDropdown('geoBrand',brands.map(b=>[b,b]),GEO.brand,s=>{GEO.brand=s;rr();},AR?'كل البراندات':'All brands');
+  msDropdown('geoPack',packs.map(p=>[p,p]),GEO.pack,s=>{GEO.pack=s;rr();},AR?'كل التعبئات':'All packing');
+  msDropdown('geoWgt',wgts.map(w=>[String(w),w+(AR?' غم':' g')]),GEO.wgt,s=>{GEO.wgt=s;rr();},AR?'كل الأوزان':'All weights');
+  msDropdown('geoProd',prodOpts,GEO.prod,s=>{GEO.prod=s;rr();},AR?'كل المنتجات':'All products',true);
+  const rst=$('#geoReset');
+  if(rst){rst.textContent=AR?'↺ مسح الفلاتر':'↺ Reset filters';
+    rst.onclick=()=>{GEO.gov=[];GEO.ag=[];GEO.cat=[];GEO.fam=[];GEO.ff=[];GEO.own=[];GEO.brand=[];GEO.pack=[];GEO.wgt=[];GEO.prod=[];renderGeo();};}
+  // ---- aggregate Q2 (product-exact for the range) ----
+  const rows=(GEO_PROD||[]).filter(r=>{
+    if(GEO.gov.length&&!GEO.gov.includes(r.gov))return false;
+    if(GEO.ag.length&&!GEO.ag.includes(r.ag))return false;
+    return geoProdPass(r.no);});
+  const M=GEO.metric; // 'c' | 't'
+  const gv={},agv={},pv={},gvAg={},gvPr={};
+  let totC=0,totT=0;
+  rows.forEach(r=>{
+    totC+=r.c;totT+=r.t;
+    (gv[r.gov]=gv[r.gov]||{c:0,t:0,ags:new Set(),prs:new Set()});gv[r.gov].c+=r.c;gv[r.gov].t+=r.t;gv[r.gov].ags.add(r.ag);gv[r.gov].prs.add(r.no);
+    const ak=r.gov+'||'+r.ag;(agv[ak]=agv[ak]||{gov:r.gov,ag:r.ag,c:0,t:0});agv[ak].c+=r.c;agv[ak].t+=r.t;
+    (pv[r.no]=pv[r.no]||{c:0,t:0});pv[r.no].c+=r.c;pv[r.no].t+=r.t;
+    const gk=r.gov+'||'+r.no;(gvPr[gk]=gvPr[gk]||{gov:r.gov,no:r.no,c:0,t:0});gvPr[gk].c+=r.c;gvPr[gk].t+=r.t;
+  });
+  Object.values(agv).forEach(a=>{(gvAg[a.gov]=gvAg[a.gov]||[]).push(a);});
+  // agent totals ACROSS governorates (an agent may sell in several govs)
+  const agT={};
+  Object.values(agv).forEach(a=>{const x=(agT[a.ag]=agT[a.ag]||{ag:a.ag,c:0,t:0,govs:[]});x.c+=a.c;x.t+=a.t;x.govs.push(a);});
+  const tot=M==='c'?totC:totT;
+  const govArr=Object.entries(gv).map(([g,v])=>({gov:g,...v,ags:v.ags.size,prs:v.prs.size})).sort((a,b)=>(b[M])-(a[M]));
+  const agArr=Object.values(agT).map(x=>{x.govs.sort((p,q)=>q[M]-p[M]);return{...x,mainGov:x.govs[0].gov,mainVal:x.govs[0][M]};}).sort((a,b)=>b[M]-a[M]);
+  const prArr=Object.entries(pv).map(([no,v])=>({no,...v})).sort((a,b)=>b[M]-a[M]);
+  // best product & best agent per gov
+  const bestPr={},bestAg={};
+  Object.values(gvPr).forEach(x=>{if(!bestPr[x.gov]||x[M]>bestPr[x.gov][M])bestPr[x.gov]=x;});
+  Object.values(agv).forEach(x=>{if(!bestAg[x.gov]||x[M]>bestAg[x.gov][M])bestAg[x.gov]=x;});
+  const dys=geoDays();
+  // active days per gov (from Q1, date+gov/ag filters)
+  const govDays={};
+  GEO_RAW.D.forEach(r=>{if(r.d<GEO.from||r.d>GEO.to)return;
+    if(GEO.gov.length&&!GEO.gov.includes(r.gov))return;
+    if(GEO.ag.length&&!GEO.ag.includes(r.ag))return;
+    (govDays[r.gov]=govDays[r.gov]||new Set()).add(r.d);});
+  // ---- KPI cards ----
+  const days=Math.max(dys.act,1);
+  const topG=govArr[0],topA=agArr[0],topP=prArr[0];
+  const pcOf=v=>tot>0?Pc(v/tot):'—';
+  $('#geoKpi').innerHTML=[
+    {k:AR?'إجمالي المبيعات':'Total sales',v:F(totC)+' '+box,d:geoTF(totT)+' '+ton},
+    {k:AR?'المعدل اليومي (أيام نشطة: '+dys.act+')':'Daily avg (active days: '+dys.act+')',v:F(totC/days)+' '+box,d:geoTF(totT/days)+' '+ton+(AR?' / يوم':' / day')},
+    {k:AR?'محافظات · وكلاء · منتجات':'Govs · agents · products',v:govArr.length+' '+(AR?'محافظة':'govs'),d:agArr.length+(AR?' وكيل · ':' agents · ')+prArr.length+(AR?' منتج':' products')},
+    {k:AR?'أقوى محافظة':'Top governorate',v:topG?geoGovName(topG.gov):'—',d:topG?F(topG.c)+' '+box+' · '+geoTF(topG.t)+' '+ton+' ('+pcOf(topG[M])+')':'—'},
+    {k:AR?'أقوى وكيل':'Top agent',v:topA?geoAgName(topA.ag):'—',d:topA?geoGovName(topA.mainGov)+(topA.govs.length>1?' +'+(topA.govs.length-1):'')+' — '+F(topA.c)+' '+box+' · '+geoTF(topA.t)+' '+ton+' ('+pcOf(topA[M])+')':'—'},
+    {k:AR?'أقوى منتج':'Top product',v:topP?geoWrap(geoPName(topP.no),34).slice(0,2).join('<br>'):'—',d:topP?F(topP.c)+' '+box+' · '+geoTF(topP.t)+' '+ton+' ('+pcOf(topP[M])+')':'—'}
+  ].map(c=>`<div class="card"><div class="k">${c.k}</div><div class="v num" style="font-size:${String(c.v).length>18?'15px':''}">${c.v}</div><div class="d">${c.d}</div></div>`).join('');
+  // ---- charts ----
+  const mu=M==='c'?box:ton;
+  const fmtV=v=>M==='c'?F(v):geoTF(v);
+  $('#geoShareT').textContent=AR?'حصة المحافظات من المبيعات %':'Governorate share %';
+  $('#geoBarT').textContent=(AR?'ترتيب المحافظات — ':'Governorate ranking — ')+mu;
+  $('#geoTrendT').textContent=AR?'الاتجاه اليومي — كل المحافظات (اضغط الاسم بالمفتاح لإخفاء/إظهار محافظة)':'Daily trend — all governorates (click legend to toggle)';
+  $('#geoAgentsT').textContent=(AR?'أفضل 10 وكلاء — ':'Top 10 agents — ')+mu;
+  $('#geoAvgT').textContent=(AR?'المعدل اليومي للمبيعات بالمحافظة — ':'Daily sales average by governorate — ')+mu+(AR?' (النسبة من إجمالي المبيعات)':' (share of total sales)');
+  $('#geoFFT').textContent=AR?'فريش مقابل مجمد — الإجمالي':'Fresh vs Frozen — total';
+  $('#geoFFGovT').textContent=AR?'فريش مقابل مجمد حسب المحافظة':'Fresh vs Frozen by governorate';
+  const pct1=v=>tot>0?(v/tot*100).toFixed(1)+'%':'—';
+  // dynamic heights: every governorate gets a readable row
+  const rowH=Math.max(320,50+govArr.length*26);
+  const bch=document.getElementById('geoBarCh'); if(bch)bch.style.height=rowH+'px';
+  const fch=document.getElementById('geoFFGovCh'); if(fch)fch.style.height=rowH+'px';
+  const shareLbls=govArr.map(g=>geoGovName(g.gov));
+  const shareVals=govArr.map(g=>g[M]);
+  mk('cGeoShare',{type:'doughnut',data:{labels:shareLbls,datasets:[{data:shareVals,backgroundColor:govArr.map((_,i)=>GEO_COLS[i%GEO_COLS.length]),borderWidth:0}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{boxWidth:11,font:{size:10}}},
+      datalabels:{display:c=>tot>0&&c.dataset.data[c.dataIndex]/tot>=0.015,color:'#fff',font:{weight:'700',size:10},formatter:v=>(v/tot*100).toFixed(1)+'%'},
+      tooltip:{callbacks:{label:c=>c.label+': '+fmtV(c.raw)+' '+mu+' ('+pct1(c.raw)+')'}}},cutout:'55%'}});
+  mk('cGeoBar',{type:'bar',data:{labels:shareLbls,datasets:[{data:shareVals,backgroundColor:GEO_COLS[0],label:mu}]},
+    options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',layout:{padding:{right:110}},
+      plugins:{legend:{display:false},
+        datalabels:{display:true,anchor:'end',align:'end',clamp:true,font:{size:10,weight:'700'},formatter:v=>fmtV(v)+' ('+pct1(v)+')'},
+        tooltip:{callbacks:{label:c=>fmtV(c.raw)+' '+mu+' ('+pct1(c.raw)+')'}}},
+      scales:{x:{ticks:{callback:v=>F(v)}}}}});
+  // trend from Q1 (gov/agent filters apply; product filters do NOT)
+  const tr={},trGovs=govArr.map(g=>g.gov);
+  GEO_RAW.D.forEach(r=>{if(r.d<GEO.from||r.d>GEO.to)return;
+    if(GEO.gov.length&&!GEO.gov.includes(r.gov))return;
+    if(GEO.ag.length&&!GEO.ag.includes(r.ag))return;
+    (tr[r.d]=tr[r.d]||{});tr[r.d][r.gov]=(tr[r.d][r.gov]||0)+(M==='c'?r.c:r.t);});
+  const dates=Object.keys(tr).sort();
+  mk('cGeoTrend',{type:'line',data:{labels:dates.map(d=>d.slice(5)),
+    datasets:trGovs.map((g,i)=>({label:geoGovName(g),data:dates.map(d=>tr[d][g]||0),borderColor:GEO_COLS[i%GEO_COLS.length],backgroundColor:GEO_COLS[i%GEO_COLS.length],tension:.25,pointRadius:0,borderWidth:i<5?2:1.4}))},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top',labels:{boxWidth:10,font:{size:9}}},datalabels:{display:false}},interaction:{mode:'index',intersect:false},
+      scales:{y:{ticks:{callback:v=>F(v)}}}}});
+  // Fresh vs Frozen split (from Q2 rows joined to catalog)
+  const ffKeys=['Fresh','Frozen','other'];
+  const ffTot={Fresh:{c:0,t:0},Frozen:{c:0,t:0},other:{c:0,t:0}};
+  const ffGov={};
+  rows.forEach(r=>{
+    const p=GEO_CAT[r.no];const k=(p&&(p.ff==='Fresh'||p.ff==='Frozen'))?p.ff:'other';
+    ffTot[k].c+=r.c;ffTot[k].t+=r.t;
+    (ffGov[r.gov]=ffGov[r.gov]||{Fresh:{c:0,t:0},Frozen:{c:0,t:0},other:{c:0,t:0}});
+    ffGov[r.gov][k].c+=r.c;ffGov[r.gov][k].t+=r.t;});
+  const ffLbl={Fresh:AR?'فريش':'Fresh',Frozen:AR?'مجمد':'Frozen',other:AR?'غير مصنف':'Unclassified'};
+  const ffColor={Fresh:'#1AAB40',Frozen:'#118DFF',other:'#8A8A8A'};
+  const ffUse=ffKeys.filter(k=>ffTot[k][M]>0);
+  mk('cGeoFF',{type:'doughnut',data:{labels:ffUse.map(k=>ffLbl[k]),datasets:[{data:ffUse.map(k=>ffTot[k][M]),backgroundColor:ffUse.map(k=>ffColor[k]),borderWidth:0}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right'},
+      datalabels:{display:true,color:'#fff',font:{weight:'700',size:12},formatter:v=>fmtV(v)+'\n('+pct1(v)+')'},
+      tooltip:{callbacks:{label:c=>c.label+': '+fmtV(c.raw)+' '+mu+' ('+pct1(c.raw)+')'}}},cutout:'50%'}});
+  mk('cGeoFFGov',{type:'bar',data:{labels:shareLbls,
+    datasets:ffUse.map(k=>({label:ffLbl[k],data:govArr.map(g=>(ffGov[g.gov]&&ffGov[g.gov][k][M])||0),backgroundColor:ffColor[k]}))},
+    options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',
+      scales:{x:{stacked:true,ticks:{callback:v=>F(v)}},y:{stacked:true}},
+      plugins:{legend:{position:'top'},
+        datalabels:{display:c=>{const g=govArr[c.dataIndex];const v=c.dataset.data[c.dataIndex];return g&&g[M]>0&&v/g[M]>=0.12;},
+          color:'#fff',font:{size:9,weight:'700'},formatter:(v,c)=>{const g=govArr[c.dataIndex];return g&&g[M]>0?(v/g[M]*100).toFixed(0)+'%':'';}},
+        tooltip:{callbacks:{label:c=>{const g=govArr[c.dataIndex];const v=c.raw;
+          return c.dataset.label+': '+fmtV(v)+' '+mu+(g&&g[M]>0?' ('+(v/g[M]*100).toFixed(1)+'% '+(AR?'من المحافظة':'of gov')+')':'');}}}}}});
+  const a10=agArr.slice(0,10);
+  mk('cGeoAgents',{type:'bar',data:{labels:a10.map(a=>geoWrap(geoAgName(a.ag),20)),datasets:[{data:a10.map(a=>a[M]),backgroundColor:GEO_COLS[2],label:mu}]},
+    options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',layout:{padding:{right:110}},
+      plugins:{legend:{display:false},datalabels:{display:true,anchor:'end',align:'end',clamp:true,font:{size:10,weight:'700'},formatter:v=>fmtV(v)+' ('+pct1(v)+')'}},
+      scales:{x:{ticks:{callback:v=>F(v)}}}}});
+  // daily sales average per governorate (per its own active days) + share of total sales
+  const avch=document.getElementById('geoAvgCh'); if(avch)avch.style.height=rowH+'px';
+  const avgData=govArr.map(g=>{const gd=(govDays[g.gov]?govDays[g.gov].size:0)||1;return g[M]/gd;});
+  mk('cGeoAvg',{type:'bar',data:{labels:shareLbls,datasets:[{data:avgData,backgroundColor:GEO_COLS[4],label:mu}]},
+    options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',layout:{padding:{right:130}},
+      plugins:{legend:{display:false},
+        datalabels:{display:true,anchor:'end',align:'end',clamp:true,font:{size:10,weight:'700'},
+          formatter:(v,c)=>fmtV(v)+(AR?'/يوم':'/day')+' ('+pct1(govArr[c.dataIndex][M])+')'},
+        tooltip:{callbacks:{label:c=>{const g=govArr[c.dataIndex];const gd=(govDays[g.gov]?govDays[g.gov].size:0)||1;
+          return (AR?'معدل يومي: ':'Daily avg: ')+fmtV(c.raw)+' '+mu+(AR?' على ':' over ')+gd+(AR?' يوم نشط — ':' active days — ')+(AR?'النسبة من المبيعات: ':'share: ')+pct1(g[M]);}}}},
+      scales:{x:{ticks:{callback:v=>F(v)}}}}});
+  // ---- main governorate table (expandable → agents) ----
+  $('#tGeoGovT').textContent=AR?'تفاصيل المحافظات — اضغط على المحافظة لعرض وكلائها':'Governorate detail — click a row to expand its agents';
+  const th=`<tr><th>${AR?'المحافظة':'Governorate'}</th><th>${box}</th><th>% ${box}</th><th>${ton}</th><th>% ${ton}</th><th>${AR?'معدل يومي (صندوق)':'Daily avg (box)'}</th><th>${AR?'معدل يومي (طن)':'Daily avg (t)'}</th><th>${AR?'وكلاء':'Agents'}</th><th>${AR?'منتجات':'Products'}</th><th>${AR?'أيام نشطة':'Active days'}</th><th>${AR?'أقوى وكيل':'Top agent'}</th><th>${AR?'أقوى منتج':'Top product'}</th></tr>`;
+  const body=govArr.map((g,i)=>{
+    const gd=govDays[g.gov]?govDays[g.gov].size:0;const gdd=Math.max(gd,1);
+    const bp=bestPr[g.gov],ba=bestAg[g.gov];
+    const sub=(gvAg[g.gov]||[]).sort((a,b)=>b[M]-a[M]).map(a=>
+      `<tr class="geo-sub geo-sub-${i}" style="display:none;background:var(--panel2,rgba(128,128,128,.06))">
+        <td style="padding-inline-start:28px">↳ ${geoAgName(a.ag)}</td><td class="num">${F(a.c)}</td><td class="num">${totC>0?Pc(a.c/totC):'—'}</td>
+        <td class="num">${geoTF(a.t)}</td><td class="num">${totT>0?Pc(a.t/totT):'—'}</td>
+        <td class="num">${F(a.c/gdd)}</td><td class="num">${geoTF(a.t/gdd)}</td>
+        <td colspan="5" class="num" style="opacity:.75">${g[M]>0?Pc(a[M]/g[M]):'—'} ${AR?'من المحافظة':'of gov'}</td></tr>`).join('');
+    return `<tr class="geo-gov" data-gi="${i}" style="cursor:pointer">
+      <td><b>${AR?'▸ ':'▸ '}${geoGovName(g.gov)}</b></td>
+      <td class="num"><b>${F(g.c)}</b></td><td class="num">${totC>0?Pc(g.c/totC):'—'}</td>
+      <td class="num"><b>${geoTF(g.t)}</b></td><td class="num">${totT>0?Pc(g.t/totT):'—'}</td>
+      <td class="num">${F(g.c/gdd)}</td><td class="num">${geoTF(g.t/gdd)}</td>
+      <td class="num">${g.ags}</td><td class="num">${g.prs}</td><td class="num">${gd}</td>
+      <td>${ba?geoAgName(ba.ag):'—'}</td><td>${bp?geoPName(bp.no):'—'}</td></tr>`+sub;
+  }).join('');
+  const totRow=`<tr style="font-weight:800;border-top:2px solid var(--bd)"><td>${AR?'الإجمالي':'Total'}</td><td class="num">${F(totC)}</td><td class="num">100%</td><td class="num">${geoTF(totT)}</td><td class="num">100%</td><td class="num">${F(totC/days)}</td><td class="num">${geoTF(totT/days)}</td><td class="num">${agArr.length}</td><td class="num">${prArr.length}</td><td class="num">${dys.act}</td><td>—</td><td>—</td></tr>`;
+  const gt=$('#tGeoGov');
+  gt.innerHTML=th+body+totRow;
+  gt.onclick=e=>{const r=e.target.closest('tr.geo-gov');if(!r)return;
+    const i=r.dataset.gi;const subs=gt.querySelectorAll('.geo-sub-'+i);
+    const show=subs.length&&subs[0].style.display==='none';
+    subs.forEach(s=>s.style.display=show?'':'none');
+    const b=r.querySelector('b');if(b)b.textContent=(show?'▾ ':'▸ ')+geoGovName(govArr[i].gov);};
+  // ---- agents table ----
+  $('#tGeoAgT').textContent=AR?'ترتيب الوكلاء':'Agent ranking';
+  const agSearch=$('#geoAgSearch');if(agSearch)agSearch.placeholder=AR?'بحث عن وكيل…':'Search agent…';
+  const drawAg=q=>{
+    q=(q||'').toLowerCase();
+    const list=agArr.filter(a=>!q||geoAgName(a.ag).toLowerCase().includes(q)||a.ag.toLowerCase().includes(q));
+    $('#tGeoAg').innerHTML=`<tr><th>#</th><th>${AR?'الوكيل':'Agent'}</th><th>${AR?'المحافظة':'Governorate'}</th><th>${box}</th><th>${ton}</th><th>% ${AR?'من الكل':'of total'}</th><th>% ${AR?'من محافظته':'of gov'}</th><th>${AR?'معدل يومي':'Daily avg'} (${mu})</th></tr>`+
+      list.slice(0,60).map((a,i)=>`<tr><td class="num">${i+1}</td><td>${geoAgName(a.ag)}</td><td>${geoGovName(a.mainGov)}${a.govs.length>1?' <small style="opacity:.7">+'+(a.govs.length-1)+'</small>':''}</td>
+        <td class="num">${F(a.c)}</td><td class="num">${geoTF(a.t)}</td>
+        <td class="num">${tot>0?Pc(a[M]/tot):'—'}</td><td class="num">${gv[a.mainGov]&&gv[a.mainGov][M]>0?Pc(a.mainVal/gv[a.mainGov][M]):'—'}</td>
+        <td class="num">${M==='c'?F(a.c/days):geoTF(a.t/days)}</td></tr>`).join('')+
+      (list.length>60?`<tr><td colspan="8" class="num" style="opacity:.7">… ${list.length-60} ${AR?'وكيل إضافي — استخدم البحث':'more — use search'}</td></tr>`:'');
+  };
+  if(agSearch)agSearch.oninput=e=>drawAg(e.target.value);
+  drawAg(agSearch?agSearch.value:'');
+  // ---- products table ----
+  $('#tGeoProdT').textContent=AR?'أفضل المنتجات (حسب الفلاتر)':'Top products (filtered)';
+  $('#tGeoProd').innerHTML=`<tr><th>#</th><th>${AR?'المنتج':'Product'}</th><th>${AR?'الفئة':'Category'}</th><th>${AR?'البراند':'Brand'}</th><th>${box}</th><th>${ton}</th><th>%</th><th>${AR?'أقوى محافظة':'Top gov'}</th></tr>`+
+    prArr.slice(0,25).map((p,i)=>{
+      const c=GEO_CAT[p.no]||{};
+      let bg=null;Object.values(gvPr).forEach(x=>{if(x.no===p.no&&(!bg||x[M]>bg[M]))bg=x;});
+      return `<tr><td class="num">${i+1}</td><td>${geoPName(p.no)}</td><td>${(T.cats&&T.cats[c.cat])||c.cat||'—'}</td><td>${c.brand||'—'}</td>
+        <td class="num">${F(p.c)}</td><td class="num">${geoTF(p.t)}</td><td class="num">${tot>0?Pc(p[M]/tot):'—'}</td>
+        <td>${bg?geoGovName(bg.gov):'—'}</td></tr>`;}).join('');
+  // ---- note ----
+  $('#geoNote').innerHTML=(AR
+    ?'ℹ️ الفترة: <b>'+GEO.from+' → '+GEO.to+'</b> ('+dys.cal+' يوم تقويمي، '+dys.act+' يوم نشط). المعدلات اليومية محسوبة على الأيام النشطة. فلاتر المنتج (الفئة/العائلة/البراند/التعبئة/الوزن/المنتجات) تنطبق على كل البطاقات والجداول والجارتات — ما عدا جارت <b>الاتجاه اليومي</b> فتنطبق عليه فلاتر المحافظة والوكيل والفترة فقط.'
+    :'ℹ️ Period: <b>'+GEO.from+' → '+GEO.to+'</b> ('+dys.cal+' calendar days, '+dys.act+' active). Daily averages use active days. Product filters apply everywhere except the <b>daily trend</b> chart (governorate/agent/period filters only).')
+    +(geoHasProdFilter()?(AR?' <b>فلاتر منتج فعّالة.</b>':' <b>Product filters active.</b>'):'');
+  try{injectExportButtons();}catch(e){}
+}
+/* ===================== /GEO ===================== */
+function renderAll(){_NAR_MAP=null;loadColors();setChrome();renderTrend();renderExec();renderRx();renderWb();renderStk();try{renderInvan();}catch(e){console.error('renderInvan',e);}try{renderABC();}catch(e){console.error('renderABC',e);}try{renderReports();}catch(e){console.error('renderReports',e);}try{renderProd();}catch(e){console.error('renderProd',e);}try{renderSales();}catch(e){console.error('renderSales',e);}try{renderOrders();}catch(e){console.error('renderOrders',e);}renderPlant();renderQuality();renderTop();try{renderOffals();}catch(e){console.error('renderOffals',e);}renderCmp();try{renderVs();}catch(e){console.error('renderVs',e);}try{renderGeo();}catch(e){console.error('renderGeo',e);}try{injectExportButtons();}catch(e){console.warn('export buttons',e);};renderWeekMonth();renderSku();try{renderWdist();}catch(e){console.error('renderWdist',e);}}
 
 $('#langBtn')&&($('#langBtn').onclick=()=>{LANG=LANG==='ar'?'en':'ar';try{localStorage.setItem('sk_lang',LANG)}catch(e){};renderAll();});
 $('#friBtn')&&($('#friBtn').onclick=()=>{
@@ -5487,6 +5976,8 @@ function computeProc(G, H, W){
   out.asof=out.days.length?out.days[out.days.length-1]:null;
   return out;
 }
+
+
 
 /* ===================== Google Sheets live loader ===================== */
 function parseCSV(text){
