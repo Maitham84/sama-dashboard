@@ -553,25 +553,6 @@ body.locked .brand, body.locked nav, body.locked main, body.locked section{visib
   <div class="tscroll" style="margin-top:14px"><table class="tbl" id="tQuality"></table></div>
   <div class="note" id="qNote"></div>
 </div></section>
-<section id="demand"><div class="wrap">
-  <div class="secthead"><h2 id="dmTitle"></h2><small id="dmSub"></small></div>
-  <div class="search"><span class="perlbl" id="dmFromLbl"></span><input type="date" id="dmFrom" class="rngDate" style="display:none"><select id="dmWkFrom"></select><span class="perlbl" id="dmToLbl"></span><select id="dmWkTo"></select><button class="rngBtn" id="dmRngReset"></button></div>
-  <div class="cards" id="dmKpi"></div>
-  <div class="panel" style="margin-bottom:14px"><h3 id="dmTrendT"></h3><div class="ch" style="height:300px"><canvas id="cDmTrend"></canvas></div></div>
-  <div class="panel" style="margin-bottom:14px">
-    <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:8px">
-      <h3 id="dmFOSt" style="margin:0;flex:1"></h3>
-      <select id="dmCatSel" class="rngBtn" style="padding:6px 10px"></select>
-      <select id="dmFFSel" class="rngBtn" style="padding:6px 10px"></select>
-    </div>
-    <div class="ch" style="height:320px"><canvas id="cDmFOS"></canvas></div></div>
-  <div class="grid2">
-    <div class="panel"><h3 id="dmBiasT"></h3><div class="ch"><canvas id="cDmBias"></canvas></div></div>
-    <div class="panel"><h3 id="dmCatT"></h3><div class="ch"><canvas id="cDmCat"></canvas></div></div>
-  </div>
-  <div class="tscroll" style="margin-top:14px"><table class="tbl" id="tDmCat"></table></div>
-  <div class="note" id="dmNote"></div>
-</div></section>
 
 <section id="top"><div class="wrap">
   <div class="secthead"><h2 id="topTitle2"></h2><small id="topSub2"></small></div>
@@ -711,7 +692,7 @@ body.locked .brand, body.locked nav, body.locked main, body.locked section{visib
   <label class="note" id="impL1"></label><input type="file" id="fDB" accept=".xlsx,.xls">
   <label class="note" id="impL2"></label><input type="file" id="fRX" accept=".xlsx,.xls">
   <label class="note" id="impL3"></label><input type="file" id="fPROC" accept=".xlsx,.xls">
-  <label class="note" id="impL4"></label><input type="file" id="fDMD" accept=".xlsx,.xls">
+  
   <div id="impMsg"></div>
   <div style="display:flex;gap:10px;margin-top:16px">
     <button class="btn" id="doImport"></button>
@@ -728,7 +709,7 @@ const GS = {
   rx:'1N0kIzThdO6JsXxDc759H4MwvfsIDQZAOO0UZz1iqGCY',  // NEW daily-receiving sheet (monthly tabs)
   proc:'1lfnETJhG5cfdoYDp1fKAR1fIVRGmtt0LfxJ9db2sIG4',
   users:'1ev9vomAg9mRoU684hgxRB4GoaOmt1BZ747yW3y-MYXI',
-  demand:'1xl-g2MXw7fN0XffLOmQK2ZNHjk_PcpMlUCzGgU4pdLw',  // Demand Plan DATABASE sheet
+    // Demand Plan DATABASE sheet
   tabs:{S:'Daily Sales',O:'Act. Orders',P:'Daily Prod',K:'Open Stock',C:'Close Stock'},
   procTabs:{G:'Daily_Grades',H:'Daily_Histogram',W:'Line_Hours'},
   rxMonths:['Jan-2026','Feb-2026','Mar-2026','Apr-2026','May-2026','Jun-2026','Jul-2026','Aug-2026','Sep-2026','Oct-2026','Nov-2026','Dec-2026']
@@ -748,7 +729,7 @@ ar:{dir:'rtl', title:'شركة سما كربلاء — مجزر الدواجن',
  asof:'آخر تحديث للبيانات', themeD:'🌙 داكن', themeL:'☀️ فاتح', importBtn:'⟳ تحديث من إكسل',
  months:['كانون الثاني','شباط','آذار','نيسان','أيار','حزيران','تموز','آب','أيلول','تشرين الأول','تشرين الثاني','كانون الأول'],
  days:['السبت','الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة'],
- tabs:{exec:'النظرة التنفيذية',rx:'الاستلام الحي',wb:'الدجاج الكامل',stk:'المخزون',invan:'تحليل المخزون',abc:'ABC وأداء البراند',reports:'التقارير',prod:'الإنتاج',sales:'المبيعات',orders:'الطلب',plant:'كفاءة المجزر',quality:'جودة الذبح',demand:'التنبؤ والدقة',top:'أفضل الأصناف',offals:'تحليل الأحشاء',wdist:'متابعة الوزن والتصافي',cmp:'الطلب·الإنتاج·المبيعات',vs:'مقارنة فترتين',week:'أسبوعي',month:'شهري',sku:'المنتجات'},
+ tabs:{exec:'النظرة التنفيذية',rx:'الاستلام الحي',wb:'الدجاج الكامل',stk:'المخزون',invan:'تحليل المخزون',abc:'ABC وأداء البراند',reports:'التقارير',prod:'الإنتاج',sales:'المبيعات',orders:'الطلب',plant:'كفاءة المجزر',quality:'جودة الذبح',top:'أفضل الأصناف',offals:'تحليل الأحشاء',wdist:'متابعة الوزن والتصافي',cmp:'الطلب·الإنتاج·المبيعات',vs:'مقارنة فترتين',week:'أسبوعي',month:'شهري',sku:'المنتجات'},
  chain:{rx:'📥 استلام حي',prod:'🏭 إنتاج',sales:'🛒 مبيعات',ord:'📦 طلبات',stk:'🏬 مخزون افتتاحي'}, rxFromLbl:'من', rxToLbl:'إلى', rxClear:'كل الفترة',
  birds:'طير', box:'صندوق', boxes:'صندوق', days_u:'يوم',
  chainNote:d=>'سلسلة آخر يوم تشغيلي '+d+' — أرقام المنتجات بالصناديق، المخزون يعتمد الرصيد الافتتاحي.',
@@ -857,9 +838,9 @@ ar:{dir:'rtl', title:'شركة سما كربلاء — مجزر الدواجن',
  dmNote:'الدقة = ١ − (مجموع |التنبؤ−الطلب| ÷ مجموع الطلب). الانحياز: موجب = توقعنا أكثر من الطلب، سالب = توقعنا أقل. المقارنة مع الطلب الفعلي (Act.Orders).',
  dmEmpty:'لا توجد بيانات تنبؤ بعد', dmEmptyD:'حوّل ملف خطة الطلب إلى Google Sheet أصلي، شاركه Viewer، وأرسل الرابط لربطه.',
  liveLoading:'⏳ جارٍ جلب أحدث البيانات من Google Sheets…',
- liveOk:d=>'🟢 Data updated as of — البيانات محدثة لغاية: '+d,
+ liveOk:d=>'🟢 متصل بـ Google Sheets — آخر يوم بيانات: '+d,
  liveErr:'🔴 تعذر الجلب من Google Sheets — تُعرض آخر نسخة محفوظة. تحقق من الإنترنت ومن أسماء التبويبات.',
- liveTab:n=>'تبويب مفقود أو غير مشارك: '+n, liveRefresh:'↻ Update Now تحديث الآن',
+ liveTab:n=>'تبويب مفقود أو غير مشارك: '+n, liveRefresh:'↻ Update تحديث الآن',
  lcwTitle:(w,f,t)=>'أسبوع '+w+' ('+f+' ← '+t+')', lcwSub:'آخر أسبوع مكتمل (سبت–جمعة) — الوحدة: صندوق',
  sales:'المبيعات', orders:'الطلبات', prod:'الإنتاج', ful:'نسبة تنفيذ الطلبات', avgday:'متوسط المبيعات/يوم',
  cover:'تغطية المخزون', coverD:(s,a)=>'مخزون '+s+' ÷ متوسط 28 يوم '+a, opDays:'يوم تشغيلي', target:'الهدف ≥ 95%',
@@ -915,12 +896,12 @@ ar:{dir:'rtl', title:'شركة سما كربلاء — مجزر الدواجن',
  impDo:'تحديث', impClose:'إغلاق', impReset:'استرجاع البيانات الأصلية',
  impOk:d=>'تم التحديث بنجاح ✓ — آخر يوم بيانات: '+d, impErr:'خطأ في القراءة: تأكد أن بنية الملف مطابقة للأصل — ',
  impPick:'اختر ملفاً واحداً على الأقل', impBusy:'جارٍ القراءة والحساب…', impResetOk:'تم استرجاع البيانات الأصلية ✓',
- foot:' قسم تخطيط الطلب — شركة سما كربلاء |9647704004040+|maitham.alzubaidy@samakarbala.iq'},
+ foot:' قسم تخطيط الطلب — شركة سما كربلاء | التصافي المعتمد 74% | أسبوع العمل: سبت–جمعة'},
 en:{dir:'ltr', title:'Sama Karbala Co. — Poultry Processing Plant', sub:'Executive Operations Report: Orders · Production · Sales · Inventory · Live Intake',
  asof:'Data as of', themeD:'🌙 Dark', themeL:'☀️ Light', importBtn:'⟳ Update from Excel',
  months:['January','February','March','April','May','June','July','August','September','October','November','December'],
  days:['Saturday','Sunday','Monday','Tuesday','Wednesday','Thursday','Friday'],
- tabs:{exec:'Executive Overview',rx:'Live Bird Intake',wb:'Whole Bird',stk:'Inventory',invan:'Inventory Analysis',abc:'ABC & Brand',reports:'Reports',prod:'Production',sales:'Sales',orders:'Orders',plant:'Plant Efficiency',quality:'Carcass Quality',demand:'Forecast & Accuracy',top:'Top Products',offals:'Offals Analysis',wdist:'Weight & Yield',cmp:'Order·Prod·Sales',vs:'Period Compare',week:'Weekly',month:'Monthly',sku:'Products'},
+ tabs:{exec:'Executive Overview',rx:'Live Bird Intake',wb:'Whole Bird',stk:'Inventory',invan:'Inventory Analysis',abc:'ABC & Brand',reports:'Reports',prod:'Production',sales:'Sales',orders:'Orders',plant:'Plant Efficiency',quality:'Carcass Quality',top:'Top Products',offals:'Offals Analysis',wdist:'Weight & Yield',cmp:'Order·Prod·Sales',vs:'Period Compare',week:'Weekly',month:'Monthly',sku:'Products'},
  chain:{rx:'📥 Live intake',prod:'🏭 Production',sales:'🛒 Sales',ord:'📦 Orders',stk:'🏬 Opening stock'}, rxFromLbl:'From', rxToLbl:'To', rxClear:'Full period',
  birds:'birds', box:'boxes', boxes:'boxes', days_u:'days',
  chainNote:d=>'Latest operating-day chain ('+d+') — product figures in boxes; inventory based on opening balance.',
@@ -1029,7 +1010,7 @@ en:{dir:'ltr', title:'Sama Karbala Co. — Poultry Processing Plant', sub:'Execu
  dmNote:'Accuracy = 1 − (Σ|forecast−orders| ÷ Σ orders). Bias: positive = over-forecast, negative = under-forecast. Compared against Act.Orders.',
  dmEmpty:'No forecast data yet', dmEmptyD:'Convert the Demand Plan to a native Google Sheet, share as Viewer, and send the link to connect it.',
  liveLoading:'⏳ Fetching latest data from Google Sheets…',
- liveOk:d=>'🟢 Connected to database — latest data day: '+d,
+ liveOk:d=>'🟢 Connected to Google Sheets — latest data day: '+d,
  liveErr:'🔴 Could not fetch from Google Sheets — showing last saved copy. Check internet & tab names.',
  liveTab:n=>'Missing or unshared tab: '+n, liveRefresh:'↻ Refresh now',
  lcwTitle:(w,f,t)=>'Week '+w+' ('+f+' → '+t+')', lcwSub:'Last complete week (Sat–Fri) — unit: boxes',
@@ -1087,7 +1068,7 @@ en:{dir:'ltr', title:'Sama Karbala Co. — Poultry Processing Plant', sub:'Execu
  impDo:'Update', impClose:'Close', impReset:'Restore original data',
  impOk:d=>'Updated successfully ✓ — latest data day: '+d, impErr:'Read error: check the workbook layout matches the original — ',
  impPick:'Choose at least one file', impBusy:'Reading & computing…', impResetOk:'Original data restored ✓',
- foot:'Prepared By the Demand Planning Dept. — Sama Karbala Co. | +9647704004040 | maitham.alzubaidy@samakarbala.iq'}
+ foot:'Prepared By the Demand Planning Dept. — Sama Karbala Co. | Dressing yield 74% | Working week: Sat–Fri'}
 };
 let LANG='ar';
 var CO_DOW_AR=['السبت','الأحد','الإثنين','الثلاثاء','الأربعاء','الخميس','الجمعة'];
@@ -1108,7 +1089,7 @@ let QFROM='', QTO='';
 let DMWKFROM=null, DMWKTO=null;
 let CAN_EXPORT=true;  // data-export (xlsx) permission, set by applyPerms
 let SKU_DATES=[];  // ISO date axis for per-product daily series  // demand week-number range
-let DMCAT='', DMFF='';  // demand FOS-chart filters (category, fresh/frozen)     // quality date range
+
 let EXCL_FRI=false; try{EXCL_FRI=localStorage.getItem('sk_excl_fri')==='1'}catch(e){}
 let RAWMATS=null;   // {S,O,P,K, RX} kept from last fetch/import for recompute on toggle
 let SKURANGE={mode:'all', from:null, to:null};
@@ -3678,7 +3659,7 @@ $('#qLineSel')&&$('#qLineSel').addEventListener('change',e=>{QLINE=e.target.valu
 
 /* ===================== Login & Permissions ===================== */
 let CURRENT_USER=null, USER_PERMS=null;
-const PERM_TABS={tab_exec:'exec',tab_rx:'rx',tab_wb:'wb',tab_stk:'stk',tab_invan:'invan',tab_abc:'abc',tab_reports:'reports',tab_prod:'prod',tab_sales:'sales',tab_orders:'orders',tab_plant:'plant',tab_quality:'quality',tab_demand:'demand',tab_top:'top',tab_offals:'offals',tab_wdist:'wdist',tab_cmp:'cmp',tab_week:'week',tab_month:'month',tab_products:'sku'};
+const PERM_TABS={tab_exec:'exec',tab_rx:'rx',tab_wb:'wb',tab_stk:'stk',tab_invan:'invan',tab_abc:'abc',tab_reports:'reports',tab_prod:'prod',tab_sales:'sales',tab_orders:'orders',tab_plant:'plant',tab_quality:'quality',tab_top:'top',tab_offals:'offals',tab_wdist:'wdist',tab_cmp:'cmp',tab_week:'week',tab_month:'month',tab_products:'sku'};
 function parseUsers(mat){
   if(!mat||!mat.length)return [];
   // find header row containing 'username' and 'password'
@@ -3803,85 +3784,7 @@ function demandWeeklyFiltered(D, catFilter, ffFilter){
   return D.weeks.map(w=>wkMap[w.wk]).filter(w=>w.ao>0||w.fc>0);
 }
 
-function renderDemand(){
-  const T=t(), D=DATA.demand;
-  $('#dmTitle').textContent=T.dmTitle; $('#dmSub').textContent=T.dmSub;
-  $('#dmTrendT').textContent=T.dmTrendT; $('#dmBiasT').textContent=T.dmBiasT; $('#dmCatT').textContent=T.dmCatT;
-  $('#dmNote').textContent=T.dmNote;
-  $('#dmFromLbl').textContent=T.dmWkFrom; $('#dmToLbl').textContent=T.dmWkTo;
-  if($('#dmRngReset'))$('#dmRngReset').textContent=T.rngReset;
-  if(!D||!D.weekly||!D.weekly.length){
-    $('#dmKpi').innerHTML='<div class="card" style="grid-column:1/-1"><div class="k">'+T.dmEmpty+'</div><div class="d">'+T.dmEmptyD+'</div></div>';
-    ['cDmTrend','cDmBias','cDmCat'].forEach(id=>{const c=charts[id];if(c){c.destroy();delete charts[id];}});
-    $('#tDmCat').innerHTML='';return;}
-  // week selectors
-  const wkOpts=D.weekly.map(w=>w.wk);
-  if(DMWKFROM==null)DMWKFROM=wkOpts[0];
-  if(DMWKTO==null)DMWKTO=wkOpts[wkOpts.length-1];
-  const fillSel=(id,val)=>{const s=$(id);if(!s)return;
-    s.innerHTML=D.weekly.map(w=>`<option value="${w.wk}" ${w.wk===val?'selected':''}>${w.label}</option>`).join('');};
-  fillSel('#dmWkFrom',DMWKFROM); fillSel('#dmWkTo',DMWKTO);
-  // filter weeks by range
-  const lo=Math.min(DMWKFROM,DMWKTO), hi=Math.max(DMWKFROM,DMWKTO);
-  const wk=D.weekly.filter(w=>w.wk>=lo&&w.wk<=hi);
-  const last=wk[wk.length-1]||D.lastWk;
-  const prev=wk.length>1?wk[wk.length-2]:null;
-  const trend=(last&&prev&&last.acc!=null&&prev.acc!=null)?(last.acc-prev.acc):null;
-  // KPIs
-  $('#dmKpi').innerHTML=[
-   [T.dmKacc,last&&last.acc!=null?Pc(last.acc):'—',last?last.label:''],
-   [T.dmKtrend,trend==null?'—':((trend>=0?'▲ ':'▼ ')+Pc(Math.abs(trend))),(LANG==='ar'?'مقابل الأسبوع السابق':'vs previous week')],
-   [T.dmKbias,last&&last.bias!=null?((last.bias>=0?'+':'')+Pc(last.bias)):'—',last&&last.bias!=null?(last.bias>=0?(LANG==='ar'?'تنبؤ زائد':'over-forecast'):(LANG==='ar'?'تنبؤ ناقص':'under-forecast')):''],
-   [T.dmKfc,F(wk.reduce((a,w)=>a+w.fc,0)),''],
-   [T.dmKao,F(wk.reduce((a,w)=>a+w.ao,0)),'']
-  ].map(([k,v,d])=>`<div class="card"><div class="k">${k}</div><div class="v num">${v}</div><div class="d">${d}</div></div>`).join('');
-  // accuracy trend line
-  mk('cDmTrend',{type:'line',data:{labels:wk.map(w=>w.label),datasets:[{
-    label:T.dmKacc,data:wk.map(w=>w.acc!=null?+(w.acc*100).toFixed(1):null),
-    borderColor:GREEN,backgroundColor:'rgba(111,185,143,.15)',fill:true,tension:.3,pointRadius:2,
-    datalabels:{display:ctx=>ctx.dataIndex%Math.ceil(wk.length/12||1)===0,color:css('--ink'),font:{size:9,weight:'700'},formatter:v=>v?v+'%':''}}]},
-    options:{maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{min:0,max:100,ticks:{callback:v=>v+'%'}},x:{ticks:{font:{size:9},maxRotation:90}}}}});
-  // Forecast vs Orders vs Sales comparison (3 lines) with category + fresh/frozen filters
-  $('#dmFOSt').textContent=T.dmFOSt;
-  // populate filter dropdowns
-  const catSel=$('#dmCatSel'), ffSel=$('#dmFFSel');
-  if(catSel)catSel.innerHTML=`<option value="">${T.dmAllCat}</option>`+D.cats.map(c=>`<option value="${c}" ${c===DMCAT?'selected':''}>${c}</option>`).join('');
-  if(ffSel)ffSel.innerHTML=`<option value="">${T.dmAllFF}</option>`+(D.ffTypes||[]).map(f=>`<option value="${f}" ${f===DMFF?'selected':''}>${f}</option>`).join('');
-  // filtered weekly data, then apply the same week range
-  const fosAll=demandWeeklyFiltered(D,DMCAT,DMFF);
-  const fos=fosAll.filter(w=>w.wk>=lo&&w.wk<=hi);
-  mk('cDmFOS',{type:'line',data:{labels:fos.map(w=>w.label),datasets:[
-    {label:(LANG==='ar'?'التنبؤ':'Forecast'),data:fos.map(w=>Math.round(w.fc)),borderColor:GOLD,backgroundColor:GOLD,tension:.3,pointRadius:2,borderWidth:2},
-    {label:(LANG==='ar'?'الطلب الفعلي':'Actual Orders'),data:fos.map(w=>Math.round(w.ao)),borderColor:SKY,backgroundColor:SKY,tension:.3,pointRadius:2,borderWidth:2},
-    {label:(LANG==='ar'?'المبيعات':'Sales'),data:fos.map(w=>Math.round(w.as)),borderColor:GREEN,backgroundColor:GREEN,tension:.3,pointRadius:2,borderWidth:2}
-  ]},options:{maintainAspectRatio:false,plugins:{legend:{labels:{boxWidth:12}},
-    tooltip:{callbacks:{label:c=>c.dataset.label+': '+F(c.parsed.y)}}},
-    scales:{y:{ticks:{callback:v=>Fk(v)}},x:{ticks:{font:{size:9},maxRotation:90}}}}});
-  if(catSel)catSel.onchange=e=>{DMCAT=e.target.value;renderDemand();};
-  if(ffSel)ffSel.onchange=e=>{DMFF=e.target.value;renderDemand();};
-  // bias bars (green=over, red=under)
-  mk('cDmBias',{type:'bar',data:{labels:wk.map(w=>w.label),datasets:[{
-    data:wk.map(w=>w.bias!=null?+(w.bias*100).toFixed(1):0),
-    backgroundColor:wk.map(w=>w.bias>=0?GOLD:RED)}]},
-    options:{maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>v+'%'}},x:{ticks:{font:{size:8},maxRotation:90}}}}});
-  // per-category accuracy for the LAST week in range
-  const catColors={'Whole Birds':GOLD,'Cutups':SKY,'Offals':VIO,'FPP':GREEN,'WIP':'#C46A4A','Rendering':'#888'};
-  const catLast=D.cats.map(cat=>{const arr=D.catWeekly[cat]||[];const c=arr.filter(x=>x.wk>=lo&&x.wk<=hi);
-    const cl=c[c.length-1]; return {cat,acc:cl?cl.acc:null,bias:cl?cl.bias:null,ao:cl?cl.ao:0};}).filter(x=>x.acc!=null);
-  mk('cDmCat',{type:'bar',data:{labels:catLast.map(x=>x.cat),datasets:[{
-    data:catLast.map(x=>+(x.acc*100).toFixed(1)),backgroundColor:catLast.map(x=>catColors[x.cat]||SKY),
-    datalabels:{display:true,color:css('--ink'),font:{size:11,weight:'700'},anchor:'end',align:'start',formatter:v=>v+'%'}}]},
-    options:{maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{min:0,max:100,ticks:{callback:v=>v+'%'}}}}});
-  // category table
-  $('#tDmCat').innerHTML=`<tr><th>${T.dmThCat}</th><th>${T.dmThAcc}</th><th>${T.dmThBias}</th><th>${T.dmThAO}</th></tr>`+
-    catLast.map(x=>`<tr><td><b>${x.cat}</b></td>
-      <td><span class="pill ${x.acc>=0.8?'g':x.acc>=0.65?'y':'r'}">${Pc(x.acc)}</span></td>
-      <td>${x.bias!=null?((x.bias>=0?'+':'')+Pc(x.bias)):'—'}</td><td class="num">${F(x.ao)}</td></tr>`).join('');
-  // wire selectors
-  $('#dmWkFrom').onchange=e=>{DMWKFROM=+e.target.value;renderDemand();};
-  $('#dmWkTo').onchange=e=>{DMWKTO=+e.target.value;renderDemand();};
-  $('#dmRngReset').onclick=()=>{DMWKFROM=wkOpts[0];DMWKTO=wkOpts[wkOpts.length-1];renderDemand();};
-}
+
 
 
 
@@ -4665,7 +4568,7 @@ function renderVs(){
     scales:{x:{title:{display:true,text:T.vsDay}}}}});
 }
 
-function renderAll(){_NAR_MAP=null;loadColors();setChrome();renderTrend();renderExec();renderRx();renderWb();renderStk();try{renderInvan();}catch(e){console.error('renderInvan',e);}try{renderABC();}catch(e){console.error('renderABC',e);}try{renderReports();}catch(e){console.error('renderReports',e);}try{renderProd();}catch(e){console.error('renderProd',e);}try{renderSales();}catch(e){console.error('renderSales',e);}try{renderOrders();}catch(e){console.error('renderOrders',e);}renderPlant();renderQuality();renderDemand();renderTop();try{renderOffals();}catch(e){console.error('renderOffals',e);}renderCmp();try{renderVs();}catch(e){console.error('renderVs',e);}try{injectExportButtons();}catch(e){console.warn('export buttons',e);};renderWeekMonth();renderSku();try{renderWdist();}catch(e){console.error('renderWdist',e);}}
+function renderAll(){_NAR_MAP=null;loadColors();setChrome();renderTrend();renderExec();renderRx();renderWb();renderStk();try{renderInvan();}catch(e){console.error('renderInvan',e);}try{renderABC();}catch(e){console.error('renderABC',e);}try{renderReports();}catch(e){console.error('renderReports',e);}try{renderProd();}catch(e){console.error('renderProd',e);}try{renderSales();}catch(e){console.error('renderSales',e);}try{renderOrders();}catch(e){console.error('renderOrders',e);}renderPlant();renderQuality();renderTop();try{renderOffals();}catch(e){console.error('renderOffals',e);}renderCmp();try{renderVs();}catch(e){console.error('renderVs',e);}try{injectExportButtons();}catch(e){console.warn('export buttons',e);};renderWeekMonth();renderSku();try{renderWdist();}catch(e){console.error('renderWdist',e);}}
 
 $('#langBtn')&&($('#langBtn').onclick=()=>{LANG=LANG==='ar'?'en':'ar';try{localStorage.setItem('sk_lang',LANG)}catch(e){};renderAll();});
 $('#friBtn')&&($('#friBtn').onclick=()=>{
@@ -5052,8 +4955,8 @@ function readWB(file){return new Promise((res,rej)=>{const r=new FileReader();
  r.onload=e=>{try{res(XLSX.read(new Uint8Array(e.target.result),{type:'array',cellDates:false}))}catch(x){rej(x)}};
  r.onerror=rej;r.readAsArrayBuffer(file)})}
 $('#doImport').onclick=async()=>{
- const fdb=$('#fDB').files[0],frx=$('#fRX').files[0],fproc=$('#fPROC').files[0],fdmd=$('#fDMD').files[0];
- if(!fdb&&!frx&&!fproc&&!fdmd){$('#impMsg').innerHTML='<div class="errmsg">'+t().impPick+'</div>';return}
+ const fdb=$('#fDB').files[0],frx=$('#fRX').files[0],fproc=$('#fPROC').files[0];
+ if(!fdb&&!frx&&!fproc){$('#impMsg').innerHTML='<div class="errmsg">'+t().impPick+'</div>';return}
  $('#impMsg').innerHTML='<div class="okmsg">'+t().impBusy+'</div>';
  try{
   let nd;
@@ -5073,9 +4976,7 @@ $('#doImport').onclick=async()=>{
     const W=getSheet(pWB,['Line_Hours','Line Hours']);
     try{nd.proc=computeProc(G?toM(G):null,H?toM(H):null,W?toM(W):null);}catch(e){console.error('proc import',e);}}
   // Demand Plan workbook (DATABASE)
-  if(fdmd){const dWB=await readWB(fdmd);
-    const DB=getSheet(dWB,['DATABASE','Database']);
-    try{if(DB)nd.demand=computeDemand(toM(DB));}catch(e){console.error('demand import',e);}}
+  
   DATA=nd;
   try{localStorage.setItem('sk_dash_v5',JSON.stringify(DATA))}catch(e){}
   renderAll();
@@ -5437,145 +5338,10 @@ function detectAnomaly(series){
 }
 
 
-function computeFresh(){
-  const D=DATA.demand; if(!D||!D.products)return null;
-  const fresh=D.products.filter(p=>String(p.ff).toLowerCase()==='fresh');
-  if(!fresh.length)return null;
-  const last=D.lastWk?D.lastWk.wk:(D.weeks&&D.weeks.length?D.weeks[D.weeks.length-1].wk:null);
-  const rows=fresh.map(p=>{
-    const ser=p.wk.filter(w=>w.ao>0).map(w=>({d:'W'+w.wk,v:w.ao}));
-    const gw=(wk,f)=>{const w=p.wk.find(x=>x.wk===wk);return w?w[f]:0;};
-    const recent=ser.slice(-4);
-    const pred=recent.length?Math.round(recent.reduce((a,x)=>a+x.v,0)/recent.length):0;
-    const st=seriesStats(ser.map(x=>x.v));
-    const anom=detectAnomaly(ser);
-    return {code:p.code,name:p.nameE||p.nameA,cat:p.cat,lastAO:gw(last,'ao'),lastFC:gw(last,'fc'),lastAS:gw(last,'as'),
-      pred,lo:Math.max(0,st?Math.round(pred-st.sd):pred),hi:st?Math.round(pred+st.sd):pred,
-      anom:anom&&anom.level!=='ok'?anom:null};
-  }).filter(r=>r.lastAO>0||r.pred>0);
-  rows.sort((a,b)=>b.lastAO-a.lastAO);
-  return {rows,lastWk:last};
-}
+
 
 /* ===================== Demand / Forecast / Accuracy engine ===================== */
-function computeDemand(M){
-  if(!M||!M.length)return null;
-  // find header rows: row with 'product' & 'code' OR the week-label row 'W01/26'.
-  // Structure: row0 title; row1 = info headers + week labels (W01/26 every 3 cols from col idx wkStart);
-  //            row2 = sub-headers Forecast/Act.Orders/Act.Sales; row3+ = data.
-  // Detect the week-label row and the first week column.
-  // flexible week-label matcher: W01/26, W1/26, W01-26, W01 26, W01/2026 (with optional spaces)
-  const WKRE=/^\s*W\s*(\d{1,2})\s*[\/\-\s]\s*(\d{2,4})\s*$/i;
-  const wkNum=(s)=>{const m=WKRE.exec(String(s||''));return m?parseInt(m[1],10):null;};
-  let wkRow=-1, subRow=-1, wkStart=-1;
-  // Strategy A: find a row+col where the cell matches a week label
-  for(let r=0;r<Math.min(8,M.length);r++){
-    const row=M[r]||[];
-    for(let c=0;c<row.length;c++){ if(wkNum(row[c])!=null){wkRow=r;wkStart=c;break;} }
-    if(wkRow>=0)break;
-  }
-  // Strategy B: if no week label, find the 'Forecast' sub-header row and treat its first Forecast col as wkStart
-  if(wkRow<0){
-    for(let r=0;r<Math.min(8,M.length);r++){const row=M[r]||[];
-      for(let c=0;c<row.length;c++){ if(String(row[c]||'').trim().toLowerCase()==='forecast'){subRow=r;wkStart=c;wkRow=r-1;break;} }
-      if(subRow>=0)break;}
-  }
-  // Strategy C (POSITIONAL): gviz may have dropped the week-tag & sub-header rows, leaving
-  // R0 = info labels (Category..Status) and data from R1. Detect the info-block width, then
-  // weeks = triplets (FC, AO, AS) starting right after it.
-  let headerRow=-1, infoEnd=-1, dataRow0=-1;
-  if(wkRow<0||wkStart<0){
-    // find the row that contains 'category' (the info header row)
-    for(let r=0;r<Math.min(4,M.length);r++){const row=(M[r]||[]).map(x=>String(x||'').trim().toLowerCase());
-      if(row.includes('category')||row.includes('status')||row.includes('name english')){headerRow=r;break;}}
-    if(headerRow>=0){
-      const row=(M[headerRow]||[]).map(x=>String(x||'').trim().toLowerCase().replace(/\s+/g,' '));
-      // The weekly block begins right after 'status' (the last info column). Find it explicitly.
-      let statusCol=-1;
-      for(let c=0;c<row.length;c++){ if(row[c]==='status'||row[c].indexOf('status')>=0){statusCol=c;} }
-      if(statusCol>=0){ wkStart=statusCol+1; }
-      else {
-        // fallback: last text label that's NOT a week tag and NOT numeric
-        let lastText=-1;
-        for(let c=0;c<row.length;c++){const v=row[c];
-          if(v && isNaN(NUM(v)) && !/^w\s*\d/i.test(v)) lastText=c;}
-        wkStart=(lastText>=0?lastText+1:12);
-      }
-      // Known template layout has 12 info columns (0..11). If detection lands oddly, snap to 12.
-      if(wkStart<8||wkStart>14) wkStart=12;
-      infoEnd=wkStart-1;
-      dataRow0=headerRow+1; subRow=-1; wkRow=headerRow;
-    }
-  }
-  if(wkStart<0){
-    return null;
-  }
-  if(subRow<0)subRow=wkRow+1;  // sub-header (Forecast/Act.Orders/Act.Sales) row
-  // map info columns by scanning the wkRow (and rows above) for known labels
-  const labelRow=M[wkRow]||[];
-  const findInfo=(keys)=>{for(let rr=Math.max(0,wkRow-1);rr<=wkRow;rr++){const row=M[rr]||[];
-    for(let c=0;c<wkStart;c++){const v=String(row[c]||'').trim().toLowerCase().replace(/\s+/g,' ');
-      if(keys.some(k=>v===k||v.indexOf(k)>=0))return c;}}return -1;};
-  let cCode=findInfo(['product code','code','الكود']);
-  let cNameE=findInfo(['name english','english']);
-  let cNameA=findInfo(['name arabic','arabic','الاسم']);
-  let cCat=findInfo(['category','الفئة']);
-  const cStatus=findInfo(['status']);
-  // positional defaults if labels weren't matched (gviz dropped/garbled header text)
-  let cFF=findInfo(['fresh/frozen','fresh','frozen','type']);
-  if(cCode<0)cCode=7; if(cCat<0)cCat=1; if(cNameA<0)cNameA=8; if(cNameE<0)cNameE=10; if(cFF<0)cFF=3;
-  // collect week columns as triplets (FC, AO, AS) from wkStart.
-  // Use the widest DATA row to know how far the columns extend.
-  const firstDataRow=(dataRow0>=0?dataRow0:(subRow>=0?subRow+1:wkRow+1));
-  let maxCol=0; for(let r=firstDataRow;r<Math.min(firstDataRow+20,M.length);r++){if(M[r])maxCol=Math.max(maxCol,M[r].length);}
-  maxCol=Math.max(maxCol,labelRow.length);
-  const weeks=[]; let autoWk=0;
-  for(let c=wkStart;c+2<maxCol;c+=3){
-    let lbl=String(labelRow[c]||'').trim();
-    let wn=wkNum(lbl);
-    if(wn==null){ autoWk++; wn=autoWk; lbl='W'+String(wn).padStart(2,'0')+'/26'; }
-    else { autoWk=wn; }
-    weeks.push({label:lbl,wk:wn,fcCol:c,aoCol:c+1,asCol:c+2});
-    if(weeks.length>60)break;
-  }
-  // parse product rows
-  const dataStart=(dataRow0>=0?dataRow0:(subRow>=0?subRow+1:wkRow+1));
-  const products=[];
-  for(let r=dataStart;r<M.length;r++){const row=M[r];if(!row)continue;
-    const code=cCode>=0?String(row[cCode]||'').trim():'';
-    if(!code)continue;
-    const nameE=cNameE>=0?String(row[cNameE]||'').trim():'';
-    const nameA=cNameA>=0?String(row[cNameA]||'').trim():'';
-    const cat=cCat>=0?String(row[cCat]||'').trim():'';
-    const ff=cFF>=0?String(row[cFF]||'').trim():'';
-    const wkData=weeks.map(w=>({wk:w.wk,label:w.label,
-      fc:NUM(row[w.fcCol]),ao:NUM(row[w.aoCol]),as:NUM(row[w.asCol])}));
-    products.push({code,nameE,nameA,cat,ff,wk:wkData});
-  }
-  // weekly accuracy (VW-MAPE over all products that have orders):
-  //  VW-MAPE = Σ|FC-AO| / Σ AO ; Accuracy=1-VW-MAPE(capped 0..1); BIAS=Σ(FC-AO)/Σ AO
-  const weekly=weeks.map(w=>{
-    let sFC=0,sAO=0,sAS=0,sAbs=0,sDiff=0,n=0;
-    products.forEach(p=>{const d=p.wk.find(x=>x.wk===w.wk);if(!d)return;
-      if(d.ao>0||d.fc>0){sFC+=d.fc;sAO+=d.ao;sAS+=d.as;sAbs+=Math.abs(d.fc-d.ao);sDiff+=(d.fc-d.ao);if(d.ao>0)n++;}});
-    const mape=sAO>0?sAbs/sAO:null;
-    const acc=mape==null?null:Math.max(0,1-mape);
-    const bias=sAO>0?sDiff/sAO:null;
-    return {wk:w.wk,label:w.label,fc:Math.round(sFC),ao:Math.round(sAO),as:Math.round(sAS),mape,acc,bias,nSKU:n};
-  }).filter(w=>w.ao>0);  // only weeks with actual orders are valid for accuracy (skip incomplete/forecast-only weeks)
-  // per-category accuracy per week
-  const cats=[...new Set(products.map(p=>p.cat).filter(Boolean))];
-  const ffTypes=[...new Set(products.map(p=>p.ff).filter(Boolean))];
-  const catWeekly={};
-  cats.forEach(cat=>{catWeekly[cat]=weeks.map(w=>{
-    let sAO=0,sAbs=0,sDiff=0;
-    products.filter(p=>p.cat===cat).forEach(p=>{const d=p.wk.find(x=>x.wk===w.wk);if(!d)return;
-      sAO+=d.ao;sAbs+=Math.abs(d.fc-d.ao);sDiff+=(d.fc-d.ao);});
-    return {wk:w.wk,label:w.label,acc:sAO>0?Math.max(0,1-sAbs/sAO):null,ao:Math.round(sAO),bias:sAO>0?sDiff/sAO:null};
-  }).filter(x=>x.ao>0);});
-  const lastWk=weekly.length?weekly[weekly.length-1]:null;
-  return {products,weeks,weekly,cats,ffTypes,catWeekly,lastWk,asof:lastWk?lastWk.label:null};
-}
+
 
 /* ===================== Plant Processing engine (PDS) ===================== */
 function colIdx(headerRow, names){
@@ -5803,8 +5569,7 @@ async function loadFromSheets(){
       try{PW=await fetchTab(GS.proc,GS.procTabs.W,0);}catch(e){PW=null;}
       console.log('[proc] grades rows:',PG?PG.length:0,'| histogram rows:',PH?PH.length:0);
     }catch(e){console.error('[proc] FETCH FAILED — check sheet sharing (Anyone with link/Viewer) and tab names Daily_Grades / Daily_Histogram:',e);}
-    let PD=null;
-    if(GS.demand){try{console.log('[demand] fetching DATABASE from',GS.demand);PD=await fetchTab(GS.demand,'DATABASE',0);console.log('[demand] DATABASE rows:',PD?PD.length:0);}catch(e){console.error('[demand] fetch failed — check sharing & tab name DATABASE:',e);}}
+    
     if(String(S[0][0]).trim()!=='Product Code')throw t().liveTab(GS.tabs.S)+' [A1='+String(S[0][0]).slice(0,20)+']';
     RAWMATS={S,O,P,K,C,RX:RXmonths};
     const nd=computeFromMats({S,O,P,K,C},null);  // include Close Stock (C)
@@ -5814,7 +5579,7 @@ async function loadFromSheets(){
       if(rxNew){ nd.rx=rxNew; nd.kpi.rxLast=rxNew.daily[rxNew.daily.length-1]; console.log('[rx] new parser days:',rxNew.days); }
       else console.warn('[rx] new parser returned no data');
     }catch(e){console.error('[rx] new parser failed:',e);}
-    try{ if(PD) nd.demand=computeDemand(PD); }catch(e){console.warn('computeDemand failed',e);}
+    
     try{ if(PG||PH){ nd.proc=computeProc(PG,PH,PW); console.log('[proc] parsed days:',nd.proc.days,'| lines:',nd.proc.lineNames); } else console.warn('[proc] no data returned from processing sheet'); }catch(e){console.error('[proc] computeProc failed:',e);}
     DATA=nd;
     try{localStorage.setItem('sk_dash_v5',JSON.stringify(DATA))}catch(e){}
