@@ -3659,7 +3659,7 @@ $('#qLineSel')&&$('#qLineSel').addEventListener('change',e=>{QLINE=e.target.valu
 
 /* ===================== Login & Permissions ===================== */
 let CURRENT_USER=null, USER_PERMS=null;
-const PERM_TABS={tab_exec:'exec',tab_rx:'rx',tab_wb:'wb',tab_stk:'stk',tab_invan:'invan',tab_abc:'abc',tab_reports:'reports',tab_prod:'prod',tab_sales:'sales',tab_orders:'orders',tab_plant:'plant',tab_quality:'quality',tab_top:'top',tab_offals:'offals',tab_wdist:'wdist',tab_cmp:'cmp',tab_week:'week',tab_month:'month',tab_products:'sku'};
+const PERM_TABS={tab_exec:'exec',tab_rx:'rx',tab_wb:'wb',tab_stk:'stk',tab_invan:'invan',tab_abc:'abc',tab_reports:'reports',tab_prod:'prod',tab_sales:'sales',tab_orders:'orders',tab_plant:'plant',tab_quality:'quality',tab_top:'top',tab_offals:'offals',tab_wdist:'wdist',tab_cmp:'cmp',tab_vs:'vs',tab_week:'week',tab_month:'month',tab_products:'sku'};
 function parseUsers(mat){
   if(!mat||!mat.length)return [];
   // find header row containing 'username' and 'password'
