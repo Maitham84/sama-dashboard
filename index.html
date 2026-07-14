@@ -972,7 +972,7 @@ ar:{dir:'rtl', title:'شركة سما كربلاء — مجزر الدواجن',
  impDo:'تحديث', impClose:'إغلاق', impReset:'استرجاع البيانات الأصلية',
  impOk:d=>'تم التحديث بنجاح ✓ — آخر يوم بيانات: '+d, impErr:'خطأ في القراءة: تأكد أن بنية الملف مطابقة للأصل — ',
  impPick:'اختر ملفاً واحداً على الأقل', impBusy:'جارٍ القراءة والحساب…', impResetOk:'تم استرجاع البيانات الأصلية ✓',
- foot:' قسم تخطيط الطلب — شركة سما كربلاء | التصافي المعتمد 74% | أسبوع العمل: سبت–جمعة'},
+ foot:' قسم التخطيط  — شركة سما كربلاء | 009647704004040 | maitham.alzubaidy@samakarbala.iq'},
 en:{dir:'ltr', title:'Sama Karbala Co. — Poultry Processing Plant', sub:'Executive Operations Report: Orders · Production · Sales · Inventory · Live Intake',
  asof:'Data as of', themeD:'🌙 Dark', themeL:'☀️ Light', importBtn:'⟳ Update from Excel',
  months:['January','February','March','April','May','June','July','August','September','October','November','December'],
@@ -1144,7 +1144,7 @@ en:{dir:'ltr', title:'Sama Karbala Co. — Poultry Processing Plant', sub:'Execu
  impDo:'Update', impClose:'Close', impReset:'Restore original data',
  impOk:d=>'Updated successfully ✓ — latest data day: '+d, impErr:'Read error: check the workbook layout matches the original — ',
  impPick:'Choose at least one file', impBusy:'Reading & computing…', impResetOk:'Original data restored ✓',
- foot:'Prepared By the Demand Planning Dept. — Sama Karbala Co. | Dressing yield 74% | Working week: Sat–Fri'}
+ foot:'Prepared By the Planning Dept. — Sama Karbala Co. | +9647704004040 | maitham.alzubaidy@samakarbala.iq'}
 };
 let LANG='ar';
 var CO_DOW_AR=['السبت','الأحد','الإثنين','الثلاثاء','الأربعاء','الخميس','الجمعة'];
@@ -4653,6 +4653,8 @@ function renderVs(){
 //  Q1 (once): daily aggregate  date×gov×agent  → trend, active days, any-period totals (no product dim)
 //  Q2 (per date-range): gov×agent×product sums for the selected range (no date dim) → exact product-filtered analysis
 //  Catalog (once): Product Status sheet → product attributes for filters + bilingual names
+const GEO_CAT_AR={'Shawarma':'شاورما','Special مطعم':'مطاعم (Special)','Special FPP':'مصنعة خاصة (Special FPP)'};
+function geoCatName(c){const T=t();return (T.cats&&T.cats[c])||(LANG==='ar'&&GEO_CAT_AR[c])||c;}
 const GEO_GOV_AR={'Baghdad':'بغداد','Basra':'البصرة','Nineveh':'نينوى','Erbil':'أربيل','Duhok':'دهوك','Kirkuk':'كركوك','Sulaymaniyah':'السليمانية','Al-Anbar':'الأنبار','Babil':'بابل','Karbala':'كربلاء','Najaf':'النجف','Al-Qadisiyyah':'القادسية','Al-Muthanna':'المثنى','Dhi Qar':'ذي قار','Maysan':'ميسان','Wasit':'واسط','Diyala':'ديالى','Saladin':'صلاح الدين','الشركة Etihad Agricultural City':'مبيعات المجمع (الاتحاد)'};
 const GEO_COLS=['#118DFF','#12239E','#E66C37','#6B007B','#E044A7','#744EC2','#D9B300','#D64550','#197278','#1AAB40','#15C6F4','#4092FF','#8A8A8A','#A66999','#3599B8','#DFBFBF','#4AC5BB','#5F6B6D'];
 let GEO_RAW=null;      // {D:[{d,gov,ag,t,c}], mind, maxd, agmap:{ar:en}}
@@ -4739,7 +4741,7 @@ async function geoLoadCore(){
     cat[no]={nameAr:String(gi(row,'product name')||'').trim(),nameEn:String(gi(row,'product name en')||'').trim(),
       pack:String(gi(row,'packing')||'').trim(),ff:String(gi(row,'item type')||'').trim(),
       brand:String(gi(row,'brand')||'').trim(),own:String(gi(row,'own category')||'').trim(),
-      cat:String(gi(row,'category')||'').trim(),fam:String(gi(row,'family')||'').trim(),
+      cat:String(gi(row,'category 1')||gi(row,'category')||'').trim(),fam:String(gi(row,'family 1')||gi(row,'family')||'').trim(),
       wgt:gi(row,'weight(g)')===''?null:Number(gi(row,'weight(g)'))};}
   GEO_RAW={D,mind,maxd,agmap};GEO_CAT=cat;
   if(!GEO.from||!GEO.to){ // default: last 30 days ending at latest data day
@@ -4950,7 +4952,7 @@ function geoRenderHeat(rows,govArr,gv,M,mu,fmtV,AR,T){
   const cats=Object.keys(catTot).sort((a,b)=>catTot[b]-catTot[a]);
   const grand=Object.values(catTot).reduce((s,v)=>s+v,0);
   if(!cats.length||grand<=0){tb.innerHTML='';$('#geoHeatNote')&&($('#geoHeatNote').textContent='');return;}
-  const kname=c=>(T.cats&&T.cats[c])||c;
+  const kname=geoCatName;
   let html='<tr><th>'+(AR?'المحافظة':'Governorate')+'</th>'+cats.map(c=>'<th>'+kname(c)+'</th>').join('')+'<th>'+(AR?'الإجمالي':'Total')+'</th></tr>';
   govArr.forEach(g=>{
     const row=hm[g.gov]||{};const gt2=g[M]||0;
@@ -5110,7 +5112,7 @@ function renderGeo(){
   const rr=()=>{renderGeo();};
   msDropdown('geoGov',govs.map(g=>[g,geoGovName(g)]),GEO.gov,s=>{GEO.gov=s;GEO.ag=GEO.ag.filter(a=>ags.includes(a));rr();},AR?'كل المحافظات':'All governorates',true);
   msDropdown('geoAg',ags.map(a=>[a,geoAgName(a)]),GEO.ag,s=>{GEO.ag=s;rr();},AR?'كل الوكلاء':'All agents',true);
-  msDropdown('geoCat',cats.map(c=>[c,(T.cats&&T.cats[c])||c]),GEO.cat,s=>{GEO.cat=s;GEO.fam=[];rr();},AR?'كل الفئات':'All categories');
+  msDropdown('geoCat',cats.map(c=>[c,geoCatName(c)]),GEO.cat,s=>{GEO.cat=s;GEO.fam=[];rr();},AR?'كل الفئات':'All categories');
   msDropdown('geoFam',fams.map(f=>[f,f]),GEO.fam,s=>{GEO.fam=s;rr();},AR?'كل العائلات':'All families');
   msDropdown('geoFF',[['Fresh',AR?'فريش':'Fresh'],['Frozen',AR?'مجمد':'Frozen']],GEO.ff,s=>{GEO.ff=s;rr();},AR?'الكل':'All',false);
   msDropdown('geoOwn',[['Own Brand',AR?'علامتنا':'Own brand'],['Private Label',AR?'علامة خاصة':'Private label']],GEO.own,s=>{GEO.own=s;rr();},AR?'الكل':'All',false);
