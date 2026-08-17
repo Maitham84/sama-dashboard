@@ -102,7 +102,9 @@ body{overflow-x:hidden}
 .funbox svg{width:100%;height:auto;display:block}
 .ch{position:relative;height:280px}
 .tbl{width:100%;border-collapse:collapse;font-size:12.5px}
-.tbl th{background:var(--panel2);color:var(--mut);font-weight:700;padding:8px 9px;text-align:center;position:sticky;top:0;z-index:2}
+.tbl th{background:var(--panel2);color:var(--mut);font-weight:700;padding:8px 9px;text-align:center;position:sticky;top:0;z-index:5;box-shadow:inset 0 -1px 0 var(--line),0 2px 6px rgba(0,0,0,.28)}
+.tbl thead th{z-index:6}
+.tbl th[data-sk]:hover{color:var(--ink);background:var(--panel)}
 .tbl td{padding:6.5px 9px;border-bottom:1px solid var(--line);text-align:center}
 .tbl tr:hover td{background:rgba(217,164,65,.06)}
 .tscroll{max-height:430px;overflow:auto;border:1px solid var(--line);border-radius:12px;background:var(--panel)}
@@ -998,7 +1000,7 @@ ar:{dir:'rtl', title:'شركة سما كربلاء — مجزر الدواجن',
  impDo:'تحديث', impClose:'إغلاق', impReset:'استرجاع البيانات الأصلية',
  impOk:d=>'تم التحديث بنجاح ✓ — آخر يوم بيانات: '+d, impErr:'خطأ في القراءة: تأكد أن بنية الملف مطابقة للأصل — ',
  impPick:'اختر ملفاً واحداً على الأقل', impBusy:'جارٍ القراءة والحساب…', impResetOk:'تم استرجاع البيانات الأصلية ✓',
- foot:'  قسم التخطيط / شركة سما كربلاء | 9647704004040+ |maitham.alzubaidy@samakarbala.iq'},
+ foot:' قسم التخطيط / شركة سما كربلاء | 9647704004040+ |maitham.alzubaidy@samakarbala.iq'},
 en:{dir:'ltr', title:'Sama Karbala Co. — Poultry Processing Plant', sub:'Executive Operations Report: Orders · Production · Sales · Inventory · Live Intake',
  asof:'Data as of', themeD:'🌙 Dark', themeL:'☀️ Light', importBtn:'⟳ Update from Excel',
  months:['January','February','March','April','May','June','July','August','September','October','November','December'],
@@ -1185,6 +1187,7 @@ var CO_DOW_EN=['Sat','Sun','Mon','Tue','Wed','Thu','Fri'];
 let CMPGRAN='daily';
 const CMP_F={cat:[],fam:[],ff:'all',own:'all',pack:'all',wt:[],brand:[],prod:[]};
 let CMPFROM=null, CMPTO=null;  // cmp date range filter  // daily | weekly
+let CMP_UNC_SORT={k:null,dir:-1};  // uncovered-orders table sort: null = default (biggest shortfall first)
 let PLGRAN='daily'; let QLINE=''; let QDAY='';
 let PLFROM='', PLTO='';  // plant date range (YYYY-MM-DD), empty=all
 let QFROM='', QTO='';
@@ -3475,11 +3478,41 @@ function renderCmp(){
   const _abcTot=_abcSorted.reduce((a,x)=>a+x.s,0);
   const ABCMAP={}; let _abcCum=0;
   _abcSorted.forEach(x=>{_abcCum+=x.s;const cp=_abcTot?(_abcCum/_abcTot*100):0;ABCMAP[x.c]=cp<=80?'A':(cp<=95?'B':'C');});
-  // default sort: biggest shortfall first (most urgent uncovered orders), then by orders, then sales
-  rows.sort((a,b)=>(b.shortQty||0)-(a.shortQty||0)||(b.ord||0)-(a.ord||0)||(b.sales||0)-(a.sales||0));
+  // ---- sorting: default = biggest shortfall first; or by the clicked column ----
+  const _ALPHA=['name','cat','abc'];
+  const _sv=(r,k)=>{
+    if(k==='name')return String(prodName(r)||'');
+    if(k==='cat')return String((T.cats&&T.cats[r.cat])||r.cat||'');
+    if(k==='abc')return String(ABCMAP[r.c]||'ZZZ');   // unclassified sinks to the end
+    if(k==='c')return Number(r.c)||0;
+    return r[k];
+  };
+  if(CMP_UNC_SORT&&CMP_UNC_SORT.k){
+    const k=CMP_UNC_SORT.k,dir=CMP_UNC_SORT.dir,isA=_ALPHA.includes(k),loc=LANG==='ar'?'ar':'en';
+    rows.sort((a,b)=>{
+      const x=_sv(a,k),y=_sv(b,k);
+      if(isA)return dir*String(x).localeCompare(String(y),loc,{numeric:true});
+      const nx=(x==null||isNaN(x))?-Infinity:Number(x), ny=(y==null||isNaN(y))?-Infinity:Number(y);
+      return dir*(nx-ny);
+    });
+  }else{
+    rows.sort((a,b)=>(b.shortQty||0)-(a.shortQty||0)||(b.ord||0)-(a.ord||0)||(b.sales||0)-(a.sales||0));
+  }
   const _ocD=(CMPFROM||SKU_DATES[0])+' → '+(CMPTO||SKU_DATES[SKU_DATES.length-1]);
   const _abcPill=a=>a==='A'?'g':(a==='B'?'y':'r');
-  $('#tCmpUnc').innerHTML=`<tr><th>#</th><th>${T.skuTh[1]}</th><th style="text-align:start">${T.skuTh[2]}</th><th>${T.thCat}</th><th>${LANG==='ar'?'صنف ABC':'ABC'}</th><th>${LANG==='ar'?'رصيد افتتاح':'Opening'}</th><th>${T.thOrd}</th><th>${T.thProd}</th><th>${T.thSale}</th><th>${T.thCovP}</th><th>${T.thCovS}</th><th>${LANG==='ar'?'النقص':'Short'}</th><th>${LANG==='ar'?'رصيد إقفال':'Closing'}</th></tr>`+
+  const _arrow=k=>(CMP_UNC_SORT&&CMP_UNC_SORT.k===k)?(CMP_UNC_SORT.dir<0?' ▼':' ▲'):'<span style="opacity:.35"> ⇅</span>';
+  const _cols=[
+    {k:null,l:'#'},{k:'c',l:T.skuTh[1]},{k:'name',l:T.skuTh[2],start:true},{k:'cat',l:T.thCat},
+    {k:'abc',l:LANG==='ar'?'صنف ABC':'ABC'},{k:'open',l:LANG==='ar'?'رصيد افتتاح':'Opening'},
+    {k:'ord',l:T.thOrd},{k:'prod',l:T.thProd},{k:'sales',l:T.thSale},
+    {k:'covP',l:T.thCovP},{k:'covS',l:T.thCovS},
+    {k:'shortQty',l:LANG==='ar'?'النقص':'Short'},{k:'close',l:LANG==='ar'?'رصيد إقفال':'Closing'}];
+  const _tipS=LANG==='ar'?'اضغط للترتيب (تصاعدي/تنازلي)':'Click to sort (asc/desc)';
+  $('#tCmpUnc').innerHTML=`<thead><tr>`+
+   _cols.map(c=>c.k
+     ?`<th data-sk="${c.k}" title="${_tipS}" style="cursor:pointer;user-select:none;white-space:nowrap${c.start?';text-align:start':''}">${c.l}${_arrow(c.k)}</th>`
+     :`<th${c.start?' style="text-align:start"':''}>${c.l}</th>`).join('')+
+   `</tr></thead><tbody>`+
    rows.map((p,i)=>`<tr><td>${i+1}</td><td>${p.c}</td><td style="text-align:start">${prodName(p)}</td><td>${T.cats[p.cat]||p.cat}</td>
    <td>${ABCMAP[p.c]?`<span class="pill ${_abcPill(ABCMAP[p.c])}">${ABCMAP[p.c]}</span>`:'—'}</td>
    <td class="num">${F(p.open)}</td>
@@ -3490,7 +3523,14 @@ function renderCmp(){
    `<tr style="font-weight:800;border-top:2px solid var(--bd)"><td>—</td><td>${LANG==='ar'?'الإجمالي':'Total'}</td><td style="text-align:start">${rows.length} ${LANG==='ar'?'منتج بحركة خلال الفترة':'products with movement'}</td><td>—</td><td>—</td>
    <td class="num">${F(rows.reduce((a,r)=>a+(r.open||0),0))}</td>
    <td class="num">${F(rows.reduce((a,r)=>a+(r.ord||0),0))}</td><td class="num">${F(rows.reduce((a,r)=>a+(r.prod||0),0))}</td><td class="num">${F(rows.reduce((a,r)=>a+(r.sales||0),0))}</td>
-   <td>—</td><td>—</td><td class="num">${F(rows.reduce((a,r)=>a+(r.shortQty||0),0))}</td><td class="num">${F(rows.reduce((a,r)=>a+(r.close||0),0))}</td></tr>`;
+   <td>—</td><td>—</td><td class="num">${F(rows.reduce((a,r)=>a+(r.shortQty||0),0))}</td><td class="num">${F(rows.reduce((a,r)=>a+(r.close||0),0))}</td></tr></tbody>`;
+  // header click → sort (alphabetic starts A→Z, numeric starts biggest→smallest; click again flips)
+  $('#tCmpUnc').querySelectorAll('th[data-sk]').forEach(th=>{th.onclick=()=>{
+    const k=th.dataset.sk;
+    if(CMP_UNC_SORT.k===k)CMP_UNC_SORT.dir=-CMP_UNC_SORT.dir;
+    else CMP_UNC_SORT={k,dir:_ALPHA.includes(k)?1:-1};
+    renderCmp();
+  };});
   // wire granularity buttons (delegation covers perBtn; gran handled here)
   document.querySelectorAll('.granBtn').forEach(b=>b.onclick=()=>{CMPGRAN=b.dataset.g;renderCmp();});
   wirePeriod();
@@ -6200,6 +6240,7 @@ function exportTableXLSX(tableId, name){
     tbl.querySelectorAll('tr').forEach(tr=>{
       const cells=[...tr.querySelectorAll('th,td')].map(td=>{
         let txt=(td.textContent||'').trim();
+        if(td.tagName==='TH')txt=txt.replace(/[⇅▲▼]/g,'').trim();   // drop sort indicators from headers
         // convert pure-number-looking strings (with thousands commas) to numbers
         const numTest=txt.replace(/[,\s]/g,'').replace(/[▲▼]/g,'');
         if(/^-?\d+(\.\d+)?%?$/.test(numTest)){
