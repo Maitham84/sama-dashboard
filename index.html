@@ -864,7 +864,7 @@ ar:{dir:'rtl', title:'شركة سما كربلاء — مجزر الدواجن',
  cmpGranD:'يومي', cmpGranW:'أسبوعي',
  cmpFromL:'من', cmpToL:'إلى', cmpClearD:'كل الفترة', cmpTrendT:'الاتجاه — طلبات / إنتاج / مبيعات', cmpCovT:'نسبة التغطية (الإنتاج÷الطلب و المبيعات÷الطلب)',
  cmpGapT:'الفجوة (إنتاج − طلب) بالصناديق', cmpUncT:'تحليل الطلبات غير المُغطّاة',
- cmpUncSub:'المنتجات الأقل تغطيةً إنتاجاً أو مبيعاً عبر كامل الفترة',
+ cmpUncSub:'كل المنتجات التي لها حركة خلال الفترة (طلب أو إنتاج أو مبيعات) — مرتّبة بالأكثر نقصاً، مع تصنيف ABC',
  cmpKO:'إجمالي الطلبات', cmpKP:'إجمالي الإنتاج', cmpKS:'إجمالي المبيعات',
  cmpKcovP:'تغطية الإنتاج', cmpKcovS:'تغطية المبيعات', cmpKgap:'فجوة الإنتاج', cmpKshort:'منتجات بنقص تغطية',
  cmpMcovP:'الأقل تغطية إنتاج', cmpMcovS:'الأقل تغطية مبيعات', cmpMrate:'الأكثر تكراراً للنقص', cmpMqty:'الأكبر كمية نقص',
@@ -998,7 +998,7 @@ ar:{dir:'rtl', title:'شركة سما كربلاء — مجزر الدواجن',
  impDo:'تحديث', impClose:'إغلاق', impReset:'استرجاع البيانات الأصلية',
  impOk:d=>'تم التحديث بنجاح ✓ — آخر يوم بيانات: '+d, impErr:'خطأ في القراءة: تأكد أن بنية الملف مطابقة للأصل — ',
  impPick:'اختر ملفاً واحداً على الأقل', impBusy:'جارٍ القراءة والحساب…', impResetOk:'تم استرجاع البيانات الأصلية ✓',
- foot:' قسم التخطيط / شركة سما كربلاء | 9647704004040+ |maitham.alzubaidy@samakarbala.iq'},
+ foot:'  قسم التخطيط / شركة سما كربلاء | 9647704004040+ |maitham.alzubaidy@samakarbala.iq'},
 en:{dir:'ltr', title:'Sama Karbala Co. — Poultry Processing Plant', sub:'Executive Operations Report: Orders · Production · Sales · Inventory · Live Intake',
  asof:'Data as of', themeD:'🌙 Dark', themeL:'☀️ Light', importBtn:'⟳ Update from Excel',
  months:['January','February','March','April','May','June','July','August','September','October','November','December'],
@@ -1036,7 +1036,7 @@ en:{dir:'ltr', title:'Sama Karbala Co. — Poultry Processing Plant', sub:'Execu
  cmpGranD:'Daily', cmpGranW:'Weekly', cmpFromL:'From', cmpToL:'To', cmpClearD:'Full period',
  cmpTrendT:'Trend — Orders / Production / Sales', cmpCovT:'Coverage ratio (Production÷Orders & Sales÷Orders)',
  cmpGapT:'Gap (Production − Orders) in boxes', cmpUncT:'Uncovered Orders Analysis',
- cmpUncSub:'Products with the weakest production or sales coverage over the full period',
+ cmpUncSub:'Every product with any movement in the period (orders, production or sales) — sorted by biggest shortfall, with ABC class',
  cmpKO:'Total orders', cmpKP:'Total production', cmpKS:'Total sales',
  cmpKcovP:'Production coverage', cmpKcovS:'Sales coverage', cmpKgap:'Production gap', cmpKshort:'Under-covered products',
  cmpMcovP:'Lowest production coverage', cmpMcovS:'Lowest sales coverage', cmpMrate:'Most frequent shortfall', cmpMqty:'Largest shortfall qty',
@@ -3464,22 +3464,33 @@ function renderCmp(){
   const _uIdx=[]; SKU_DATES.forEach((d,i)=>{ if((!CMPFROM||d>=CMPFROM)&&(!CMPTO||d<=CMPTO)) _uIdx.push(i); });
   let rows=_passSku.map(p=>{
     let to=0,tp=0,ts=0; _uIdx.forEach(i=>{to+=(p.dO&&p.dO[i])||0;tp+=(p.dP&&p.dP[i])||0;ts+=(p.dS&&p.dS[i])||0;});
-    if(to<=0)return null;
+    if(to<=0&&tp<=0&&ts<=0)return null;   // keep EVERY product with any movement (order OR production OR sales)
     const oc=prodOpenClose(p,CMPFROM,CMPTO);
     const fulfilled=Math.max(tp,ts); const sq=Math.max(0,to-fulfilled);
     return {c:p.c,n:p.n,nAr:p.nAr,cat:p.cat,ord:Math.round(to),prod:Math.round(tp),sales:Math.round(ts),
       covP:to>0?tp/to:null,covS:to>0?ts/to:null,shortQty:Math.round(sq),open:oc.open,close:oc.close};
   }).filter(Boolean);
-  // default sort: biggest shortfall first (most urgent uncovered orders)
-  rows.sort((a,b)=>(b.shortQty||0)-(a.shortQty||0));
+  // ABC class over the SAME period — identical rule to the ABC tab (rank by sales boxes, cumulative 80% / 95%)
+  const _abcSorted=rows.map(r=>({c:r.c,s:r.sales})).filter(x=>x.s>0).sort((a,b)=>b.s-a.s);
+  const _abcTot=_abcSorted.reduce((a,x)=>a+x.s,0);
+  const ABCMAP={}; let _abcCum=0;
+  _abcSorted.forEach(x=>{_abcCum+=x.s;const cp=_abcTot?(_abcCum/_abcTot*100):0;ABCMAP[x.c]=cp<=80?'A':(cp<=95?'B':'C');});
+  // default sort: biggest shortfall first (most urgent uncovered orders), then by orders, then sales
+  rows.sort((a,b)=>(b.shortQty||0)-(a.shortQty||0)||(b.ord||0)-(a.ord||0)||(b.sales||0)-(a.sales||0));
   const _ocD=(CMPFROM||SKU_DATES[0])+' → '+(CMPTO||SKU_DATES[SKU_DATES.length-1]);
-  $('#tCmpUnc').innerHTML=`<tr><th>#</th><th>${T.skuTh[1]}</th><th style="text-align:start">${T.skuTh[2]}</th><th>${T.thCat}</th><th>${LANG==='ar'?'رصيد افتتاح':'Opening'}</th><th>${T.thOrd}</th><th>${T.thProd}</th><th>${T.thSale}</th><th>${T.thCovP}</th><th>${T.thCovS}</th><th>${LANG==='ar'?'النقص':'Short'}</th><th>${LANG==='ar'?'رصيد إقفال':'Closing'}</th></tr>`+
-   rows.slice(0,60).map((p,i)=>`<tr><td>${i+1}</td><td>${p.c}</td><td style="text-align:start">${prodName(p)}</td><td>${T.cats[p.cat]||p.cat}</td>
+  const _abcPill=a=>a==='A'?'g':(a==='B'?'y':'r');
+  $('#tCmpUnc').innerHTML=`<tr><th>#</th><th>${T.skuTh[1]}</th><th style="text-align:start">${T.skuTh[2]}</th><th>${T.thCat}</th><th>${LANG==='ar'?'صنف ABC':'ABC'}</th><th>${LANG==='ar'?'رصيد افتتاح':'Opening'}</th><th>${T.thOrd}</th><th>${T.thProd}</th><th>${T.thSale}</th><th>${T.thCovP}</th><th>${T.thCovS}</th><th>${LANG==='ar'?'النقص':'Short'}</th><th>${LANG==='ar'?'رصيد إقفال':'Closing'}</th></tr>`+
+   rows.map((p,i)=>`<tr><td>${i+1}</td><td>${p.c}</td><td style="text-align:start">${prodName(p)}</td><td>${T.cats[p.cat]||p.cat}</td>
+   <td>${ABCMAP[p.c]?`<span class="pill ${_abcPill(ABCMAP[p.c])}">${ABCMAP[p.c]}</span>`:'—'}</td>
    <td class="num">${F(p.open)}</td>
    <td class="num">${F(p.ord)}</td><td class="num">${F(p.prod)}</td><td class="num">${F(p.sales)}</td>
    <td>${p.covP==null?'—':`<span class="pill ${p.covP>=0.95?'g':(p.covP>=0.7?'y':'r')}">${Pc(p.covP,0)}</span>`}</td>
    <td>${p.covS==null?'—':`<span class="pill ${p.covS>=0.95?'g':(p.covS>=0.7?'y':'r')}">${Pc(p.covS,0)}</span>`}</td>
-   <td class="num">${F(p.shortQty)}</td><td class="num">${F(p.close)}</td></tr>`).join('');
+   <td class="num">${F(p.shortQty)}</td><td class="num">${F(p.close)}</td></tr>`).join('')+
+   `<tr style="font-weight:800;border-top:2px solid var(--bd)"><td>—</td><td>${LANG==='ar'?'الإجمالي':'Total'}</td><td style="text-align:start">${rows.length} ${LANG==='ar'?'منتج بحركة خلال الفترة':'products with movement'}</td><td>—</td><td>—</td>
+   <td class="num">${F(rows.reduce((a,r)=>a+(r.open||0),0))}</td>
+   <td class="num">${F(rows.reduce((a,r)=>a+(r.ord||0),0))}</td><td class="num">${F(rows.reduce((a,r)=>a+(r.prod||0),0))}</td><td class="num">${F(rows.reduce((a,r)=>a+(r.sales||0),0))}</td>
+   <td>—</td><td>—</td><td class="num">${F(rows.reduce((a,r)=>a+(r.shortQty||0),0))}</td><td class="num">${F(rows.reduce((a,r)=>a+(r.close||0),0))}</td></tr>`;
   // wire granularity buttons (delegation covers perBtn; gran handled here)
   document.querySelectorAll('.granBtn').forEach(b=>b.onclick=()=>{CMPGRAN=b.dataset.g;renderCmp();});
   wirePeriod();
