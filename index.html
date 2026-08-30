@@ -12,14 +12,18 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
 :root, html[data-theme="dark"]{
-  --bg:#0C1420; --panel:#131F2E; --panel2:#182636; --line:#23344A;
-  --ink:#EAF0F7; --mut:#8DA2B8; --gold:#D9A441; --gold2:#F0C470;
-  --good:#3FA372; --bad:#D9534F; --sky:#5BA8D9; --vio:#9B7ED9; --shadow:none;
+  --bg:#080D16; --panel:#121C2C; --panel2:#182437; --line:#2C4160;
+  --ink:#F3F7FC; --mut:#93A9C2; --gold:#E8A930; --gold2:#FFCF66;
+  --good:#2FBD7E; --bad:#EF4B54; --sky:#3FA9F5; --vio:#A876F0; --shadow:0 10px 28px rgba(0,0,0,.45);
+  --accent-glow:0 0 0 1px rgba(232,169,48,.25), 0 8px 24px rgba(232,169,48,.10);
+  --stripe:rgba(255,255,255,.025); --grp-bg:#1B2A40; --grp-ink:#CBD8EA;
 }
 html[data-theme="light"]{
-  --bg:#F2F4F7; --panel:#FFFFFF; --panel2:#EEF2F7; --line:#D7DEE8;
-  --ink:#1B2837; --mut:#5C6E82; --gold:#B07E1F; --gold2:#9A6E15;
-  --good:#1E7A4E; --bad:#B8362F; --sky:#2A6FA8; --vio:#6B4FA8; --shadow:0 1px 3px rgba(20,30,45,.08);
+  --bg:#EEF1F6; --panel:#FFFFFF; --panel2:#F3F6FB; --line:#C7D2E3;
+  --ink:#101A2B; --mut:#51617A; --gold:#B4790F; --gold2:#8F5E0C;
+  --good:#158A55; --bad:#C42E37; --sky:#1968A6; --vio:#6B3FC4; --shadow:0 6px 18px rgba(20,30,45,.10);
+  --accent-glow:0 0 0 1px rgba(180,121,15,.18), 0 6px 16px rgba(180,121,15,.10);
+  --stripe:rgba(16,26,43,.03); --grp-bg:#E4EAF3; --grp-ink:#2C4160;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--bg);color:var(--ink);font-family:'IBM Plex Sans Arabic','Segoe UI',sans-serif;font-size:14px;transition:background .25s}
@@ -35,35 +39,39 @@ h1,h2,h3{font-family:'Tajawal','Segoe UI',sans-serif}
 .hctrl{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .asof{color:var(--mut);font-size:11.5px;text-align:center}
 .asof b{display:block;color:var(--gold2);font-size:14px;font-family:'Tajawal'}
-.btn{background:var(--gold);color:#1a1206;border:none;border-radius:10px;font-family:'Tajawal';font-weight:800;font-size:13.5px;padding:9px 16px;cursor:pointer}
+.btn{background:linear-gradient(180deg,var(--gold2),var(--gold));color:#1a1206;border:none;border-radius:8px;font-family:'Tajawal';font-weight:800;font-size:13.5px;padding:9px 16px;cursor:pointer;box-shadow:0 4px 12px rgba(232,169,48,.28)}
 html[data-theme="light"] .btn:not(.ghost){color:#fff}
 html[data-theme="light"] .btn.ghost{color:var(--mut);border-color:var(--line)}
-.btn:hover{filter:brightness(1.08)}
-.btn.ghost{background:none;border:1px solid var(--line);color:var(--mut)}
+.btn:hover{filter:brightness(1.1);box-shadow:0 6px 16px rgba(232,169,48,.4)}
+.btn:active{transform:translateY(1px)}
+.btn.ghost{background:none;border:1.5px solid var(--line);color:var(--mut);box-shadow:none}
 #friBtn.on{background:var(--gold);border-color:var(--gold);color:#1a1206}
 html[data-theme="light"] #friBtn.on{color:#fff}
-.chain{display:grid;grid-template-columns:repeat(5,1fr);margin:16px 0 4px;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--panel);box-shadow:var(--shadow)}
-.chain .step{padding:13px 15px;position:relative;border-inline-start:1px solid var(--line)}
+.chain{display:grid;grid-template-columns:repeat(5,1fr);margin:16px 0 4px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:linear-gradient(180deg,var(--panel),var(--panel2));box-shadow:var(--shadow)}
+.chain .step{padding:14px 15px;position:relative;border-inline-start:1px solid var(--line)}
 .chain .step:first-child{border-inline-start:none}
-.chain .step::after{content:"◄";position:absolute;inset-inline-start:-9px;top:50%;transform:translateY(-50%);color:var(--gold);font-size:11px;background:var(--bg);border:1px solid var(--line);border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center}
+.chain .step::after{content:"◄";position:absolute;inset-inline-start:-10px;top:50%;transform:translateY(-50%);color:#1a1206;font-size:11px;background:var(--gold);border:2px solid var(--bg);border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-weight:800}
 html[dir="ltr"] .chain .step::after{content:"►"}
 .chain .step:first-child::after{display:none}
-.chain .lbl{color:var(--mut);font-size:11px;margin-bottom:5px}
-.chain .val{font-family:'Tajawal';font-weight:800;font-size:20px}
+.chain .lbl{color:var(--mut);font-size:11px;margin-bottom:5px;text-transform:uppercase;letter-spacing:.03em}
+.chain .val{font-family:'Tajawal';font-weight:800;font-size:21px;letter-spacing:-.01em}
 .chain .val span{font-size:11px;color:var(--mut);font-weight:500}
 .chain .step.gold .val{color:var(--gold2)}
+.chain .step.gold{background:rgba(232,169,48,.06)}
 nav{position:sticky;top:0;z-index:50;background:var(--bg);border-bottom:1px solid var(--line)}
 nav .wrap{display:flex;gap:4px;overflow-x:auto;padding:9px 20px}
-nav button{background:none;border:1px solid transparent;color:var(--mut);font-family:'Tajawal';font-weight:700;font-size:13.5px;padding:8px 14px;border-radius:10px;cursor:pointer;white-space:nowrap}
-nav button.on{background:var(--panel2);border-color:var(--gold);color:var(--gold2)}
+nav button{background:none;border:1px solid transparent;color:var(--mut);font-family:'Tajawal';font-weight:700;font-size:13.5px;padding:8px 14px;border-radius:8px;cursor:pointer;white-space:nowrap;transition:background .15s,color .15s}
+nav button:hover{color:var(--ink)}
+nav button.on{background:var(--panel2);border-color:var(--gold);color:var(--gold2);box-shadow:var(--accent-glow);font-weight:800}
 section{display:none;padding:20px 0 50px}
 section.on{display:block}
 .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:12px 0}
-.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:13px 15px;box-shadow:var(--shadow)}
-.card .k{color:var(--mut);font-size:11.5px;margin-bottom:6px;line-height:1.6}
-.card .v{font-family:'Tajawal';font-weight:800;font-size:23px}
+.card{background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--gold);border-radius:10px;padding:13px 15px;box-shadow:var(--shadow);transition:transform .15s ease,box-shadow .15s ease}
+.card:hover{transform:translateY(-2px);box-shadow:var(--accent-glow),var(--shadow)}
+.card .k{color:var(--mut);font-size:11.5px;margin-bottom:6px;line-height:1.6;text-transform:uppercase;letter-spacing:.03em}
+.card .v{font-family:'Tajawal';font-weight:800;font-size:24px;letter-spacing:-.01em}
 .card .d{font-size:11.5px;margin-top:6px;color:var(--mut);line-height:1.8}
-.up{color:var(--good)} .dn{color:var(--bad)} .gold{color:var(--gold2)}
+.up{color:var(--good);font-weight:800} .dn{color:var(--bad);font-weight:800} .gold{color:var(--gold2)}
 .secthead{display:flex;align-items:baseline;gap:12px;margin:22px 0 4px;flex-wrap:wrap}
 .secthead h2{font-size:16.5px;font-weight:800;color:var(--gold2)}
 .secthead small{color:var(--mut)}
@@ -87,13 +95,13 @@ body{overflow-x:hidden}
   .ch{height:240px;direction:ltr}
   .tbl{font-size:11px}.tbl th,.tbl td{padding:5px 6px}
 }
-.panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:15px;box-shadow:var(--shadow)}
-.panel h3{font-size:13.5px;margin-bottom:11px;font-weight:700}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:15px;box-shadow:var(--shadow)}
+.panel h3{font-size:13.5px;margin-bottom:11px;font-weight:800;color:var(--gold2);letter-spacing:.01em;padding-bottom:8px;border-bottom:2px solid var(--line)}
 /* ===== Power BI visuals (exec) ===== */
 .card .spark{margin-top:8px;width:100%;height:36px;display:block}
-.dchip{display:inline-block;font-size:11px;font-weight:800;padding:1px 8px;border-radius:999px;margin-inline-start:7px;vertical-align:2px;letter-spacing:.2px}
-.dchip.up{background:rgba(56,161,105,.14);color:var(--good)}
-.dchip.dn{background:rgba(214,69,69,.13);color:var(--bad)}
+.dchip{display:inline-block;font-size:11px;font-weight:800;padding:2px 9px;border-radius:999px;margin-inline-start:7px;vertical-align:2px;letter-spacing:.2px}
+.dchip.up{background:rgba(47,189,126,.18);color:var(--good)}
+.dchip.dn{background:rgba(239,75,84,.18);color:var(--bad)}
 .grid3pb{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:12px 0}
 @media(max-width:1000px){.grid3pb{grid-template-columns:minmax(0,1fr)}}
 .gaugebox{display:flex;justify-content:center;align-items:center;min-height:150px}
@@ -101,17 +109,34 @@ body{overflow-x:hidden}
 .funbox{padding:4px 2px}
 .funbox svg{width:100%;height:auto;display:block}
 .ch{position:relative;height:280px}
-.tbl{width:100%;border-collapse:collapse;font-size:12.5px}
-.tbl th{background:var(--panel2);color:var(--mut);font-weight:700;padding:8px 9px;text-align:center;position:sticky;top:0;z-index:5;box-shadow:inset 0 -1px 0 var(--line),0 2px 6px rgba(0,0,0,.28)}
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl th{background:var(--panel2);color:var(--gold2);font-weight:800;padding:10px 10px;text-align:center;position:sticky;top:0;z-index:5;box-shadow:inset 0 -2px 0 var(--gold),0 2px 8px rgba(0,0,0,.35);text-transform:uppercase;font-size:11px;letter-spacing:.03em;border-inline-start:1px solid var(--line)}
+.tbl th:first-child{border-inline-start:none}
 .tbl thead th{z-index:6}
 .tbl th[data-sk]:hover{color:var(--ink);background:var(--panel)}
-.tbl td{padding:6.5px 9px;border-bottom:1px solid var(--line);text-align:center}
-.tbl tr:hover td{background:rgba(217,164,65,.06)}
-.tscroll{max-height:430px;overflow:auto;border:1px solid var(--line);border-radius:12px;background:var(--panel)}
-.pill{display:inline-block;padding:1px 8px;border-radius:99px;font-size:11px}
-.pill.g{background:rgba(63,163,114,.16);color:var(--good)}
-.pill.b{background:rgba(58,124,165,.15);color:#3a7ca5} .pill.r{background:rgba(217,83,79,.16);color:var(--bad)}
-.pill.y{background:rgba(217,164,65,.16);color:var(--gold2)}
+.tbl tr.grp th{background:var(--grp-bg);color:var(--grp-ink);box-shadow:inset 0 -1px 0 var(--line);font-size:10.5px;padding:7px 10px;position:static}
+.tbl tr.grp th.g-on{color:var(--gold2);font-weight:800}
+.tbl td{padding:9px 10px;border-bottom:1px solid var(--line);border-inline-start:1px solid var(--line);text-align:center;font-size:13px}
+.tbl td:first-child{border-inline-start:none}
+.tbl td.num,.tbl td b{font-weight:800;font-variant-numeric:tabular-nums}
+.tbl tr:nth-child(even) td{background:var(--stripe)}
+.tbl tr:hover td{background:rgba(232,169,48,.12)}
+.tbl tr.tbl-total td{background:var(--panel2);font-weight:800;border-top:2px solid var(--gold)}
+.tscroll{max-height:430px;overflow:auto;border:1px solid var(--line);border-radius:10px;background:var(--panel);box-shadow:var(--shadow)}
+.pbar-wrap{display:flex;align-items:center;gap:8px;min-width:120px}
+.pbar-track{position:relative;flex:1;height:9px;border-radius:5px;background:var(--panel2);border:1px solid var(--line);overflow:visible}
+.pbar-fill{height:100%;border-radius:5px;background:linear-gradient(90deg,var(--gold),var(--gold2))}
+.pbar-mark{position:absolute;top:-3px;width:2px;height:15px;background:var(--ink);opacity:.55;border-radius:1px}
+.pbar-delta{font-size:11px;font-weight:800;white-space:nowrap}
+.pbar-delta.up{color:var(--good)} .pbar-delta.dn{color:var(--bad)}
+.dlt{display:inline-flex;align-items:center;gap:3px;font-weight:800;font-size:11.5px;padding:3px 9px;border-radius:7px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.dlt.up{background:rgba(47,189,126,.16);color:var(--good)}
+.dlt.dn{background:rgba(239,75,84,.16);color:var(--bad)}
+.dlt.flat{background:rgba(147,169,194,.14);color:var(--mut)}
+.pill{display:inline-block;padding:2px 9px;border-radius:99px;font-size:11px;font-weight:700}
+.pill.g{background:rgba(47,189,126,.18);color:var(--good)}
+.pill.b{background:rgba(63,169,245,.16);color:var(--sky)} .pill.r{background:rgba(239,75,84,.18);color:var(--bad)}
+.pill.y{background:rgba(232,169,48,.18);color:var(--gold2)}
 .search{display:flex;gap:10px;margin:12px 0;flex-wrap:wrap}
 .search input,.search select{background:var(--panel);border:1px solid var(--line);border-radius:10px;color:var(--ink);padding:9px 13px;font-size:13px;font-family:inherit}
 .search input{flex:1;min-width:220px}
@@ -1207,6 +1232,19 @@ const fmtM=lbl=>{const [m,y]=lbl.split('/').map(Number);return t().months[m-1]+'
 const F=n=>n==null?'—':Math.round(Number(n)).toLocaleString('en-GB');
 const Fk=n=>n==null?'—':(Math.abs(n)>=1e6?(n/1e6).toFixed(2)+'M':Math.abs(n)>=1e3?Math.round(n/1e3)+'k':Math.round(n));
 const Pc=(x,d=1)=>x==null?'—':(x*100).toFixed(d)+'%';
+// Power BI-style inline "plan vs actual" progress bar for table cells.
+// plan/actual are numbers; the gold bar fills to actual% of the larger of plan/actual,
+// with a marker at the plan position, plus a colored delta chip.
+function pbar(plan,actual){
+  if(plan==null||actual==null||!isFinite(plan)||!isFinite(actual))return '—';
+  const max=Math.max(plan,actual,1)*1.02;
+  const fillPct=Math.max(0,Math.min(100,(actual/max)*100));
+  const markPct=Math.max(0,Math.min(100,(plan/max)*100));
+  const diff=actual-plan;
+  const dCls=diff>=0?'up':'dn';
+  const dTxt=(diff>=0?'+':'')+F(diff);
+  return `<div class="pbar-wrap"><div class="pbar-track"><div class="pbar-fill" style="width:${fillPct}%"></div><div class="pbar-mark" style="inset-inline-start:${markPct}%"></div></div><span class="pbar-delta ${dCls}">${dTxt}</span></div>`;
+}
 const $=s=>document.querySelector(s);
 const charts={};
 function mk(id,cfg){if(charts[id])charts[id].destroy();charts[id]=new Chart(document.getElementById(id),pbify(cfg))}
@@ -1264,10 +1302,38 @@ function pbify(cfg){
     sc[catAx].border=Object.assign({display:false},sc[catAx].border||{});
     sc[valAx]=sc[valAx]||{}; sc[valAx].grid=Object.assign({color:soft},sc[valAx].grid||{});
     sc[valAx].border=Object.assign({display:false},sc[valAx].border||{});
+    // Force every category (y-axis, horizontal-bar) label onto a single line at a fixed
+    // pixel-measured width, so bar rows always line up evenly instead of some wrapping
+    // to 2 lines and others staying at 1 (Chart.js auto-wraps long tick text otherwise).
+    if(horiz){
+      const labels=cfg.data.labels;
+      if(Array.isArray(labels)&&labels.length&&typeof labels[0]==='string'){
+        const fontSize=(sc[catAx].ticks&&sc[catAx].ticks.font&&sc[catAx].ticks.font.size)||10.5;
+        const mctx=pbMeasureCtx(); mctx.font=fontSize+'px '+Chart.defaults.font.family;
+        const CAP=260, PAD=22;
+        const fitOne=s=>{
+          if(mctx.measureText(s).width<=CAP-PAD)return s;
+          let lo=0,hi=s.length;
+          while(lo<hi){const mid=(lo+hi+1)>>1;
+            if(mctx.measureText(s.slice(0,mid)+'…').width<=CAP-PAD)lo=mid; else hi=mid-1;}
+          return lo>0?s.slice(0,lo)+'…':s.slice(0,1)+'…';
+        };
+        cfg.data.labels=labels.map(l=>fitOne(String(l==null?'':l)));
+        const measured=Math.max(60,...cfg.data.labels.map(l=>mctx.measureText(l).width+PAD+8));
+        const fixedW=Math.min(CAP,measured);
+        sc[catAx].afterFit=scale=>{scale.width=fixedW;};
+        sc[catAx].ticks=Object.assign({autoSkip:false},sc[catAx].ticks||{});
+      }
+    }
   }
   return cfg;
 }
 function css(v){return getComputedStyle(document.documentElement).getPropertyValue(v).trim()}
+let _pbMeasureCtx=null;
+function pbMeasureCtx(){
+  if(_pbMeasureCtx)return _pbMeasureCtx;
+  const c=document.createElement('canvas'); _pbMeasureCtx=c.getContext('2d'); return _pbMeasureCtx;
+}
 let GOLD,SKY,GREEN,VIO,RED,MUT;
 function loadColors(){GOLD=css('--gold');SKY=css('--sky');GREEN=css('--good');VIO=css('--vio');RED=css('--bad');MUT=css('--mut');
  Chart.defaults.color=MUT;Chart.defaults.borderColor=css('--line');
@@ -1509,15 +1575,16 @@ function renderExec(){
    options:{maintainAspectRatio:false,scales:{y:{ticks:{callback:v=>v+'%'}}},plugins:{legend:{display:false}}}});
   $('#topTitle').textContent=T.chTop(fmtM(lm.label));
   const _topLbl=x=>{const nm=String(prodName(x)||x.name||'');
-    // wrap into 2 lines so the full name shows
-    if(nm.length<=28)return nm;
-    const words=nm.split(' ');let l1='',l2='';
-    words.forEach(w=>{ if((l1+' '+w).trim().length<=28&&!l2)l1=(l1+' '+w).trim(); else l2=(l2+' '+w).trim(); });
-    return l2?[l1,l2.length>28?l2.slice(0,27)+'…':l2]:l1;};
+    // single line only — wrapping to 2 lines breaks tick/bar alignment in Chart.js
+    return nm.length<=34?nm:nm.slice(0,33)+'…';};
+  const topEl=document.getElementById('cTop');
+  if(topEl&&topEl.parentElement){topEl.parentElement.style.height=Math.max(280,DATA.top10.length*30+40)+'px';}
   mk('cTop',{type:'bar',data:{labels:DATA.top10.map(_topLbl),
    datasets:[{data:DATA.top10.map(x=>x.v),backgroundColor:GOLD,
     datalabels:{display:true,...DL(),anchor:'end',align:'start',color:'#1a1206'}}]},
-   options:{indexAxis:'y',maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{font:{size:9.5}}}}}});
+   options:{indexAxis:'y',maintainAspectRatio:false,plugins:{legend:{display:false},
+     tooltip:{callbacks:{title:c=>{const x=DATA.top10[c[0].dataIndex];return String(prodName(x)||x.name||'');}}}},
+     scales:{y:{ticks:{font:{size:10.5},autoSkip:false}}}}});
   mk('cWd',{type:'bar',data:{labels:T.days,
    datasets:[{data:DATA.wd.map(d=>d.v),backgroundColor:DATA.wd.map((d,i)=>i===6?'#6B7E94':SKY),
     datalabels:{display:true,...DL(),anchor:'end',align:'start'}}]},
@@ -3173,10 +3240,8 @@ function renderStk(){
   const chEl=document.getElementById('cStkProd');
   if(chEl&&chEl.parentElement){chEl.parentElement.style.height=Math.max(300,shown.length*26+60)+'px';}
   const _stkLbl=r=>{const nm=String(prodName(r)||'');
-    if(nm.length<=30)return nm;
-    const words=nm.split(' ');let l1='',l2='';
-    words.forEach(w=>{ if((l1+' '+w).trim().length<=30&&!l2)l1=(l1+' '+w).trim(); else l2=(l2+' '+w).trim(); });
-    return l2?[l1,l2.length>30?l2.slice(0,29)+'…':l2]:l1;};
+    // single line only — wrapping to 2 lines breaks tick/bar alignment in Chart.js
+    return nm.length<=38?nm:nm.slice(0,37)+'…';};
   mk('cStkProd',{type:'bar',data:{labels:shown.map(_stkLbl),datasets:[{
     label:LANG==='ar'?'صناديق':'Boxes',
     data:shown.map(r=>r.bal),
@@ -3184,8 +3249,8 @@ function renderStk(){
     datalabels:{display:true,color:css('--ink'),font:{size:9,weight:'700'},anchor:'end',align:'end',formatter:v=>F(v)}}]},
     options:{indexAxis:'y',maintainAspectRatio:false,
       plugins:{legend:{display:false},
-        tooltip:{callbacks:{label:c=>{const r=shown[c.dataIndex];return F(r.bal)+' '+(LANG==='ar'?'صندوق':'box')+' · '+F(r.kg)+' '+(LANG==='ar'?'كغم':'kg');}}}},
-      scales:{x:{beginAtZero:true,grid:{color:css('--line')}},y:{grid:{display:false},ticks:{font:{size:10}}}}}});
+        tooltip:{callbacks:{title:c=>String(prodName(shown[c[0].dataIndex])||''),label:c=>{const r=shown[c.dataIndex];return F(r.bal)+' '+(LANG==='ar'?'صندوق':'box')+' · '+F(r.kg)+' '+(LANG==='ar'?'كغم':'kg');}}}},
+      scales:{x:{beginAtZero:true,grid:{color:css('--line')}},y:{grid:{display:false},ticks:{font:{size:10.5},autoSkip:false}}}}});
   // products table
   window.__stkD=D;
   renderStkTable();
@@ -3197,9 +3262,11 @@ function renderStkTable(){
   if(q)rows=rows.filter(r=>String(r.name).toLowerCase().includes(q)||String(r.code).toLowerCase().includes(q));
   const ffPill=tp=>tp==='Frozen'?`<span class="pill b">${LANG==='ar'?'مجمد':'Frozen'}</span>`:`<span class="pill g">${LANG==='ar'?'فريش':'Fresh'}</span>`;
   const oLbl=LANG==='ar'?'الافتتاح':'Opening', cLbl=LANG==='ar'?'الإغلاق':'Closing';
-  $('#tStk').innerHTML=`<tr><th>${T.stkThCode}</th><th style="text-align:start">${T.stkThName}</th><th>${T.stkThCat}</th><th>${T.stkThFam}</th><th>${T.stkThPack}</th><th>${T.stkThType}</th><th>${oLbl}</th><th>${cLbl}</th><th>${T.stkThKg}</th></tr>`+
+  const grpProd=LANG==='ar'?'المنتج':'Product', grpBal=LANG==='ar'?'الرصيد (صندوق)':'Balance (boxes)';
+  $('#tStk').innerHTML=`<tr class="grp"><th colspan="6" class="g-on">${grpProd}</th><th colspan="3" class="g-on">${grpBal}</th></tr>`+
+    `<tr><th>${T.stkThCode}</th><th style="text-align:start">${T.stkThName}</th><th>${T.stkThCat}</th><th>${T.stkThFam}</th><th>${T.stkThPack}</th><th>${T.stkThType}</th><th>${oLbl}</th><th>${cLbl}</th><th>${T.stkThKg}</th></tr>`+
     rows.map(r=>`<tr><td>${r.code}</td><td style="text-align:start"><b>${prodName(r)}</b></td><td>${T.cats[r.cat]||r.cat}</td><td>${r.fam}</td><td>${r.pack}</td><td>${ffPill(r.typ)}</td><td class="num" style="opacity:.7">${F(r.openBal)}</td><td class="num"><b>${F(r.bal)}</b></td><td class="num">${F(r.kg)}</td></tr>`).join('')+
-    `<tr style="background:var(--panel2);font-weight:800"><td>—</td><td style="text-align:start">${LANG==='ar'?'الإجمالي':'Total'} (${rows.length})</td><td>—</td><td>—</td><td>—</td><td>—</td><td class="num" style="opacity:.7">${F(rows.reduce((a,r)=>a+r.openBal,0))}</td><td class="num">${F(rows.reduce((a,r)=>a+r.bal,0))}</td><td class="num">${F(rows.reduce((a,r)=>a+r.kg,0))}</td></tr>`;
+    `<tr class="tbl-total"><td>—</td><td style="text-align:start">${LANG==='ar'?'الإجمالي':'Total'} (${rows.length})</td><td>—</td><td>—</td><td>—</td><td>—</td><td class="num" style="opacity:.7">${F(rows.reduce((a,r)=>a+r.openBal,0))}</td><td class="num">${F(rows.reduce((a,r)=>a+r.bal,0))}</td><td class="num">${F(rows.reduce((a,r)=>a+r.kg,0))}</td></tr>`;
   try{injectExportButtons();}catch(e){}
 }
 
@@ -3217,20 +3284,23 @@ function renderWeekMonth(){
    options:{maintainAspectRatio:false,plugins:{legend:{labels:{boxWidth:12}}}}});
   $('#wktFilter').innerHTML=periodBar('wktFilter','wkt',[12,26,52,0]);
   const wkTbl=tail(wk,PERIOD.wkt);
-  $('#tWeek').innerHTML=`<tr><th>${T.thW}</th><th>${T.thFrom}</th><th>${T.thTo}</th><th>${T.sales}</th><th>${T.orders}</th><th>${T.prod}</th><th>${T.thFul}</th><th>${T.thWoW}</th></tr>`+
+  const grpQty=LANG==='ar'?'الكميات (صندوق)':'Volumes (boxes)', grpPerf=LANG==='ar'?'الأداء والتغيّر':'Performance & change';
+  $('#tWeek').innerHTML=`<tr class="grp"><th colspan="3"></th><th colspan="3" class="g-on">${grpQty}</th><th colspan="2" class="g-on">${grpPerf}</th></tr>`+
+   `<tr><th>${T.thW}</th><th>${T.thFrom}</th><th>${T.thTo}</th><th>${T.sales}</th><th>${T.orders}</th><th>${T.prod}</th><th>${T.thFul}</th><th>${T.thWoW}</th></tr>`+
    [...wkTbl].reverse().map((w,i,arr)=>{const pv=arr[i+1];
    return `<tr><td><b>${w.label}</b></td><td>${w.frm}</td><td>${w.to}</td>
    <td class="num"><b>${F(w.sales)}</b></td><td class="num">${F(w.orders)}</td><td class="num">${F(w.prod)}</td>
-   <td>${w.ful?`<span class="pill ${w.ful>=0.95?'g':'y'}">${Pc(w.ful)}</span>`:'—'}</td>
-   <td>${w.wow==null?'—':(w.wow>=0?`<span class="up">▲ ${Pc(w.wow)}</span>`:`<span class="dn">▼ ${Pc(Math.abs(w.wow))}</span>`)}${pv?` <span class="num" style="font-size:11px;color:var(--mut)">(${Fk(w.sales)} / ${Fk(pv.sales)})</span>`:''}</td></tr>`}).join('');
+   <td>${pbar(w.orders,w.sales)}</td>
+   <td>${w.wow==null?'—':(w.wow>=0?`<span class="dlt up">▲ ${Pc(w.wow)}</span>`:`<span class="dlt dn">▼ ${Pc(Math.abs(w.wow))}</span>`)}${pv?` <span class="num" style="font-size:11px;color:var(--mut)">(${Fk(w.sales)} / ${Fk(pv.sales)})</span>`:''}</td></tr>`}).join('');
   $('#motFilter').innerHTML=periodBar('motFilter','mot',[6,12,0]);
   const moTbl=tail(mm,PERIOD.mot);
-  $('#tMonth').innerHTML=`<tr><th>${T.moTitle.split(' ')[0]==='التحليل'?'الشهر':'Month'}</th><th>${T.thDays}</th><th>${T.sales}</th><th>${T.orders}</th><th>${T.prod}</th><th>${T.thFul}</th><th>${T.thMoM}</th><th>${T.thAvg}</th></tr>`+
+  $('#tMonth').innerHTML=`<tr class="grp"><th colspan="2"></th><th colspan="3" class="g-on">${grpQty}</th><th colspan="3" class="g-on">${grpPerf}</th></tr>`+
+   `<tr><th>${T.moTitle.split(' ')[0]==='التحليل'?'الشهر':'Month'}</th><th>${T.thDays}</th><th>${T.sales}</th><th>${T.orders}</th><th>${T.prod}</th><th>${T.thFul}</th><th>${T.thMoM}</th><th>${T.thAvg}</th></tr>`+
    [...moTbl].reverse().map((m,i,arr)=>{const pv=arr[i+1];
    return `<tr><td><b>${fmtM(m.label)}</b></td><td>${m.days}</td><td class="num"><b>${F(m.sales)}</b></td>
    <td class="num">${F(m.orders)}</td><td class="num">${F(m.prod)}</td>
-   <td>${m.ful?`<span class="pill ${m.ful>=0.95?'g':'y'}">${Pc(m.ful)}</span>`:'—'}</td>
-   <td>${m.mom==null?'—':(m.mom>=0?`<span class="up">▲ ${Pc(m.mom)}</span>`:`<span class="dn">▼ ${Pc(Math.abs(m.mom))}</span>`)}${pv?` <span class="num" style="font-size:11px;color:var(--mut)">(${Fk(m.sales)} / ${Fk(pv.sales)})</span>`:''}</td>
+   <td>${pbar(m.orders,m.sales)}</td>
+   <td>${m.mom==null?'—':(m.mom>=0?`<span class="dlt up">▲ ${Pc(m.mom)}</span>`:`<span class="dlt dn">▼ ${Pc(Math.abs(m.mom))}</span>`)}${pv?` <span class="num" style="font-size:11px;color:var(--mut)">(${Fk(m.sales)} / ${Fk(pv.sales)})</span>`:''}</td>
    <td class="num">${F(m.avg)}</td></tr>`}).join('');
   wirePeriod();
 }
@@ -5104,7 +5174,7 @@ function geoRenderGrowth(M,mu,fmtV,AR){
       datasets:[{data:items.map(x=>x.pc==null?100:x.pc*100),backgroundColor:items.map(x=>(x.pc==null||x.pc>=0)?'#1AAB40':'#D64550'),label:'%'}]},
     options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',layout:{padding:{right:120}},
       plugins:{legend:{display:false},
-        datalabels:{display:true,anchor:'end',align:0,clamp:true,clip:false,font:{size:10,weight:'700'},
+        datalabels:{display:true,anchor:'end',align:'end',offset:6,clamp:true,clip:false,font:{size:10,weight:'700'},
           formatter:(v,c)=>{const x=items[c.dataIndex];return (x.pc==null?(AR?'جديد':'new'):((x.pc>=0?'▲':'▼')+Math.abs(x.pc*100).toFixed(1)+'%'))+' ('+fmtV(x.c)+')';}},
         tooltip:{callbacks:{label:c=>{const x=items[c.dataIndex];
           return (AR?'الحالية: ':'Current: ')+fmtV(x.c)+' · '+(AR?'السابقة: ':'Previous: ')+fmtV(x.p)+' · Δ '+fmtV(x.d);}}}},
@@ -5456,7 +5526,7 @@ function renderGeo(){
   mk('cGeoBar',{type:'bar',data:{labels:shareLbls,datasets:[{data:shareVals,backgroundColor:GEO_COLS[0],label:mu}]},
     options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',layout:{padding:{right:110}},
       plugins:{legend:{display:false},
-        datalabels:{display:true,anchor:'end',align:0,clamp:true,clip:false,font:{size:10,weight:'700'},formatter:v=>fmtV(v)+' ('+pct1(v)+')'},
+        datalabels:{display:true,anchor:'end',align:'end',offset:6,clamp:true,clip:false,font:{size:10,weight:'700'},formatter:v=>fmtV(v)+' ('+pct1(v)+')'},
         tooltip:{callbacks:{label:c=>fmtV(c.raw)+' '+mu+' ('+pct1(c.raw)+')'}}},
       scales:{x:{ticks:{callback:v=>F(v)}}}}});
   // trend from Q1 (gov/agent filters apply; product filters do NOT)
@@ -5498,7 +5568,7 @@ function renderGeo(){
   const a10=agArr.slice(0,10);
   mk('cGeoAgents',{type:'bar',data:{labels:a10.map(a=>geoWrap(geoAgName(a.ag),20)),datasets:[{data:a10.map(a=>a[M]),backgroundColor:GEO_COLS[2],label:mu}]},
     options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',layout:{padding:{right:110}},
-      plugins:{legend:{display:false},datalabels:{display:true,anchor:'end',align:0,clamp:true,clip:false,font:{size:10,weight:'700'},formatter:v=>fmtV(v)+' ('+pct1(v)+')'}},
+      plugins:{legend:{display:false},datalabels:{display:true,anchor:'end',align:'end',offset:6,clamp:true,clip:false,font:{size:10,weight:'700'},formatter:v=>fmtV(v)+' ('+pct1(v)+')'}},
       scales:{x:{ticks:{callback:v=>F(v)}}}}});
   // daily sales average per governorate (per its own active days) + share of total sales
   const avch=document.getElementById('geoAvgCh'); if(avch)avch.style.height=rowH+'px';
@@ -5506,7 +5576,7 @@ function renderGeo(){
   mk('cGeoAvg',{type:'bar',data:{labels:shareLbls,datasets:[{data:avgData,backgroundColor:GEO_COLS[4],label:mu}]},
     options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',layout:{padding:{right:130}},
       plugins:{legend:{display:false},
-        datalabels:{display:true,anchor:'end',align:0,clamp:true,clip:false,font:{size:10,weight:'700'},
+        datalabels:{display:true,anchor:'end',align:'end',offset:6,clamp:true,clip:false,font:{size:10,weight:'700'},
           formatter:(v,c)=>fmtV(v)+(AR?'/يوم':'/day')+' ('+pct1(govArr[c.dataIndex][M])+')'},
         tooltip:{callbacks:{label:c=>{const g=govArr[c.dataIndex];const gd=(govDays[g.gov]?govDays[g.gov].size:0)||1;
           return (AR?'معدل يومي: ':'Daily avg: ')+fmtV(c.raw)+' '+mu+(AR?' على ':' over ')+gd+(AR?' يوم نشط — ':' active days — ')+(AR?'النسبة من المبيعات: ':'share: ')+pct1(g[M]);}}}},
@@ -5584,6 +5654,7 @@ $('#themeBtn').onclick=()=>{const h=document.documentElement;h.dataset.theme=h.d
  try{localStorage.setItem('sk_theme',h.dataset.theme)}catch(e){};renderAll();};
 try{const th=localStorage.getItem('sk_theme'); if(th)document.documentElement.dataset.theme=th;}catch(e){}
 try{renderAll();}catch(e){console.warn('[init] pre-live render skipped (waiting for Google Sheets):',e);}
+if(document.fonts&&document.fonts.ready){document.fonts.ready.then(()=>{try{renderAll();}catch(e){}});}
 
 /* ===================== Excel compute engine ===================== */
 const INFO=15;
@@ -5788,7 +5859,7 @@ function computeFromMats(M, rxMat){
   const st=[],ot=[],pt=[],kt=[];
   for(let j=0;j<nd;j++){let a=0,b=0,c=0,d=0;
    for(let r=1;r<=n;r++){a+=val('S',r,j);b+=val('O',r,j);c+=val('P',r,j);d+=val('K',r,j)}
-   if(!useDay(j)){a=0;b=0;c=0;}  // exclude Friday flows from totals; keep stock for asof selection
+   if(!useDay(j)){a=0;b=0;c=0;}  // exclude Friday flows from totals — governed by the EXCL_FRI toggle; keep stock for asof selection
    st.push(a);ot.push(b);pt.push(c);kt.push(d);}
   let ai=-1;for(let j=nd-1;j>=0;j--)if(st[j]>0||ot[j]>0||pt[j]>0||kt[j]>0){ai=j;break}
   const asof=dts[ai].d;
