@@ -3602,7 +3602,7 @@ function renderCmp(){
      ?`<th data-sk="${c.k}" title="${_tipS}" style="cursor:pointer;user-select:none;white-space:nowrap${c.start?';text-align:start':''}${c.rate?';color:var(--gold2)':''}">${c.l}${_arrow(c.k)}</th>`
      :`<th${c.start?' style="text-align:start"':''}>${c.l}</th>`).join('')+
    `</tr></thead><tbody>`+
-   rows.map((p,i)=>`<tr><td>${i+1}</td><td>${p.c}</td><td style="text-align:start">${prodName(p)}</td><td>${T.cats[p.cat]||p.cat}</td>
+   rows.map((p,i)=>`<tr><td>${i+1}</td><td>${p.c}</td><td style="text-align:start;white-space:nowrap;min-width:260px">${prodName(p)}</td><td>${T.cats[p.cat]||p.cat}</td>
    <td><span class="pill ${p.ff==='Frozen'?'b':'g'}">${p.ff==='Frozen'?(LANG==='ar'?'فروزن':'Frozen'):(LANG==='ar'?'فريش':'Fresh')}</span></td>
    <td>${ABCMAP[p.c]?`<span class="pill ${_abcPill(ABCMAP[p.c])}">${ABCMAP[p.c]}</span>`:'—'}</td>
    <td class="num">${F(p.open)}</td>
