@@ -759,39 +759,6 @@ body.locked .brand, body.locked nav, body.locked main, body.locked section{visib
   <div class="note" id="geoNote" style="margin-top:10px"></div>
 </div></section>
 
-<section id="vs"><div class="wrap">
-  <div class="secthead"><h2 id="vsTitle"></h2><small id="vsSub"></small></div>
-  <div class="panel" style="margin-bottom:12px">
-    <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end">
-      <div><div class="note" id="vsALbl" style="margin-bottom:4px;font-weight:700"></div>
-        <span id="vsAFromL" class="note"></span> <input type="date" id="vsAFrom" class="btn ghost">
-        <span id="vsAToL" class="note"></span> <input type="date" id="vsATo" class="btn ghost"></div>
-      <div><div class="note" id="vsBLbl" style="margin-bottom:4px;font-weight:700"></div>
-        <span id="vsBFromL" class="note"></span> <input type="date" id="vsBFrom" class="btn ghost">
-        <span id="vsBToL" class="note"></span> <input type="date" id="vsBTo" class="btn ghost"></div>
-      <div style="display:flex;gap:8px">
-        <button class="btn ghost" id="vsPreM"></button>
-        <button class="btn ghost" id="vsPreW"></button>
-      </div>
-    </div>
-    <div class="search" id="vsFilters" style="flex-wrap:wrap;gap:10px;margin-top:12px;border-top:1px solid var(--bd);padding-top:12px">
-      <span class="fgrp"><span class="perlbl" id="vsCatL"></span><span id="vsCat"></span></span>
-      <span class="fgrp"><span class="perlbl" id="vsFamL"></span><span id="vsFam"></span></span>
-      <span class="fgrp"><span class="perlbl" id="vsFFL"></span><span id="vsFF"></span></span>
-      <span class="fgrp"><span class="perlbl" id="vsOwnL"></span><span id="vsOwn"></span></span>
-      <span class="fgrp"><span class="perlbl" id="vsBrandL"></span><span id="vsBrand"></span></span>
-      <span class="fgrp"><span class="perlbl" id="vsPackL"></span><span id="vsPack"></span></span>
-      <span class="fgrp"><span class="perlbl" id="vsProdL"></span><span id="vsProd"></span></span>
-    </div>
-  </div>
-  <div class="cards" id="vsKpi"></div>
-  <div class="grid2">
-    <div class="panel"><h3 id="vsBarT"></h3><div class="ch"><canvas id="cVsBar"></canvas></div></div>
-    <div class="panel"><h3 id="vsLineT"></h3><div id="vsMetricWrap" style="margin-bottom:8px"></div><div class="ch" style="height:252px"><canvas id="cVsLine"></canvas></div></div>
-  </div>
-  <div class="note" id="vsNote" style="margin-top:8px"></div>
-</div></section>
-
 <section id="week"><div class="wrap">
   <div class="secthead"><h2 id="wkTitle"></h2><small id="wkSub"></small></div>
   <div class="panel" style="margin-bottom:14px"><h3 id="wkChT"></h3><div id="wkFilter"></div><div class="ch" style="height:330px"><canvas id="cWeekBig"></canvas></div></div>
@@ -858,7 +825,7 @@ ar:{dir:'rtl', title:'شركة سما كربلاء — مجزر الدواجن',
  asof:'آخر تحديث للبيانات', themeD:'🌙 داكن', themeL:'☀️ فاتح', importBtn:'⟳ تحديث من إكسل',
  months:['كانون الثاني','شباط','آذار','نيسان','أيار','حزيران','تموز','آب','أيلول','تشرين الأول','تشرين الثاني','كانون الأول'],
  days:['السبت','الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة'],
- tabs:{exec:'النظرة التنفيذية',rx:'الاستلام الحي',wb:'الدجاج الكامل',stk:'المخزون',invan:'تحليل المخزون',abc:'ABC وأداء البراند',reports:'التقارير',prod:'الإنتاج',sales:'المبيعات',geo:'المبيعات بالمحافظات',orders:'الطلب',plant:'كفاءة المجزر',quality:'جودة الذبح',top:'أفضل الأصناف',offals:'تحليل الأحشاء',wdist:'متابعة الوزن والتصافي',cmp:'الطلب·الإنتاج·المبيعات',vs:'مقارنة فترتين',week:'أسبوعي',month:'شهري',sku:'المنتجات'},
+ tabs:{exec:'النظرة التنفيذية',rx:'الاستلام الحي',wb:'الدجاج الكامل',stk:'المخزون',invan:'تحليل المخزون',abc:'ABC وأداء البراند',reports:'التقارير',prod:'الإنتاج',sales:'المبيعات',geo:'المبيعات بالمحافظات',orders:'الطلب',plant:'كفاءة المجزر',quality:'جودة الذبح',top:'أفضل الأصناف',offals:'تحليل الأحشاء',wdist:'متابعة الوزن والتصافي',cmp:'الطلب·الإنتاج·المبيعات',week:'أسبوعي',month:'شهري',sku:'المنتجات'},
  chain:{rx:'📥 استلام حي',prod:'🏭 إنتاج',sales:'🛒 مبيعات',ord:'📦 طلبات',stk:'🏬 مخزون افتتاحي'}, rxFromLbl:'من', rxToLbl:'إلى', rxClear:'كل الفترة',
  birds:'طير', box:'صندوق', boxes:'صندوق', days_u:'يوم',
  chainNote:d=>'سلسلة آخر يوم تشغيلي '+d+' — أرقام المنتجات بالصناديق، المخزون يعتمد الرصيد الافتتاحي.',
@@ -869,14 +836,6 @@ ar:{dir:'rtl', title:'شركة سما كربلاء — مجزر الدواجن',
  pbFulN:(m,s,o)=>'شهر '+m+' — مبيعات '+s+' ÷ طلب '+o+' صندوق',
  pbFunN:m=>'شهر '+m+' — النسبة محسوبة من إجمالي الطلب',
  pbNoData:'لا توجد بيانات كافية',
- vsTitle:'مقارنة فترتين — جنباً إلى جنب', vsSub:'اختر فترتين (أ) و(ب) لمقارنة المبيعات والطلب والإنتاج — الوحدة: صندوق',
- vsA:'الفترة أ', vsB:'الفترة ب', vsFrom:'من', vsTo:'إلى',
- vsPreM:'شهر مقابل شهر', vsPreW:'أسبوع مقابل أسبوع', vsPre7:'٧ أيام مقابل ٧ أيام',
- vsBarT:'إجماليات الفترتين — مبيعات · طلب · إنتاج',
- vsLineT:'المسار اليومي المتراكب (محاذاة برقم اليوم داخل الفترة)',
- vsDay:'اليوم', vsOpDays:'يوم تشغيلي', vsAvgD:'متوسط اليوم التشغيلي',
- vsNote:'ملاحظة: المجاميع تشمل كل أيام الفترة كما في السلاسل اليومية، ونسبة الوفاء = مبيعات ÷ طلب.',
- vsNoData:'لا توجد بيانات في إحدى الفترتين — عدّل التواريخ.',
  trTitle:'مؤشر الاتجاه — قصير الأجل مقابل طويل الأجل', 
  trSub:'متوسط اليوم التشغيلي: آخر 7 أيام (قصير) مقابل آخر 28 و90 يوماً (طويل) — الوحدة: صندوق، الاستلام بالطير',
  trRising:'⬆ اتجاه صاعد', trFalling:'⬇ اتجاه هابط', trStable:'◼ مستقر',
@@ -1030,7 +989,7 @@ en:{dir:'ltr', title:'Sama Karbala Co. — Poultry Processing Plant', sub:'Execu
  asof:'Data as of', themeD:'🌙 Dark', themeL:'☀️ Light', importBtn:'⟳ Update from Excel',
  months:['January','February','March','April','May','June','July','August','September','October','November','December'],
  days:['Saturday','Sunday','Monday','Tuesday','Wednesday','Thursday','Friday'],
- tabs:{exec:'Executive Overview',rx:'Live Bird Intake',wb:'Whole Bird',stk:'Inventory',invan:'Inventory Analysis',abc:'ABC & Brand',reports:'Reports',prod:'Production',sales:'Sales',geo:'Sales by Governorate',orders:'Orders',plant:'Plant Efficiency',quality:'Carcass Quality',top:'Top Products',offals:'Offals Analysis',wdist:'Weight & Yield',cmp:'Order·Prod·Sales',vs:'Period Compare',week:'Weekly',month:'Monthly',sku:'Products'},
+ tabs:{exec:'Executive Overview',rx:'Live Bird Intake',wb:'Whole Bird',stk:'Inventory',invan:'Inventory Analysis',abc:'ABC & Brand',reports:'Reports',prod:'Production',sales:'Sales',geo:'Sales by Governorate',orders:'Orders',plant:'Plant Efficiency',quality:'Carcass Quality',top:'Top Products',offals:'Offals Analysis',wdist:'Weight & Yield',cmp:'Order·Prod·Sales',week:'Weekly',month:'Monthly',sku:'Products'},
  chain:{rx:'📥 Live intake',prod:'🏭 Production',sales:'🛒 Sales',ord:'📦 Orders',stk:'🏬 Opening stock'}, rxFromLbl:'From', rxToLbl:'To', rxClear:'Full period',
  birds:'birds', box:'boxes', boxes:'boxes', days_u:'days',
  chainNote:d=>'Latest operating-day chain ('+d+') — product figures in boxes; inventory based on opening balance.',
@@ -1041,14 +1000,6 @@ en:{dir:'ltr', title:'Sama Karbala Co. — Poultry Processing Plant', sub:'Execu
  pbFulN:(m,s,o)=>m+' — sales '+s+' ÷ orders '+o+' boxes',
  pbFunN:m=>m+' — shares computed from total orders',
  pbNoData:'Not enough data',
- vsTitle:'Period Compare — side by side', vsSub:'Pick periods (A) and (B) to compare sales, orders and production — unit: boxes',
- vsA:'Period A', vsB:'Period B', vsFrom:'From', vsTo:'To',
- vsPreM:'Month vs Month', vsPreW:'Week vs Week', vsPre7:'7d vs 7d',
- vsBarT:'Period totals — Sales · Orders · Production',
- vsLineT:'Daily overlay (aligned by day number within period)',
- vsDay:'Day', vsOpDays:'operating days', vsAvgD:'Avg / operating day',
- vsNote:'Note: totals include all days of the range as in the daily series; fulfilment = sales ÷ orders.',
- vsNoData:'No data in one of the periods — adjust the dates.',
  trTitle:'Trend Monitor — Short vs Long Term',
  trSub:'Average per operating day: last 7 days (short) vs last 28 & 90 days (long) — unit: boxes; intake in birds',
  trRising:'⬆ Trending up', trFalling:'⬇ Trending down', trStable:'◼ Stable',
@@ -3935,7 +3886,7 @@ $('#qLineSel')&&$('#qLineSel').addEventListener('change',e=>{QLINE=e.target.valu
 
 /* ===================== Login & Permissions ===================== */
 let CURRENT_USER=null, USER_PERMS=null;
-const PERM_TABS={tab_exec:'exec',tab_rx:'rx',tab_wb:'wb',tab_stk:'stk',tab_invan:'invan',tab_abc:'abc',tab_reports:'reports',tab_prod:'prod',tab_sales:'sales',tab_orders:'orders',tab_plant:'plant',tab_quality:'quality',tab_top:'top',tab_offals:'offals',tab_wdist:'wdist',tab_cmp:'cmp',tab_vs:'vs',tab_geo:'geo',tab_week:'week',tab_month:'month',tab_products:'sku'};
+const PERM_TABS={tab_exec:'exec',tab_rx:'rx',tab_wb:'wb',tab_stk:'stk',tab_invan:'invan',tab_abc:'abc',tab_reports:'reports',tab_prod:'prod',tab_sales:'sales',tab_orders:'orders',tab_plant:'plant',tab_quality:'quality',tab_top:'top',tab_offals:'offals',tab_wdist:'wdist',tab_cmp:'cmp',tab_geo:'geo',tab_week:'week',tab_month:'month',tab_products:'sku'};
 function parseUsers(mat){
   if(!mat||!mat.length)return [];
   // find header row containing 'username' and 'password'
@@ -4731,125 +4682,6 @@ let WBFROM=null, WBTO=null, WBOWN='all', WBFAM=[];  // Whole Bird date range + b
 let CUTFROM=null, CUTTO=null, CUTFAM=[];
 
 
-/* ===================== Period Compare tab (vs) ===================== */
-let VS={af:null,at:null,bf:null,bt:null,metric:'s',_auto:true,_lbl:null,cat:[],fam:[],ff:[],own:[],brand:[],pack:[],prod:[]};
-function _vsMonthRange(lbl){const p=String(lbl||'').split('/');const m=+p[0],y=+p[1];
-  if(!m||!y)return null;const f=new Date(Date.UTC(y,m-1,1)),t=new Date(Date.UTC(y,m,0));return[iso(f),iso(t)]}
-function _vsShift(dstr,n){const d=new Date(dstr+'T00:00:00Z');d.setUTCDate(d.getUTCDate()+n);return iso(d)}
-function _vsFilteredSku(){
-  let sku=(DATA.sku||[]).slice();
-  sku=sku.filter(p=>msPass(p.cat, VS.cat));
-  sku=sku.filter(p=>msPass(p.fam||'—', VS.fam));
-  if(VS.ff&&VS.ff.length) sku=sku.filter(p=>VS.ff.includes(detectType(p)));
-  if(VS.own&&VS.own.length) sku=sku.filter(p=>VS.own.includes(classifyOwn(p)));
-  if(VS.pack&&VS.pack.length) sku=sku.filter(p=>VS.pack.includes(packType(p.n)));
-  if(VS.brand&&VS.brand.length) sku=sku.filter(p=>VS.brand.includes(String(p.brand||'—')));
-  if(VS.prod&&VS.prod.length) sku=sku.filter(p=>VS.prod.includes(String(p.c)));
-  return sku;
-}
-// aggregate filtered products over [f,t] using per-product daily arrays (dS/dO/dP), boxes
-function _vsSum(f,t){
-  const idxs=[]; SKU_DATES.forEach((d,i)=>{ if(d>=f&&d<=t) idxs.push(i); });
-  const sku=_vsFilteredSku();
-  const ds=[],dO=[],dP=[],dates=[];
-  let s=0,o=0,p=0,op=0;
-  idxs.forEach(i=>{let sv=0,ov=0,pv=0;
-    sku.forEach(pp=>{sv+=(pp.dS&&pp.dS[i])||0;ov+=(pp.dO&&pp.dO[i])||0;pv+=(pp.dP&&pp.dP[i])||0;});
-    s+=sv;o+=ov;p+=pv; if(sv>0)op++;
-    ds.push(Math.round(sv));dO.push(Math.round(ov));dP.push(Math.round(pv));dates.push(SKU_DATES[i]);});
-  return {s:Math.round(s),o:Math.round(o),p:Math.round(p),op,ds,dO,dP,dates,n:idxs.length,
-    ful:o>0?s/o:null, avg:op?Math.round(s/op):0};
-}
-function renderVs(){
-  const T=t();
-  $('#vsTitle').textContent=T.vsTitle; $('#vsSub').textContent=T.vsSub;
-  $('#vsALbl').textContent=T.vsA; $('#vsBLbl').textContent=T.vsB;
-  $('#vsAFromL').textContent=T.vsFrom; $('#vsAToL').textContent=T.vsTo;
-  $('#vsBFromL').textContent=T.vsFrom; $('#vsBToL').textContent=T.vsTo;
-  $('#vsPreM').textContent=T.vsPreM; $('#vsPreW').textContent=T.vsPreW;
-  $('#vsBarT').textContent=T.vsBarT; $('#vsLineT').textContent=T.vsLineT;
-  $('#vsNote').textContent=T.vsNote;
-  if(!DATA||!DATA.dt||!DATA.dt.length){$('#vsKpi').innerHTML='';return;}
-  const lo=DATA.dt[0].d, hi=DATA.dt[DATA.dt.length-1].d;
-  /* defaults: last complete month vs previous month (auto-refresh until user edits) */
-  const _lcmLbl=DATA.kpi.lcm&&DATA.kpi.lcm.label;
-  if(!VS.af||(VS._auto&&VS._lbl!==_lcmLbl)){
-    VS._lbl=_lcmLbl;
-    const a=_vsMonthRange(DATA.kpi.lcm&&DATA.kpi.lcm.label), b=_vsMonthRange(DATA.kpi.lcm_prev&&DATA.kpi.lcm_prev.label);
-    if(a){VS.af=a[0];VS.at=a[1];} if(b){VS.bf=b[0];VS.bt=b[1];}
-    if(!VS.af){VS.at=hi;VS.af=_vsShift(hi,-6);VS.bt=_vsShift(VS.af,-1);VS.bf=_vsShift(VS.bt,-6);}
-  }
-  const ids=['vsAFrom','vsATo','vsBFrom','vsBTo'], keys=['af','at','bf','bt'];
-  ids.forEach((id,i)=>{const el=$('#'+id);if(!el)return;el.min=lo;el.max=hi;el.value=VS[keys[i]]||'';
-    if(!el.dataset.init){el.dataset.init='1';
-      el.onchange=e=>{VS[keys[i]]=e.target.value||null;VS._auto=false;renderVs();};
-      el.onclick=()=>{if(el.showPicker){try{el.showPicker();}catch(e){}}};}});
-  const pre=(id,fn)=>{const b=$('#'+id);if(b&&!b.dataset.init){b.dataset.init='1';b.onclick=()=>{fn();VS._auto=false;renderVs();};}};
-  pre('vsPreM',()=>{const a=_vsMonthRange(DATA.kpi.lcm.label),b=_vsMonthRange(DATA.kpi.lcm_prev.label);
-    if(a){VS.af=a[0];VS.at=a[1];} if(b){VS.bf=b[0];VS.bt=b[1];}});
-  pre('vsPreW',()=>{const w=DATA.kpi.lcw,wp=DATA.kpi.lcw_prev;
-    if(w){VS.af=w.frm;VS.at=w.to;} if(wp&&wp.frm){VS.bf=wp.frm;VS.bt=wp.to;}});
-  // ---- standard multi-select filters ----
-  const AR=LANG==='ar';
-  $('#vsCatL')&&($('#vsCatL').textContent=AR?'الفئة':'Category');
-  $('#vsFamL')&&($('#vsFamL').textContent=AR?'العائلة':'Family');
-  $('#vsFFL')&&($('#vsFFL').textContent=AR?'فريش/مجمد':'Fresh/Frozen');
-  $('#vsOwnL')&&($('#vsOwnL').textContent=AR?'العلامة':'Own/PL');
-  $('#vsBrandL')&&($('#vsBrandL').textContent=AR?'البراند':'Brand');
-  $('#vsPackL')&&($('#vsPackL').textContent=AR?'التعبئة':'Packaging');
-  $('#vsProdL')&&($('#vsProdL').textContent=AR?'المنتج':'Product');
-  const allP=(DATA.sku||[]);
-  const cats=[...new Set(allP.map(p=>p.cat))].filter(Boolean).sort();
-  msDropdown('vsCat', cats.map(c=>[c,(T.cats&&T.cats[c])||c]), VS.cat, sel=>{VS.cat=sel;VS.fam=[];renderVs();}, AR?'كل الفئات':'All categories');
-  const fams=[...new Set(allP.filter(p=>msPass(p.cat,VS.cat)).map(p=>p.fam||'—'))].filter(x=>x&&x!=='—').sort();
-  VS.fam=VS.fam.filter(v=>fams.includes(v));
-  msDropdown('vsFam', fams.map(f=>[f,f]), VS.fam, sel=>{VS.fam=sel;renderVs();}, AR?'كل العائلات':'All families');
-  msDropdown('vsFF', [['Fresh',AR?'فريش':'Fresh'],['Frozen',AR?'مجمد':'Frozen']], VS.ff, sel=>{VS.ff=sel;renderVs();}, AR?'الكل':'All', false);
-  msDropdown('vsOwn', [['own',AR?'علامتنا':'Own brand'],['pl',AR?'علامة خاصة':'Private Label']], VS.own, sel=>{VS.own=sel;renderVs();}, AR?'الكل':'All', false);
-  const brands=[...new Set(allP.map(p=>String(p.brand||'—')))].filter(x=>x&&x!=='—').sort();
-  VS.brand=VS.brand.filter(v=>brands.includes(v));
-  msDropdown('vsBrand', brands.map(b=>[b,b]), VS.brand, sel=>{VS.brand=sel;renderVs();}, AR?'كل البراندات':'All brands');
-  const packs=[...new Set(allP.map(p=>packType(p.n)))].filter(Boolean).sort();
-  VS.pack=VS.pack.filter(v=>packs.includes(v));
-  msDropdown('vsPack', packs.map(p=>[p,p]), VS.pack, sel=>{VS.pack=sel;renderVs();}, AR?'كل التعبئات':'All packaging');
-  const prodScope=allP.filter(p=>msPass(p.cat,VS.cat)&&(!(VS.brand&&VS.brand.length)||VS.brand.includes(String(p.brand||'—'))));
-  const prods=prodScope.map(p=>[String(p.c),(p.c)+' — '+String(prodName(p)).slice(0,45)]).sort((a,b)=>a[1].localeCompare(b[1]));
-  VS.prod=(VS.prod||[]).filter(v=>prods.some(x=>x[0]===String(v)));
-  msDropdown('vsProd', prods, VS.prod, sel=>{VS.prod=sel;renderVs();}, AR?'كل المنتجات':'All products', true);
-  if(!(VS.af&&VS.at&&VS.bf&&VS.bt))return;
-  const A=_vsSum(VS.af,VS.at), B=_vsSum(VS.bf,VS.bt);
-  if(!A.n||!B.n){$('#vsKpi').innerHTML='<div class="card" style="grid-column:1/-1"><div class="k">'+T.vsNoData+'</div></div>';
-    mk('cVsBar',{type:'bar',data:{labels:[],datasets:[]},options:{}});
-    mk('cVsLine',{type:'line',data:{labels:[],datasets:[]},options:{}});return;}
-  const aL=T.vsA+' '+VS.af+' → '+VS.at, bL=T.vsB+' '+VS.bf+' → '+VS.bt;
-  const dtl=(a,b)=>T.vsA+': <b class="num">'+F(a)+'</b> · '+T.vsB+': <b class="num">'+F(b)+'</b>';
-  $('#vsKpi').innerHTML=[
-   pbiCard(T.sales+' '+T.mUnit,F(A.s),dchip(A.s,B.s),dtl(A.s,B.s),A.ds,GOLD),
-   pbiCard(T.orders+' '+T.mUnit,F(A.o),dchip(A.o,B.o),dtl(A.o,B.o),A.dO,SKY),
-   pbiCard(T.prod+' '+T.mUnit,F(A.p),dchip(A.p,B.p),dtl(A.p,B.p),A.dP,GREEN),
-   pbiCard(T.ful,Pc(A.ful),dchip(A.ful,B.ful),T.vsB+': '+Pc(B.ful),null,pbColor(A.ful)),
-   pbiCard(T.vsAvgD+' '+T.mUnit,F(A.avg),dchip(A.avg,B.avg),A.op+' '+T.vsOpDays+' · '+T.vsB+': '+F(B.avg),null,VIO)
-  ].join('');
-  mk('cVsBar',{type:'bar',data:{labels:[T.sSales,T.sOrders,T.sProd],datasets:[
-    {label:aL,data:[A.s,A.o,A.p],backgroundColor:GOLD,datalabels:{display:true,...DL(),anchor:'end',align:'start',color:'#1a1206'}},
-    {label:bL,data:[B.s,B.o,B.p],backgroundColor:SKY,datalabels:{display:true,...DL(),anchor:'end',align:'start',color:'#fff'}}]},
-   options:{maintainAspectRatio:false,plugins:{legend:{labels:{boxWidth:12}}}}});
-  /* metric switch for overlay */
-  const mets=[['s',T.sSales],['o',T.sOrders],['p',T.sProd]];
-  $('#vsMetricWrap').innerHTML=mets.map(([k,l])=>'<button class="btn ghost'+(VS.metric===k?' on':'')+'" data-vm="'+k+'" style="font-size:11px;padding:3px 10px'+(VS.metric===k?';color:var(--gold2);font-weight:800':'')+'">'+l+'</button>').join(' ');
-  document.querySelectorAll('#vsMetricWrap button').forEach(b=>{b.onclick=()=>{VS.metric=b.dataset.vm;renderVs();};});
-  const pick=(r,m)=>m==='s'?r.ds:(m==='o'?r.dO:r.dP);
-  const sA=pick(A,VS.metric), sB=pick(B,VS.metric);
-  const n=Math.max(sA.length,sB.length);
-  const lbls=Array.from({length:n},(_,i)=>String(i+1));
-  mk('cVsLine',{type:'line',data:{labels:lbls,datasets:[
-    {label:aL,data:sA,borderColor:GOLD,pointRadius:2},
-    {label:bL,data:sB,borderColor:SKY,borderDash:[6,4],pointRadius:2,fill:false}]},
-   options:{maintainAspectRatio:false,plugins:{legend:{labels:{boxWidth:12}},
-    tooltip:{callbacks:{afterTitle:i=>{const j=i[0].dataIndex;
-      return (A.dates[j]?T.vsA+': '+A.dates[j]:'')+(B.dates[j]?'\n'+T.vsB+': '+B.dates[j]:'')}}}},
-    scales:{x:{title:{display:true,text:T.vsDay}}}}});
-}
 
 /* ===================== GEO: Sales by Governorate (tab 21) ===================== */
 // Data strategy (Master sheet ~200k rows — never fetched raw):
@@ -5696,7 +5528,7 @@ function renderGeo(){
 }
 /* ===================== /GEO ===================== */
 
-function renderAll(){_NAR_MAP=null;loadColors();setChrome();renderTrend();renderExec();renderRx();renderWb();renderStk();try{renderInvan();}catch(e){console.error('renderInvan',e);}try{renderABC();}catch(e){console.error('renderABC',e);}try{renderReports();}catch(e){console.error('renderReports',e);}try{renderProd();}catch(e){console.error('renderProd',e);}try{renderSales();}catch(e){console.error('renderSales',e);}try{renderOrders();}catch(e){console.error('renderOrders',e);}renderPlant();renderQuality();renderTop();try{renderOffals();}catch(e){console.error('renderOffals',e);}renderCmp();try{renderVs();}catch(e){console.error('renderVs',e);}try{renderGeo();}catch(e){console.error('renderGeo',e);}try{injectExportButtons();}catch(e){console.warn('export buttons',e);};renderWeekMonth();renderSku();try{renderWdist();}catch(e){console.error('renderWdist',e);}}
+function renderAll(){_NAR_MAP=null;loadColors();setChrome();renderTrend();renderExec();renderRx();renderWb();renderStk();try{renderInvan();}catch(e){console.error('renderInvan',e);}try{renderABC();}catch(e){console.error('renderABC',e);}try{renderReports();}catch(e){console.error('renderReports',e);}try{renderProd();}catch(e){console.error('renderProd',e);}try{renderSales();}catch(e){console.error('renderSales',e);}try{renderOrders();}catch(e){console.error('renderOrders',e);}renderPlant();renderQuality();renderTop();try{renderOffals();}catch(e){console.error('renderOffals',e);}renderCmp();try{renderGeo();}catch(e){console.error('renderGeo',e);}try{injectExportButtons();}catch(e){console.warn('export buttons',e);};renderWeekMonth();renderSku();try{renderWdist();}catch(e){console.error('renderWdist',e);}}
 
 $('#langBtn')&&($('#langBtn').onclick=()=>{LANG=LANG==='ar'?'en':'ar';try{localStorage.setItem('sk_lang',LANG)}catch(e){};renderAll();});
 $('#friBtn')&&($('#friBtn').onclick=()=>{
