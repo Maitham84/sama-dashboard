@@ -1310,7 +1310,7 @@ function pbify(cfg){
       if(Array.isArray(labels)&&labels.length&&typeof labels[0]==='string'){
         const fontSize=(sc[catAx].ticks&&sc[catAx].ticks.font&&sc[catAx].ticks.font.size)||10.5;
         const mctx=pbMeasureCtx(); mctx.font=fontSize+'px '+Chart.defaults.font.family;
-        const CAP=260, PAD=22;
+        const CAP=280, PAD=26;
         const fitOne=s=>{
           if(mctx.measureText(s).width<=CAP-PAD)return s;
           let lo=0,hi=s.length;
@@ -2942,7 +2942,7 @@ function renderWdist(){
   if(fr&&!fr.dataset.init){fr.dataset.init='1';fr.onchange=e=>{WDFROM=e.target.value||null;renderWdist();};}
   if(to&&!to.dataset.init){to.dataset.init='1';to.onchange=e=>{WDTO=e.target.value||null;renderWdist();};}
   const allDates=(DATA.rx&&DATA.rx.daily?DATA.rx.daily.map(e=>e.d):[]).filter(Boolean).sort();
-  const setRange=days=>{ if(!allDates.length)return; const last=allDates[allDates.length-1]; const dt=new Date(last); dt.setDate(dt.getDate()-(days-1)); WDFROM=dt.toISOString().slice(0,10); WDTO=last; if(fr)fr.value=WDFROM; if(to)to.value=WDTO; renderWdist(); };
+  const setRange=days=>{ if(!allDates.length){const n=$('#wdNote'); if(n)n.textContent=window.__liveBusy?(AR?'⏳ البيانات لسا تتحمّل — جرّب بعد ثانية.':'⏳ Data still loading — try again in a moment.'):(AR?'لا توجد بيانات استلام محمّلة.':'No receiving data loaded.'); return;} const last=allDates[allDates.length-1]; const dt=new Date(last); dt.setDate(dt.getDate()-(days-1)); WDFROM=dt.toISOString().slice(0,10); WDTO=last; if(fr)fr.value=WDFROM; if(to)to.value=WDTO; renderWdist(); };
   const b7=$('#wdR7'); if(b7&&!b7.dataset.init){b7.dataset.init='1';b7.onclick=()=>setRange(7);}
   const b30=$('#wdR30'); if(b30&&!b30.dataset.init){b30.dataset.init='1';b30.onclick=()=>setRange(30);}
   const cb=$('#wdClearBtn'); if(cb&&!cb.dataset.init){cb.dataset.init='1';cb.onclick=()=>{WDFROM=null;WDTO=null;if(fr)fr.value='';if(to)to.value='';renderWdist();};}
@@ -3535,13 +3535,22 @@ function renderCmp(){
       && (!CMP_F.prod.length||CMP_F.prod.includes(String(p.c))));
   // compute per-product coverage LIVE over the selected date range (CMPFROM..CMPTO), working days only
   const _uIdx=[]; SKU_DATES.forEach((d,i)=>{ if((!CMPFROM||d>=CMPFROM)&&(!CMPTO||d<=CMPTO)) _uIdx.push(i); });
+  const _last7Idx=[]; for(let i=Math.max(0,SKU_DATES.length-7);i<SKU_DATES.length;i++)_last7Idx.push(i);
   let rows=_passSku.map(p=>{
     let to=0,tp=0,ts=0; _uIdx.forEach(i=>{to+=(p.dO&&p.dO[i])||0;tp+=(p.dP&&p.dP[i])||0;ts+=(p.dS&&p.dS[i])||0;});
     if(to<=0&&tp<=0&&ts<=0)return null;   // keep EVERY product with any movement (order OR production OR sales)
     const oc=prodOpenClose(p,CMPFROM,CMPTO);
     const fulfilled=Math.max(tp,ts); const sq=Math.max(0,to-fulfilled);
-    return {c:p.c,n:p.n,nAr:p.nAr,cat:p.cat,ord:Math.round(to),prod:Math.round(tp),sales:Math.round(ts),
-      covP:to>0?tp/to:null,covS:to>0?ts/to:null,shortQty:Math.round(sq),open:oc.open,close:oc.close};
+    const avgSel=_uIdx.length?ts/_uIdx.length:0;
+    let wkSum=0,wkOrdSum=0; _last7Idx.forEach(i=>{wkSum+=(p.dS&&p.dS[i])||0;wkOrdSum+=(p.dO&&p.dO[i])||0;});
+    const avgWk=_last7Idx.length?wkSum/_last7Idx.length:0;
+    const avgOrdSel=_uIdx.length?to/_uIdx.length:0;
+    const avgOrdWk=_last7Idx.length?wkOrdSum/_last7Idx.length:0;
+    return {c:p.c,n:p.n,nAr:p.nAr,cat:p.cat,ff:detectType(p),ord:Math.round(to),prod:Math.round(tp),sales:Math.round(ts),
+      covP:to>0?tp/to:null,covS:to>0?ts/to:null,shortQty:Math.round(sq),open:oc.open,close:oc.close,
+      avgSel,avgWk,req7:avgSel*7,avgOrdSel,avgOrdWk,reqOrd7:avgOrdSel*7,
+      covRatio:avgOrdSel>0?oc.close/avgOrdSel:null,
+      gapWeek:oc.close-avgSel*7};
   }).filter(Boolean);
   // ABC class over the SAME period — identical rule to the ABC tab (rank by sales boxes, cumulative 80% / 95%)
   const _abcSorted=rows.map(r=>({c:r.c,s:r.sales})).filter(x=>x.s>0).sort((a,b)=>b.s-a.s);
@@ -3549,11 +3558,12 @@ function renderCmp(){
   const ABCMAP={}; let _abcCum=0;
   _abcSorted.forEach(x=>{_abcCum+=x.s;const cp=_abcTot?(_abcCum/_abcTot*100):0;ABCMAP[x.c]=cp<=80?'A':(cp<=95?'B':'C');});
   // ---- sorting: default = biggest shortfall first; or by the clicked column ----
-  const _ALPHA=['name','cat','abc'];
+  const _ALPHA=['name','cat','abc','ff'];
   const _sv=(r,k)=>{
     if(k==='name')return String(prodName(r)||'');
     if(k==='cat')return String((T.cats&&T.cats[r.cat])||r.cat||'');
     if(k==='abc')return String(ABCMAP[r.c]||'ZZZ');   // unclassified sinks to the end
+    if(k==='ff')return String(r.ff||'');
     if(k==='c')return Number(r.c)||0;
     return r[k];
   };
@@ -3573,27 +3583,53 @@ function renderCmp(){
   const _arrow=k=>(CMP_UNC_SORT&&CMP_UNC_SORT.k===k)?(CMP_UNC_SORT.dir<0?' ▼':' ▲'):'<span style="opacity:.35"> ⇅</span>';
   const _cols=[
     {k:null,l:'#'},{k:'c',l:T.skuTh[1]},{k:'name',l:T.skuTh[2],start:true},{k:'cat',l:T.thCat},
+    {k:'ff',l:LANG==='ar'?'فريش/فروزن':'Fresh/Frozen'},
     {k:'abc',l:LANG==='ar'?'صنف ABC':'ABC'},{k:'open',l:LANG==='ar'?'رصيد افتتاح':'Opening'},
     {k:'ord',l:T.thOrd},{k:'prod',l:T.thProd},{k:'sales',l:T.thSale},
     {k:'covP',l:T.thCovP},{k:'covS',l:T.thCovS},
-    {k:'shortQty',l:LANG==='ar'?'النقص':'Short'},{k:'close',l:LANG==='ar'?'رصيد إقفال':'Closing'}];
+    {k:'shortQty',l:LANG==='ar'?'النقص':'Short'},{k:'close',l:LANG==='ar'?'رصيد إقفال':'Closing'},
+    {k:'avgSel',l:LANG==='ar'?'معدل البيع اليومي (الفترة المختارة)':'Avg daily sales (selected period)',rate:true},
+    {k:'avgWk',l:LANG==='ar'?'معدل البيع اليومي (آخر أسبوع)':'Avg daily sales (last week)',rate:true},
+    {k:'req7',l:LANG==='ar'?'الرصيد المطلوب لتغطية مبيعات 7 أيام':'Stock needed for 7-day sales cover',rate:true},
+    {k:'avgOrdSel',l:LANG==='ar'?'معدل الطلب اليومي (الفترة المختارة)':'Avg daily orders (selected period)',rate:true},
+    {k:'avgOrdWk',l:LANG==='ar'?'معدل الطلب اليومي (آخر أسبوع)':'Avg daily orders (last week)',rate:true},
+    {k:'reqOrd7',l:LANG==='ar'?'الرصيد المطلوب لتغطية طلب 7 أيام':'Stock needed for 7-day order cover',rate:true},
+    {k:'covRatio',l:LANG==='ar'?'تغطية الرصيد الحالي من معدل الطلب اليومي (أيام)':'Current balance coverage at order rate (days)',rate:true},
+    {k:'gapWeek',l:LANG==='ar'?'فجوة تغطية المبيعات الأسبوعية (الرصيد−المطلوب)':'Weekly sales-coverage gap (balance−needed)',rate:true}];
   const _tipS=LANG==='ar'?'اضغط للترتيب (تصاعدي/تنازلي)':'Click to sort (asc/desc)';
   $('#tCmpUnc').innerHTML=`<thead><tr>`+
    _cols.map(c=>c.k
-     ?`<th data-sk="${c.k}" title="${_tipS}" style="cursor:pointer;user-select:none;white-space:nowrap${c.start?';text-align:start':''}">${c.l}${_arrow(c.k)}</th>`
+     ?`<th data-sk="${c.k}" title="${_tipS}" style="cursor:pointer;user-select:none;white-space:nowrap${c.start?';text-align:start':''}${c.rate?';color:var(--gold2)':''}">${c.l}${_arrow(c.k)}</th>`
      :`<th${c.start?' style="text-align:start"':''}>${c.l}</th>`).join('')+
    `</tr></thead><tbody>`+
    rows.map((p,i)=>`<tr><td>${i+1}</td><td>${p.c}</td><td style="text-align:start">${prodName(p)}</td><td>${T.cats[p.cat]||p.cat}</td>
+   <td><span class="pill ${p.ff==='Frozen'?'b':'g'}">${p.ff==='Frozen'?(LANG==='ar'?'فروزن':'Frozen'):(LANG==='ar'?'فريش':'Fresh')}</span></td>
    <td>${ABCMAP[p.c]?`<span class="pill ${_abcPill(ABCMAP[p.c])}">${ABCMAP[p.c]}</span>`:'—'}</td>
    <td class="num">${F(p.open)}</td>
    <td class="num">${F(p.ord)}</td><td class="num">${F(p.prod)}</td><td class="num">${F(p.sales)}</td>
    <td>${p.covP==null?'—':`<span class="pill ${p.covP>=0.95?'g':(p.covP>=0.7?'y':'r')}">${Pc(p.covP,0)}</span>`}</td>
    <td>${p.covS==null?'—':`<span class="pill ${p.covS>=0.95?'g':(p.covS>=0.7?'y':'r')}">${Pc(p.covS,0)}</span>`}</td>
-   <td class="num">${F(p.shortQty)}</td><td class="num">${F(p.close)}</td></tr>`).join('')+
-   `<tr style="font-weight:800;border-top:2px solid var(--bd)"><td>—</td><td>${LANG==='ar'?'الإجمالي':'Total'}</td><td style="text-align:start">${rows.length} ${LANG==='ar'?'منتج بحركة خلال الفترة':'products with movement'}</td><td>—</td><td>—</td>
+   <td class="num">${F(p.shortQty)}</td><td class="num">${F(p.close)}</td>
+   <td class="num" style="color:var(--gold2);font-weight:700">${F(p.avgSel)}</td>
+   <td class="num" style="color:var(--gold2);font-weight:700">${F(p.avgWk)}</td>
+   <td class="num" style="color:var(--gold2);font-weight:700">${F(Math.round(p.req7))}</td>
+   <td class="num" style="color:var(--gold2);font-weight:700">${F(p.avgOrdSel)}</td>
+   <td class="num" style="color:var(--gold2);font-weight:700">${F(p.avgOrdWk)}</td>
+   <td class="num" style="color:var(--gold2);font-weight:700">${F(Math.round(p.reqOrd7))}</td>
+   <td class="num" style="color:var(--gold2);font-weight:700">${p.covRatio==null?'—':F(Math.round(p.covRatio))}</td>
+   <td class="num" style="color:${p.gapWeek<0?'var(--bad)':'var(--good)'};font-weight:800">${F(Math.round(p.gapWeek))}</td></tr>`).join('')+
+   `<tr style="font-weight:800;border-top:2px solid var(--bd)"><td>—</td><td>${LANG==='ar'?'الإجمالي':'Total'}</td><td style="text-align:start">${rows.length} ${LANG==='ar'?'منتج بحركة خلال الفترة':'products with movement'}</td><td>—</td><td>—</td><td>—</td>
    <td class="num">${F(rows.reduce((a,r)=>a+(r.open||0),0))}</td>
    <td class="num">${F(rows.reduce((a,r)=>a+(r.ord||0),0))}</td><td class="num">${F(rows.reduce((a,r)=>a+(r.prod||0),0))}</td><td class="num">${F(rows.reduce((a,r)=>a+(r.sales||0),0))}</td>
-   <td>—</td><td>—</td><td class="num">${F(rows.reduce((a,r)=>a+(r.shortQty||0),0))}</td><td class="num">${F(rows.reduce((a,r)=>a+(r.close||0),0))}</td></tr></tbody>`;
+   <td>—</td><td>—</td><td class="num">${F(rows.reduce((a,r)=>a+(r.shortQty||0),0))}</td><td class="num">${F(rows.reduce((a,r)=>a+(r.close||0),0))}</td>
+   <td class="num" style="color:var(--gold2)">${F(rows.reduce((a,r)=>a+(r.avgSel||0),0))}</td>
+   <td class="num" style="color:var(--gold2)">${F(rows.reduce((a,r)=>a+(r.avgWk||0),0))}</td>
+   <td class="num" style="color:var(--gold2)">${F(Math.round(rows.reduce((a,r)=>a+(r.req7||0),0)))}</td>
+   <td class="num" style="color:var(--gold2)">${F(rows.reduce((a,r)=>a+(r.avgOrdSel||0),0))}</td>
+   <td class="num" style="color:var(--gold2)">${F(rows.reduce((a,r)=>a+(r.avgOrdWk||0),0))}</td>
+   <td class="num" style="color:var(--gold2)">${F(Math.round(rows.reduce((a,r)=>a+(r.reqOrd7||0),0)))}</td>
+   <td class="num" style="color:var(--gold2)">${(()=>{const totOrd=rows.reduce((a,r)=>a+(r.avgOrdSel||0),0);const totClose=rows.reduce((a,r)=>a+(r.close||0),0);return totOrd>0?F(Math.round(totClose/totOrd)):'—';})()}</td>
+   <td class="num" style="color:${rows.reduce((a,r)=>a+(r.gapWeek||0),0)<0?'var(--bad)':'var(--good)'};font-weight:800">${F(Math.round(rows.reduce((a,r)=>a+(r.gapWeek||0),0)))}</td></tr></tbody>`;
   // header click → sort (alphabetic starts A→Z, numeric starts biggest→smallest; click again flips)
   $('#tCmpUnc').querySelectorAll('th[data-sk]').forEach(th=>{th.onclick=()=>{
     const k=th.dataset.sk;
@@ -3626,7 +3662,8 @@ function renderPlant(){
   $('#plProdT').textContent=T.plProdT; $('#plYieldT').textContent=T.plYieldT;
   $('#plNote').textContent=T.plNote;
   if(!P||!P.daily||!P.daily.length){
-    $('#plKpi').innerHTML='<div class="card" style="grid-column:1/-1"><div class="k">'+(LANG==='ar'?'لا توجد بيانات معالجة بعد':'No processing data yet')+'</div><div class="d">'+(LANG==='ar'?'تأكد أن شيت المعالجة مُشارَك (Anyone with link / Viewer) وأن تبويباته Daily_Grades و Daily_Histogram، ثم اضغط تحديث الآن.':'Ensure the processing sheet is shared (Anyone with link / Viewer) with tabs Daily_Grades & Daily_Histogram, then press Refresh.')+'</div></div>';
+    const busy=window.__liveBusy;
+    $('#plKpi').innerHTML='<div class="card" style="grid-column:1/-1"><div class="k">'+(busy?(LANG==='ar'?'⏳ جاري تحميل بيانات المعالجة من Google Sheets…':'⏳ Loading processing data from Google Sheets…'):(LANG==='ar'?'لا توجد بيانات معالجة بعد':'No processing data yet'))+'</div><div class="d">'+(busy?(LANG==='ar'?'قد يستغرق التحميل بضع ثوان — لا تحتاج فعل شي.':'This can take a few seconds — no action needed.'):(LANG==='ar'?'تأكد أن شيت المعالجة مُشارَك (Anyone with link / Viewer) وأن تبويباته Daily_Grades و Daily_Histogram، ثم اضغط تحديث الآن.':'Ensure the processing sheet is shared (Anyone with link / Viewer) with tabs Daily_Grades & Daily_Histogram, then press Refresh.'))+'</div></div>';
     ['cPlProd','cPlUtil','cPlYield'].forEach(id=>{const c=charts[id];if(c){c.destroy();delete charts[id];}});
     $('#tPlant').innerHTML='';$('#plGran').innerHTML='';return;}
   // controls: granularity + date range
@@ -3648,6 +3685,12 @@ function renderPlant(){
   if(PLFROM)days=days.filter(d=>d.d>=PLFROM);
   if(PLTO)days=days.filter(d=>d.d<=PLTO);
   const winDays=new Set(days.map(d=>d.d));
+  // chart-only day set: union of proc days + any RX-only days within the window (a day can
+  // have real receiving data with zero/no Daily_Grades rows — those should still show a bar
+  // in the per-line chart, even though they're excluded from the proc-based KPI/yield totals)
+  const effFrom=PLFROM||dMin, effTo=PLTO||dMax;
+  const rxDaysInWin=(DATA.rx&&DATA.rx.daily)?DATA.rx.daily.filter(x=>x.d>=effFrom&&x.d<=effTo).map(x=>x.d):[];
+  const chartWinDays=new Set([...winDays,...rxDaysInWin]);
   // line list = PDS lines (1 & 2) + Breeder (from receiving intake, manual count)
   const BREEDER='Breeder Line';
   const lineNames=P.lineNames.slice();
@@ -3682,35 +3725,44 @@ function renderPlant(){
   const dl={display:true,color:css('--ink'),font:{size:9,weight:'700'},formatter:v=>v?Fk(v):''};
   const colors=[GOLD,SKY,GREEN,VIO];
   let lbl, prodData;
+  const rxLineCount=(d,ln)=>{
+    const x=DATA.rx&&DATA.rx.daily&&DATA.rx.daily.find(y=>y.d===d); if(!x||!x.lines)return 0;
+    if(ln==='Line 1 (B01)')return (x.lines.B01&&x.lines.B01.sl||0)+(x.lines.B02&&x.lines.B02.sl||0);
+    if(ln==='Line 2 (B03)')return (x.lines.B03&&x.lines.B03.sl||0)+(x.lines.B04&&x.lines.B04.sl||0);
+    return 0;
+  };
   if(isW){
     const wl={}, word=[];
-    P.daily.forEach(e=>{ if(!winDays.has(e.d))return;
+    P.daily.forEach(e=>{ if(!chartWinDays.has(e.d))return;
       const sat=satOf(new Date(e.d+'T00:00:00Z'));const k=iso(sat);
       if(!wl[k]){wl[k]={label:wlabel(sat),frm:k,lines:{}};word.push(k);}
-      wl[k].lines[e.line]=(wl[k].lines[e.line]||0)+e.count;});
-    // add breeder weekly from rx intake
-    if(DATA.rx&&DATA.rx.daily){DATA.rx.daily.forEach(x=>{if(!winDays.has(x.d)||!(x.br>0))return;
+    });
+    // bird counts per line now come from RX (receiving) — the received count per line —
+    // not from Daily_Grades, which proved unreliable (e.g. duplicate-looking entries)
+    if(DATA.rx&&DATA.rx.daily){DATA.rx.daily.forEach(x=>{if(!chartWinDays.has(x.d))return;
       const sat=satOf(new Date(x.d+'T00:00:00Z'));const k=iso(sat);
       if(!wl[k]){wl[k]={label:wlabel(sat),frm:k,lines:{}};word.push(k);}
-      wl[k].lines[BREEDER]=(wl[k].lines[BREEDER]||0)+x.br;});}
+      [ 'Line 1 (B01)','Line 2 (B03)' ].forEach(ln=>{wl[k].lines[ln]=(wl[k].lines[ln]||0)+rxLineCount(x.d,ln);});
+      if(x.br>0)wl[k].lines[BREEDER]=(wl[k].lines[BREEDER]||0)+x.br;});}
     word.sort();
     lbl=word.map(k=>wl[k].label);
     prodData=lineNames.map((ln,i)=>({label:ln,backgroundColor:colors[i%colors.length],datalabels:dl,
       data:word.map(k=>wl[k].lines[ln]||0)}));
   } else {
-    lbl=days.map(e=>e.d.slice(5));
+    const chartDays=Array.from(chartWinDays).sort();
+    lbl=chartDays.map(d=>d.slice(5));
     const rxBr=d=>{const x=DATA.rx&&DATA.rx.daily&&DATA.rx.daily.find(y=>y.d===d);return x&&x.br>0?x.br:0;};
     prodData=lineNames.map((ln,i)=>({label:ln,backgroundColor:colors[i%colors.length],datalabels:dl,
-      data:days.map(e=> ln===BREEDER ? rxBr(e.d) : (e.lines[ln]?e.lines[ln].count:0) )}));
+      data:chartDays.map(d=> ln===BREEDER ? rxBr(d) : rxLineCount(d,ln) )}));
   }
   // stacked line-load chart (quantity per line) + received overlay — matches the ops-style visual
   prodData.forEach(ds=>{ds.stack='lines';});
   // add a "received" overlay line from rx intake (total birds received per bucket)
   let recvData=null;
   if(DATA.rx&&DATA.rx.daily){
-    if(isW){const wmap={}; DATA.rx.daily.forEach(x=>{if(!winDays.has(x.d))return;const sat=satOf(new Date(x.d+'T00:00:00Z'));const k=iso(sat);wmap[k]=(wmap[k]||0)+(x.v||0);});
+    if(isW){const wmap={}; DATA.rx.daily.forEach(x=>{if(!chartWinDays.has(x.d))return;const sat=satOf(new Date(x.d+'T00:00:00Z'));const k=iso(sat);wmap[k]=(wmap[k]||0)+(x.v||0);});
       recvData=Object.keys(wmap).sort().map(k=>wmap[k]);}
-    else {recvData=days.map(e=>{const x=DATA.rx.daily.find(y=>y.d===e.d);return x&&x.v?x.v:0;});}
+    else {const chartDays=Array.from(chartWinDays).sort(); recvData=chartDays.map(d=>{const x=DATA.rx.daily.find(y=>y.d===d);return x&&x.v?x.v:0;});}
   }
   const cplDatasets=prodData.slice();
   if(recvData&&recvData.some(v=>v>0))cplDatasets.push({type:'line',label:(LANG==='ar'?'المستلم':'Received'),data:recvData,borderColor:GREEN,backgroundColor:'transparent',pointRadius:0,tension:.3,datalabels:{display:false}});
@@ -3787,7 +3839,8 @@ function renderQuality(){
   $('#qGradeT').textContent=T.qGradeT; $('#qHistT').textContent=T.qHistT; $('#qABtrendT').textContent=T.qABtrendT;
   $('#qNote').textContent=T.qNote;
   if(!P||!P.daily||!P.daily.length){
-    $('#qKpi').innerHTML='<div class="card" style="grid-column:1/-1"><div class="k">'+(LANG==='ar'?'لا توجد بيانات معالجة بعد':'No processing data yet')+'</div><div class="d">'+(LANG==='ar'?'تأكد من مشاركة شيت المعالجة واسم تبويباته، ثم اضغط تحديث الآن.':'Check the processing sheet sharing & tab names, then press Refresh.')+'</div></div>';
+    const busy=window.__liveBusy;
+    $('#qKpi').innerHTML='<div class="card" style="grid-column:1/-1"><div class="k">'+(busy?(LANG==='ar'?'⏳ جاري تحميل بيانات المعالجة من Google Sheets…':'⏳ Loading processing data from Google Sheets…'):(LANG==='ar'?'لا توجد بيانات معالجة بعد':'No processing data yet'))+'</div><div class="d">'+(busy?(LANG==='ar'?'قد يستغرق التحميل بضع ثوان — لا تحتاج فعل شي.':'This can take a few seconds — no action needed.'):(LANG==='ar'?'تأكد من مشاركة شيت المعالجة واسم تبويباته، ثم اضغط تحديث الآن.':'Check the processing sheet sharing & tab names, then press Refresh.'))+'</div></div>';
     ['cQGrade','cQHist','cQABtrend'].forEach(id=>{const c=charts[id];if(c){c.destroy();delete charts[id];}});
     $('#tQuality').innerHTML='';if($('#qLineSel'))$('#qLineSel').innerHTML='';return;}
   // selectors: line + day
@@ -3907,7 +3960,7 @@ function parseUsers(mat){
   return users;
 }
 async function fetchUsers(){
-  try{const mat=await fetchTab(GS.users,null,0);return parseUsers(mat);}catch(e){console.error('users fetch failed',e);return null;}
+  try{const mat=await fetchTab(GS.users,null,0,(LANG==='ar'?'المستخدمين/الصلاحيات':'Users/Permissions'));return parseUsers(mat);}catch(e){console.error('users fetch failed',e);return null;}
 }
 function applyPerms(rec){
   USER_PERMS=rec; CURRENT_USER=rec.username;
@@ -6538,9 +6591,11 @@ function computeProc(G, H, W){
     for(const ln in lines){
       out.lineNames.add(ln);
       const gd=lines[ln];
-      // total from explicit Total row if present, else sum of A..Rest
+      // total from explicit Total row if present AND non-empty, else sum of A..Rest
+      // (a Total row object is truthy even when its count is 0/blank — must check the value,
+      // not just presence, or a not-yet-filled Total cell silently zeroes out real grade data)
       let cnt=0,kg=0;
-      let hasTotal=gd['Total'];
+      let hasTotal=gd['Total']&&gd['Total'].count>0;
       if(hasTotal){cnt=gd['Total'].count;kg=gd['Total'].kg;}
       else{for(const g of out.ord){if(gd[g]){cnt+=gd[g].count;kg+=gd[g].kg;}}}
       if(cnt<=0)continue;
@@ -6579,11 +6634,12 @@ function parseCSV(text){
   return rows;
 }
 let __gvN=0;
-function gvTab(id,sheet,hdrMode){
+function gvTab(id,sheet,hdrMode,label){
   return new Promise((resolve,reject)=>{
     const h='__gv'+(__gvN++);
     let done=false;
-    const timer=setTimeout(()=>{if(!done){done=true;cleanup();reject(t().liveTab(sheet||'RX')+' (timeout)')}},90000);
+    const nm=sheet||label||(LANG==='ar'?'الشيت الرئيسي':'default sheet');
+    const timer=setTimeout(()=>{if(!done){done=true;cleanup();reject(t().liveTab(nm)+' (timeout)')}},90000);
     // keep a no-op callback so a LATE gviz response can't throw "__gvN is not defined"
     function cleanup(){clearTimeout(timer);try{window[h]=function(){}}catch(e){};setTimeout(()=>{try{delete window[h]}catch(e){}},180000);if(s.parentNode)s.parentNode.removeChild(s)}
     window[h]=resp=>{
@@ -6599,18 +6655,18 @@ function gvTab(id,sheet,hdrMode){
         if(hdrMode===0){cleanup();resolve(rows);}
         else{const hdr=(resp.table.cols||[]).map(c=>c&&c.label!=null?c.label:'');
           cleanup();resolve([hdr].concat(rows));}
-      }catch(err){cleanup();reject(t().liveTab(sheet||'RX')+' — '+err)}
+      }catch(err){cleanup();reject(t().liveTab(nm)+' — '+err)}
     };
     const hm=(hdrMode===0)?0:1;
     let u='https://docs.google.com/spreadsheets/d/'+id+'/gviz/tq?headers='+hm+'&tqx=out:json;responseHandler:'+h+'&cb='+Date.now();
     if(sheet)u+='&sheet='+encodeURIComponent(sheet);
     const s=document.createElement('script');
     s.src=u;
-    s.onerror=()=>{if(!done){done=true;cleanup();reject(t().liveTab(sheet||'RX')+' (network)')}};
+    s.onerror=()=>{if(!done){done=true;cleanup();reject(t().liveTab(nm)+' (network)')}};
     document.head.appendChild(s);
   });
 }
-async function fetchTab(id,sheet,hdrMode){return gvTab(id,sheet,hdrMode)}
+async function fetchTab(id,sheet,hdrMode,label){return gvTab(id,sheet,hdrMode,label)}
 function setLive(html,cls){const el=document.getElementById('liveChip');if(el){el.innerHTML=html;el.className='note '+(cls||'')}}
 async function loadFromSheets(){
   setLive(t().liveLoading);
@@ -6672,7 +6728,12 @@ async function loadFromSheets(){
 }
 initPeriodDelegation();
 loadFromSheets();
-
+// The Arabic webfont loads with font-display:swap, so the very first chart paint can
+// measure/size horizontal-bar label columns against the narrower fallback font. Once the
+// real font is confirmed ready, re-render so every chart re-measures with correct metrics.
+if(document.fonts&&document.fonts.ready){
+  document.fonts.ready.then(()=>{ try{ renderAll(); }catch(e){ console.warn('[fonts.ready] re-render skipped',e); } });
+}
 
 $('#cmpUncMetric')&&$('#cmpUncMetric').addEventListener('change',renderCmp);
 ;try{initAuth();}catch(e){console.error('auth init failed',e);}
